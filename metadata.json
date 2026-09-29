@@ -1,0 +1,6 @@
+{
+  "name": "Pipulinos - Showroom & Catálogo de Indumentaria Infantil",
+  "description": "Showroom y catálogo oficial de indumentaria infantil Pipulinos. Ropa tierna para bebés y niños de 0 a 10 años, compra online con Mercado Pago y WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
