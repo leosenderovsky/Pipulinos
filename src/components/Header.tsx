@@ -79,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({
             <img
               src={BRAND_CONFIG.logo.url}
               alt={BRAND_CONFIG.logo.alt}
-              className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-sm transition-all duration-300"
+              className="h-auto w-[min(56vw,220px)] max-w-full object-contain drop-shadow-sm transition-all duration-300"
             />
           </button>
         </div>

@@ -213,11 +213,11 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
             <span>✨ Compra 100% Segura • 3 y 6 cuotas sin interés • Despachos garantizados a todo el país ✨</span>
           </div>
 
-          <div className="w-full px-6 py-4 flex items-center justify-between gap-4">
+          <div className="w-full px-4 py-4 grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 sm:flex sm:justify-between sm:gap-4 sm:px-6">
             <button
               type="button"
               onClick={onBackToCart}
-              className="inline-flex items-center gap-1.5 text-purple-900/80 hover:text-[#FF6B57] font-bold text-xs transition-colors cursor-pointer"
+              className="col-start-1 row-start-1 inline-flex items-center gap-1.5 text-purple-900/80 hover:text-[#FF6B57] font-bold text-xs transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Volver al carrito</span>
@@ -226,10 +226,10 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
             <img
               src={BRAND_CONFIG.logo.url}
               alt={BRAND_CONFIG.logo.alt}
-              className="h-16 md:h-20 w-auto object-contain"
+              className="col-span-2 row-start-2 justify-self-center h-auto w-[min(64vw,220px)] max-w-full object-contain sm:w-[190px]"
             />
 
-            <div className="flex items-center gap-2 bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-100">
+            <div className="col-start-2 row-start-1 flex items-center gap-2 bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-100">
               <ShieldCheck className="w-4 h-4 text-[#FF6B57]" />
               <div className="flex flex-col text-left">
                 <span className="font-extrabold text-[10px] text-[#1E2046] uppercase leading-tight">

@@ -23,7 +23,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
                 <img
                   src={BRAND_CONFIG.logo.url}
                   alt={BRAND_CONFIG.logo.alt}
-                  className="h-14 md:h-16 w-auto object-contain drop-shadow-xs hover:scale-105 transition-transform"
+                  className="h-auto w-[min(100%,180px)] max-w-full object-contain drop-shadow-xs hover:scale-105 transition-transform"
                 />
               </button>
             </div>

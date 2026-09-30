@@ -68,7 +68,7 @@ export const BRAND_CONFIG: BrandConfig = {
   slogan: 'Amor en cada puntada para crecer jugando 🎈',
   foundedYear: 2025,
   logo: {
-    url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBYP5kAaSFVMgGqGckykDhpxAK3PNXHJCVJCZB0x3BgFBGBt0eACCbpcUdiHhDXI8Z8bbWWVx_FFDtdpxncteVpGypj0b6lcVmrNe9k_9iueMc0e54T-2e2vOAymmdo9tdYw2RRMCO28IrbMkhQ3UGUSDuC3qvFj8xQH5CBUcvSn2hNRwf4Kaj_h5I3a-ZI9_BQyFB9RrpcoreDulorM9Nwww6yXAttVfUcdONog9MBXp7W3xSL5ED3Cd1EI0EKnd-maBc',
+    url: '/images/logo/logo.png',
     alt: 'Pipulinos - Indumentaria Infantil',
   },
   contact: {
