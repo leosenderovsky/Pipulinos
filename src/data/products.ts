@@ -51,10 +51,10 @@ export const PRODUCTS: Product[] = [
       { name: 'Blanco Nube', hex: '#FAF9F6', colorFamily: 'neutro' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuCjbWQJaxsnF0LP_TDRUYzW4lueTl92KV7ryU8-53HvFMpmeERDw8HEWZn-rgJLYeLrSSlhJ8OmLaCfuOA42G7CpIDETRSHp_EJiQGshzaM81p0pamhJJVr0Q5FydM0RItWcdfcRjtEsYmzE1fJxJItrDuWSINg0nR-uw_xHc1a36e4hUKZtaRMBS6KkGeDYTqOfaT_eSzrFTzKx40Xh_pAixxybreYKEP9oWn6M_HmIeFFc4gw6WLdIA',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuALS83ByPpztMEm1F3WYKVfaeFzR2lb1FWlgTdT9kULChVnStZ_AjoiUutR_JIzsxnr30KRtJ6QptoUWDf9BrRQ-PCPVSQSPTLqHAMFIhIDlOxpLeggH7YPlZHb0Bnw0IqOLx1PDPP5yVg55620YUzp0IAzGiXcIR_m8KaBK1xX04MXUxqJX7e8tRX0fLebcDsnXZwdUL3PALgj2SWl3foGKz08dzvwJN7CWubl-QcaPeMbxZ8Db08Qug',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAGM3Q643CHk5RFIncmz2EB5gmG4oUBOHpTkIUx4L4MMa3_F_K0Yz773e1kWlrlfvylOZluAYovf8zuyewSgYOqwsfKo6h0NOR75pdwuZ1otOilf4eCo4lkwbAh1JL32BUE3C1kqUnzuICRsc2LjuU-zMPSWuTggMGA3n5yTFLGKjrYRPnusbTj9E_lUxxECvo0igizlFgaXOLGT8XkmF2_QKDbGg6nkochBiuGcSTUYn-NQEuzYjFyyA',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuA1WjdGu7cBXESBQoloLxKfVXq7GcM4HPDn5D0wd7rFTb1_DvVpTRHJG1pKD6Vj4n3-hvVMt7E5aVCfO0FUB6jnwpDxqlV7ZCFPSYPx5_IYP80MlU-kWObND4iD3P8kyBj2khHJHgcqjyvha1g4AK1poZMndx3BHUfdCyCvxffondJOb11p0YTpeNrf5CD5yvLvhctW3yiqvreinrSOFiIszgQIusu-1wJusPLUQ6gNujmu05AdPhAukw',
+      '/assets/products/body-manga-larga-algodon-pima.jpg',
+      '/assets/products/body-manga-larga-algodon-pima-2.jpg',
+      '/assets/products/body-manga-larga-algodon-pima-3.jpg',
+      '/assets/products/body-manga-larga-algodon-pima-4.jpg',
     ],
     descripcion:
       'Confeccionado artesanalmente en 100% Algodón Pima puro peinado, este body brinda la caricia más suave para la piel sensible de tu bebé. Su cuello americano extensible permite deslizarlo hacia abajo sin apretar las orejitas en caso de cambios de emergencia, mientras sus broches metálicos reforzados libres de níquel garantizan máxima seguridad y durabilidad lavado tras lavado.',
@@ -92,8 +92,8 @@ export const PRODUCTS: Product[] = [
       { name: 'Celeste Suave', hex: '#93C5FD', colorFamily: 'celeste' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDw6z_gFlP4yOsGhpFQTu-yks4rPN19e5IjPMQcIZ71oNH2a1UsYTA-z8ponwkA1Z9LbGi2GlujkKHFyTk_ZYZTZOTQxlV4HZTtVOB6bZSuSeIrEfqV6WarvHCizRFEdZKCUn8wdY6Zb0Z9wpVisB0nCLylO6g0Crujs2U5kJW9p9jOWbOZOdTeDyzWAjyQqxkwbdO7yik8BYJdffCC_F3clJUHJDbgX7jrssL4e2tcnUoNgexfiCTKKw',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBP_3NQifBmzAiO5xWedEr0G9PmCgFVecZL4e3dtxmBL3F1V2W-FtqwJ5itKTx_OKC0uifM1ZuNtFl5RIjx5viYhIa9AAWS7TOlxKCIKPQjy_UGCZ8a47pFCn73ClAp6W1BdS9rtk5qumN0jU4z9Grr51Nf0oIcKy5YIv0BhF5BNP1Jum0ZOxCvQaDlie_ebzHqGJKLEjVXXM58cefRI18_UNcSZjiqiR6Ppk8YQck7Ny0DhcGAmRYuwg',
+      '/assets/products/enterito-osito-termico-plush.jpg',
+      '/assets/products/enterito-osito-termico-plush-2.jpg',
     ],
     descripcion:
       'Enterito ultra abrigado en plush térmico soft con capucha con orejitas 3D de osito. Cuenta con un innovador cierre frontal de doble vía con solapa protectora para cambiar los pañales de noche sin desabrigar el pecho de tu peque.',
@@ -129,7 +129,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Trío Pastel Nube (Celeste/Lila/Crudo)', hex: '#8B5CF6', colorFamily: 'lila' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC-doFf-Xoop-wNUt9W2vwchzoKMrs0-UzbXsaM8PxuGgsrCS7DUmDA10g6y63CNIIstCgBfNPwO6t_3IuSCl6g22dOZ-AJuCTEenE-h-t2h68JC8UIj-1ByHDoy1s9m22EBE-4wMM_YN6toOpd7Xxbc8JhBFfKxVrtuTVbUJcq9T-BwMossyLUKk1QSzrO0-I4CLLWzLcdqqRoIIoBbO5GbGmSmCyOvDHbGWEUQ1sbxFUPfsrJGsbj7g',
+      '/assets/products/pack-x3-remeras-basicas.jpg',
     ],
     descripcion:
       'Un esencial infalible para el guardarropa infantil. Tres remeras clásicas de cuello redondo reforzado con rib elástico que mantiene su forma tras incontables lavados. Confeccionadas en algodón peinado 24/1 de textura suave, transpirable y resistente para jugar sin parar.',
@@ -166,7 +166,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Amarillo Mostaza', hex: '#FFD026', colorFamily: 'amarillo' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC6wyi1LnOyT8DzHUm_dE5rvF0wEtaDpBmG9lDXuE55omfH9xweuHyPPwnXrqfRG9XfA2TBOuVz9o38JpNVkqCCCOqOGwXLWxfztNDjJKl0D-WbUrXuiS_pxPNNn4AMEUIIZcb3PIH1_Ptu8XgFaHqjmiupbwwNrZEghLNd7Qt1Pp8MjPFnVJlppwpFADgC-P4-Aj678Ke8-VJihmEX965h6v4s-RS9YVFGmPSrFhnW4_MCq5wTL01z2A',
+      '/assets/products/conjunto-jogging-friza-soft.jpg',
     ],
     descripcion:
       'Conjunto urbano y relajado diseñado para abrigar sin pesar. Incluye buzo con bolsillo canguro amplio y capucha forrada, más pantalón jogger con cintura elastizada suave y cordón ajustable decorativo. Interior en friza suave peinada que no desprende pelusas.',
@@ -200,7 +200,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Celeste Cielo', hex: '#60A5FA', colorFamily: 'celeste' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDr_25dTDL66tKAS03hF0wWToFJcZmYMDXqoh_y68ppnwXtU1rfs6ELQREdbvmIDIxWfn2fCDgNnGzj5M_xjW6cjZUSgdXw3X1jvAWtIJoH_ejaM6fjEzB4qdscS3dOUx8A5DWlGqb1OShbEAzx4c7qePrhL2KgUx8vJc8v_WyYk7satL8JXn0-5IvJqZ8UHOGLk4CDyAiB3VJoBV9VlVYJ-jOJqXiBG_J_oyD-Zzkp83WWUev3HYNuDw',
+      '/assets/products/pijama-enterizo-antideslizante.jpg',
     ],
     descripcion:
       'El pijama ideal para noches de sueño ininterrumpido. Tejido en rib acanalado de algodón con memoria elástica, incluye suelas con apliques antideslizantes de silicona segura para peques que ya gatean o dan sus primeros pasitos por la casa.',
@@ -232,7 +232,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Celeste Desgastado', hex: '#38BDF8', colorFamily: 'celeste' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAaMj_POg8cZDkbV11dvl8AOcWl0T6yYMl9bGsrIloCjDUbVdT4xfU7G4FhmcmTcSSt1Wc4Z8KHJxLBHdF1QQ2ksXeTjcvQep-tc-z1dHz_C_CtgUUWgZYcUGM2912f6q7FQiZ_H1jf4OXxhoocBAHe2zt12-gfNYSspjbiysSQnxu4Y4CeXbXQGL8_t3z_5ZcxpmCQM_bs1RPeqncWTmkvl78Be0-huLiNQssFiOe8cWMmJK6GQPCzWw',
+      '/assets/products/jardinero-denim-liviano.jpg',
     ],
     descripcion:
       'Un clásico reinventado para la infancia moderna. Este jardinero confeccionado en denim camisero ultra liviano cuenta con un 3% de elastano que permite agacharse, trepar y jugar sin ninguna rigidez. Tiradores con botones de madera regulables en dos alturas.',
@@ -265,7 +265,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Vainilla Floral', hex: '#FEF08A', colorFamily: 'amarillo' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAs1ylBa7Xia74qRhNoCcvoGTzYxwwLtMNPUOBusQRQ0FxFZwoU_oxbu5ALOKRmXLxX1I8qq9YVGQa2yJ_ZSbLlHEAvVJaIhGhdEWnfPx9yGxemef0K-am0aLqHm6lk8cDBQTe1L42qXF7RJebUcWMx_jDfJhlLhnMjYjm3_bcghgeY0E6UWh0hhlYi6tWEpIwy8944oWSAaaY7FW8MZryAPUG_Fq8p2fcFvpg8iMsSDG7RLgtzEFeFHQ',
+      '/assets/products/vestido-solero-muselina.jpg',
     ],
     descripcion:
       'Fresco, vaporoso y lleno de encanto campestre. Confeccionado en doble gasa de muselina 100% algodón orgánico pre-lavado con textura arrugadita natural. Tirantes anchos con lazo y falda con frunce delicado que no requiere plancha.',
@@ -298,7 +298,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Verde Salvia Mini', hex: '#4ADE80', colorFamily: 'verde' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBmqgr8V2udJWrHOVdSGqLmSk6F6p_05b_nsFvWo2VXfHZBK_lziFvqS71TMvgQHQp3niFYQ2nSeY-zSvSXR5KTrAbZncad5wEVHKeUWYkJfhfIJYgAJYiGI0RlVZAzyl8x80WKkEUx9z9siKQT6p27iJpTdTlZ7skiISrGlcDAobh7ugFKauN_itRWIZeUQOKQXAFS3qDcKoehWhfp8dSCcarXmFI8JXuGdHnZHL1PwoniKzrAPME2Cg',
+      '/assets/products/calza-termica-suave-estampada.jpg',
     ],
     descripcion:
       'Calza indispensable para todos los días en interlock térmico peinado con lycra. Elástica, suave y calentita, se adapta a pañales descartables o de tela sin comprimir la pancita gracias a su cintura elástica ancha embutida.',
@@ -331,7 +331,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Celeste & Blanco', hex: '#93C5FD', colorFamily: 'celeste' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBi27mwPtKpSaRNLLZJ6tGpcEGrg4ENR0jUFZt20eySvcwkbaJ9wypt1JESedJtP7iB__TV_cRV-judWoeYg29b30JJkkuu1wcfrvRfjnvGr7d0DH70Bfip7cz2k9I-x-fqMi_vKLiz5FsI9XhD31mydAdyX2u-KOnfFPdOjwWVOgHWKIZ9hVlhjKDCTUDQll8-aZCT2FsA2br4de0RBN4AfuvcVztNq6V7jn4PNGTOYpMUdMgXPAsuEg',
+      '/assets/products/pack-x2-escarpines-soft.jpg',
     ],
     descripcion:
       'Dúo de escarpines tejidos en hilo de algodón hipoalergénico con puño doble que sujeta suavemente sin caerse.',
@@ -354,7 +354,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Coral Dulce', hex: '#FB7185', colorFamily: 'coral' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuALHRs04-Vag-lF87diKvF-nbMsKu0L3nK710RU10u3tilIYeryEe6FoIhNZOo4uu81sQt4D-hzbJVogvUIE5F87j7pQ5PfMwwRZgIhwwlgK-8JFF69mkH-Xo-NF2rs_3jlt1o2e1jYnZ40ek9Vh77ntoujRYcEyzuOt3uyK9c1sdsEa6_4FnOSwChCfcHc6Tb4tcG4fKph-ckb8kdegIgUIDf9Bn5VfJjzBjO8YS-aLrNpzU783mRZhw',
+      '/assets/products/babero-bandana-gotitas.jpg',
     ],
     descripcion:
       'Babero bandana con triple capa absorbente: gasa de muselina externa y toalla de algodón interna para absorber babitas durante la dentición.',
@@ -377,7 +377,7 @@ export const PRODUCTS: Product[] = [
       { name: 'Amarillo Vainilla', hex: '#FEF08A', colorFamily: 'amarillo' },
     ],
     imagenes: [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuA0eIRpbk2k7Ph6eGsz5Nx4lUyaRdjSYy0jmAOdvF7oz-BHSuPRR2w9Iin_IQ_rLsGTwgE19hrs380-E99POLdeitYRgH73Q4_GYMUJHCNMpHhulq4z_ipnvM2NJqeVHdEsnVahP9LqaQ9zyduUjXU8MzEfmyPH8iXgKcNv9T5XwS58L9sDSt77j9-DZOu37A8KabNk-l2z-1hfk9VC7OdjAYUEHNUEZT0aE71pqgwOqvU6Owt5MNVNOQ',
+      '/assets/products/gorro-nudo-recien-nacido.jpg',
     ],
     descripcion:
       'Gorrito de maternidad en morley elastizado ultra suave con nudo regulable para ajustar la profundidad a la cabecita del bebé.',

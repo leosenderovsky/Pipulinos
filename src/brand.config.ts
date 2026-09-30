@@ -68,7 +68,7 @@ export const BRAND_CONFIG: BrandConfig = {
   slogan: 'Amor en cada puntada para crecer jugando 🎈',
   foundedYear: 2025,
   logo: {
-    url: '/images/logo/logo.png',
+    url: '/assets/logo/logo.png',
     alt: 'Pipulinos - Indumentaria Infantil',
   },
   contact: {
@@ -104,7 +104,7 @@ export const BRAND_CONFIG: BrandConfig = {
     promoCreditCard: 'Hasta 6 Cuotas Sin Interés con Mercado Pago',
     promoTransfer: '+ 10% OFF abonando por Transferencia Bancaria',
     bannerImageUrl:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC1553bDDh87vxFV7K5hXRyL0wj9yR_CrPbCqwfXOZwLs2x493olvttm4JBaHW-D8X5zS66ZdyPrHzRbczoaB9kC2dFDjiH9BiTCcCOwDnL-r05_aO2VNV7B5MswUuTSbRrSJwCtKYimKVYmp3bOu0GiAN7V_gjbkO631c_MlfrMbxBimNBjHiZmSBUj9MR_DDHa1zZjJzDU13J8FMk28MoRIXtdqsopJ5xwjfctQ_lQUNELYjB6NGidw',
+      '/assets/hero/hero-1.jpg',
     bannerImageAlt: 'Bebés jugando felices con prendas suaves Pipulinos en showroom',
     trustPill: '100% Algodón Peinado Suave',
   },
