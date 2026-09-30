@@ -10,6 +10,8 @@ import { SizeGuideModal } from './components/SizeGuideModal';
 import { MobileFilterDrawer } from './components/MobileFilterDrawer';
 import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { Footer } from './components/Footer';
+// DEMO ONLY — borrar este import y esta línea, más PrototypeBanner.tsx y demoBanner.config.ts, para pasar este proyecto a un cliente real
+import { PrototypeBanner } from './components/PrototypeBanner';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<'catalog' | 'product-detail' | 'cart' | 'checkout' | 'size-guide'>('catalog');
@@ -103,21 +105,24 @@ export default function App() {
   return (
     <CartProvider>
       <div className="min-h-screen flex flex-col bg-[#FFFDF9] text-[#1E2046]">
-        {/* Navigation Bar */}
-        <Header
-          currentView={currentView}
-          onNavigate={(view) => {
-            if (view === 'catalog') handleBackToCatalog();
-            else if (view === 'cart') handleOpenCart();
-            else if (view === 'size-guide') setIsSizeGuideModalOpen(true);
-          }}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-          selectedAgeGroup={selectedAgeGroup}
-          onSelectAgeGroup={setSelectedAgeGroup}
-        />
+        <div className="sticky top-0 z-50 [&>header]:static">
+          <PrototypeBanner />
+          {/* Navigation Bar */}
+          <Header
+            currentView={currentView}
+            onNavigate={(view) => {
+              if (view === 'catalog') handleBackToCatalog();
+              else if (view === 'cart') handleOpenCart();
+              else if (view === 'size-guide') setIsSizeGuideModalOpen(true);
+            }}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            selectedAgeGroup={selectedAgeGroup}
+            onSelectAgeGroup={setSelectedAgeGroup}
+          />
+        </div>
 
         {/* Dynamic Main View */}
         <main className="flex-1">
