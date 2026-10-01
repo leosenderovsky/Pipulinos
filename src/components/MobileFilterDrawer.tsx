@@ -11,6 +11,8 @@ interface MobileFilterDrawerProps {
   onSelectCategory: (cat: string) => void;
   selectedAgeGroup: string;
   onSelectAgeGroup: (group: string) => void;
+  selectedTag: string | null;
+  onSelectTag: (tag: string | null) => void;
   selectedSize: string | null;
   onSelectSize: (size: string | null) => void;
   selectedColor: string | null;

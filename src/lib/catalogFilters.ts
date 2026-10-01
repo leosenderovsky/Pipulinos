@@ -36,7 +36,7 @@ export const applyStructuredFilters = (products: Product[], filters: CatalogFilt
       return false;
     }
 
-    if (filters.tag && !(product.tags ?? []).includes(filters.tag)) return false;
+    if (filters.tag && !(product.tags ?? []).some((tag) => tag === filters.tag)) return false;
 
     return true;
   });
