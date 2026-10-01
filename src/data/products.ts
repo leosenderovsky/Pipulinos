@@ -12,6 +12,46 @@ export interface ProductColor {
   colorFamily?: 'amarillo' | 'coral' | 'celeste' | 'verde' | 'lila' | 'naranja' | 'neutro';
 }
 
+export type AgeStage = 'recien-nacidos' | 'bebes' | 'ninos';
+
+export const TAG_VOCAB = [
+  'body',
+  'algodon-pima',
+  'basico',
+  'abrigo',
+  'termico',
+  'suave',
+  'invierno',
+  'pijama',
+  'remera',
+  'pack',
+  'conjunto',
+  'jogging',
+  'friza',
+  'antideslizante',
+  'noche',
+  'jardinero',
+  'denim',
+  'calza',
+  'escarpines',
+  'accesorio',
+  'gorro',
+  'babero',
+  'recien-nacido',
+  'buzo',
+  'campera',
+  'polar',
+  'medias',
+  'rustico',
+  'comodo',
+  'vestido',
+  'verano',
+  'muselina',
+  'pantalon',
+] as const;
+
+export type ProductTag = typeof TAG_VOCAB[number];
+
 export interface Product {
   id: string;
   nombre: string;
@@ -27,13 +67,14 @@ export interface Product {
   tela: string;
   etiqueta?: string;
   badgeType?: 'destacado' | 'oferta' | 'nuevo' | 'termico' | 'pima';
-  edadEtapa: 'recien-nacidos' | 'bebes' | 'ninos';
+  edadEtapa: AgeStage;
+  etapasOverride?: AgeStage[];
   caracteristicas: string[];
   cuidados: string[];
   stockPorTalle?: Record<string, number>;
   destacado?: boolean;
   esPack?: boolean;
-  tags?: string[];
+  tags?: ProductTag[];
 }
 
 export const PRODUCTS: Product[] = [
@@ -117,7 +158,7 @@ export const PRODUCTS: Product[] = [
     ],
     stockPorTalle: { '0-3m': 5, '3-6m': 10, '6-9m': 7, '9-12m': 4, '12-18m': 6 },
     destacado: true,
-    tags: ['abrigo', 'termico', 'suave', 'invierno', 'pijama'],
+    tags: ['abrigo', 'termico', 'suave', 'invierno'],
   },
   {
     id: 'pack-x3-remeras-basicas',
@@ -188,7 +229,7 @@ export const PRODUCTS: Product[] = [
     ],
     stockPorTalle: { T4: 7, T6: 12, T8: 9, T10: 4 },
     destacado: true,
-    tags: ['conjunto', 'jogging', 'friza', 'abrigo', 'invierno', 'suave', 'pijama'],
+    tags: ['conjunto', 'jogging', 'friza', 'abrigo', 'invierno', 'suave'],
   },
   {
     id: 'pijama-enterizo-antideslizante',
@@ -360,6 +401,7 @@ export const PRODUCTS: Product[] = [
     caracteristicas: ['Triple capa absorbente', '2 broches para regular el cuello', 'Secado ultra rápido'],
     cuidados: ['Lavar en lavarropas con agua tibia'],
     stockPorTalle: { 'Talle Único': 30 },
+    etapasOverride: ['recien-nacidos', 'bebes'],
     tags: ['babero', 'accesorio'],
   },
   {

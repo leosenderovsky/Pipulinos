@@ -19,12 +19,12 @@ export const applyStructuredFilters = (products: Product[], filters: CatalogFilt
 
     if (
       filters.ageGroup !== 'all' &&
-      !stagesOf(product.tallesDisponibles).includes(filters.ageGroup as 'recien-nacidos' | 'bebes' | 'ninos')
+      !stagesOf(product).includes(filters.ageGroup as 'recien-nacidos' | 'bebes' | 'ninos')
     ) {
       return false;
     }
 
-    if (filters.size && !productHasSize(product.tallesDisponibles, filters.size)) return false;
+    if (filters.size && !productHasSize(product, filters.size)) return false;
 
     if (filters.color && !product.coloresDisponibles.some((color) => color.colorFamily === filters.color)) {
       return false;

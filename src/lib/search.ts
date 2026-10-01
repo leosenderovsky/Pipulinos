@@ -51,8 +51,6 @@ const getWords = (product: Product): string[] => {
         product.nombre,
         product.descripcion,
         product.descripcionCorta,
-        product.categoria,
-        product.subcategoria,
         product.tela,
         product.etiqueta,
         ...(product.caracteristicas ?? []),
@@ -96,7 +94,8 @@ export const searchProducts = (
   const partial = scored
     .filter((entry) => entry.score > 0)
     .sort((a, b) => b.score - a.score)
-    .map((entry) => entry.product);
+    .map((entry) => entry.product)
+    .slice(0, 4);
 
   return { items: partial, relaxed: partial.length > 0 };
 };

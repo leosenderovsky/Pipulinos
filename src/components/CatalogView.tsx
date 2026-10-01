@@ -7,6 +7,7 @@ import { ProductCard } from './ProductCard';
 import { SlidersHorizontal, ArrowUpDown, MessageCircle, Home } from 'lucide-react';
 import { applyCatalogFilters } from '../lib/catalogFilters';
 import { QUICK_FILTERS } from '../data/filterOptions';
+import { stageAffinity } from '../lib/sizes';
 
 interface CatalogViewProps {
   onOpenProduct: (product: Product) => void;
@@ -82,8 +83,17 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
         const discB = b.precioAnterior ? b.precioAnterior - b.precio : 0;
         return discB - discA;
       });
+
+    if (selectedAgeGroup !== 'all') {
+      return items.sort((a, b) => {
+        const affinityA = stageAffinity(a, selectedAgeGroup as 'recien-nacidos' | 'bebes' | 'ninos');
+        const affinityB = stageAffinity(b, selectedAgeGroup as 'recien-nacidos' | 'bebes' | 'ninos');
+        return affinityB - affinityA;
+      });
+    }
+
     return items;
-  }, [filteredProducts, sortOrder]);
+  }, [filteredProducts, sortOrder, selectedAgeGroup]);
 
   const activeFilterPills: Array<{ id: string; label: string; onRemove: () => void }> = [];
 

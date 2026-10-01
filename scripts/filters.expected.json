@@ -1,0 +1,88 @@
+{
+  "stages": {
+    "recien-nacidos": [
+      "body-manga-larga-algodon-pima",
+      "enterito-osito-termico-plush",
+      "pijama-enterizo-antideslizante",
+      "calza-termica-suave-estampada",
+      "pack-x2-escarpines-soft",
+      "babero-bandana-gotitas",
+      "gorro-nudo-recien-nacido",
+      "pijama-enterito-pima-recien-nacido",
+      "campera-polar-soft-orejitas",
+      "pack-x3-bodys-manga-corta-pima",
+      "pack-x3-medias-antideslizantes"
+    ],
+    "bebes": [
+      "body-manga-larga-algodon-pima",
+      "enterito-osito-termico-plush",
+      "pack-x3-remeras-basicas",
+      "pijama-enterizo-antideslizante",
+      "jardinero-denim-liviano",
+      "vestido-solero-muselina",
+      "calza-termica-suave-estampada",
+      "babero-bandana-gotitas",
+      "pijama-dos-piezas-algodon-suavecito",
+      "buzo-canguro-friza-ninos",
+      "campera-polar-soft-orejitas",
+      "remera-manga-larga-pima-estampada",
+      "pantalon-jogging-rustico-ninos",
+      "pack-x3-medias-antideslizantes"
+    ],
+    "ninos": [
+      "pack-x3-remeras-basicas",
+      "conjunto-jogging-friza-soft",
+      "jardinero-denim-liviano",
+      "vestido-solero-muselina",
+      "calza-termica-suave-estampada",
+      "pijama-dos-piezas-algodon-suavecito",
+      "buzo-canguro-friza-ninos",
+      "remera-manga-larga-pima-estampada",
+      "pantalon-jogging-rustico-ninos"
+    ]
+  },
+  "chips": {
+    "pijama": [
+      "pijama-enterizo-antideslizante",
+      "pijama-dos-piezas-algodon-suavecito",
+      "pijama-enterito-pima-recien-nacido"
+    ],
+    "pack": [
+      "pack-x3-remeras-basicas",
+      "pack-x2-escarpines-soft",
+      "pack-x3-bodys-manga-corta-pima",
+      "pack-x3-medias-antideslizantes"
+    ]
+  },
+  "stageXchip": {
+    "recien-nacidos": {
+      "pijama": [
+        "pijama-enterizo-antideslizante",
+        "pijama-enterito-pima-recien-nacido"
+      ],
+      "pack": [
+        "pack-x2-escarpines-soft",
+        "pack-x3-bodys-manga-corta-pima",
+        "pack-x3-medias-antideslizantes"
+      ]
+    },
+    "bebes": {
+      "pijama": [
+        "pijama-enterizo-antideslizante",
+        "pijama-dos-piezas-algodon-suavecito"
+      ],
+      "pack": [
+        "pack-x3-remeras-basicas",
+        "pack-x3-medias-antideslizantes"
+      ]
+    },
+    "ninos": {
+      "pijama": [
+        "pijama-dos-piezas-algodon-suavecito"
+      ],
+      "pack": [
+        "pack-x3-remeras-basicas"
+      ]
+    }
+  }
+}
