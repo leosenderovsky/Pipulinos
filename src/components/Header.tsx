@@ -1,7 +1,8 @@
 import React from 'react';
 import { BRAND_CONFIG } from '../brand.config';
 import { useCart } from '../context/CartContext';
-import { Search, ShoppingBag, User, ArrowRight } from 'lucide-react';
+import { Search, ShoppingBag, User, ArrowRight, X } from 'lucide-react';
+import { QUICK_FILTERS } from '../data/filterOptions';
 
 interface HeaderProps {
   currentView: string;
@@ -12,6 +13,9 @@ interface HeaderProps {
   onSelectCategory: (cat: string) => void;
   selectedAgeGroup: string;
   onSelectAgeGroup: (group: string) => void;
+  selectedTag: string | null;
+  onSelectTag: (tag: string | null) => void;
+  onSubmitSearch: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -23,39 +27,35 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectCategory,
   selectedAgeGroup,
   onSelectAgeGroup,
+  selectedTag,
+  onSelectTag,
+  onSubmitSearch,
 }) => {
   const { totalCount } = useCart();
 
-  const handleCategoryClick = (cat: string) => {
-    onSelectCategory(cat);
-    if (currentView !== 'catalog') {
-      onNavigate('catalog');
+  const handleQuickFilterClick = (filter: (typeof QUICK_FILTERS)[number]) => {
+    if (filter.axis === 'stage') {
+      const nextValue = selectedAgeGroup === filter.value ? 'all' : filter.value;
+      onSelectAgeGroup(nextValue);
+    } else {
+      const nextValue = selectedTag === filter.value ? null : filter.value;
+      onSelectTag(nextValue);
     }
-  };
 
-  const handleAgeGroupClick = (group: string) => {
-    onSelectAgeGroup(group);
-    if (currentView !== 'catalog') {
-      onNavigate('catalog');
-    }
+    if (currentView !== 'catalog') onNavigate('catalog');
   };
 
   return (
     <header className="w-full bg-white/95 backdrop-blur-xl shadow-[0_6px_25px_-5px_rgba(139,92,246,0.1)] border-b border-purple-100/70 sticky top-0 z-50 transition-all">
-      {/* 1. Top Announcement Bar */}
       {BRAND_CONFIG.announcement.enabled && (
         <div className="bg-gradient-to-r from-[#FFD026] via-[#FF8A1E] to-[#FF6B57] text-white px-4 py-2 text-center font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs">
           <span className="animate-bounce inline-block text-base">✨</span>
-          <span className="font-extrabold tracking-wide drop-shadow-xs">
-            {BRAND_CONFIG.announcement.text}
-          </span>
+          <span className="font-extrabold tracking-wide drop-shadow-xs">{BRAND_CONFIG.announcement.text}</span>
           <span className="animate-bounce inline-block text-base">✨</span>
         </div>
       )}
 
-      {/* 2. Brand Level with Heroic Logo and Fast Actions */}
       <div className="max-w-[1280px] mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-4">
-        {/* Left auxiliary pill to balance the layout */}
         <div className="hidden lg:flex items-center gap-2">
           <button
             type="button"
@@ -69,7 +69,6 @@ export const Header: React.FC<HeaderProps> = ({
           </span>
         </div>
 
-        {/* Central Heroic Logo (vertical format given room to breathe) */}
         <div className="flex-1 lg:flex-initial flex justify-center">
           <button
             type="button"
@@ -84,7 +83,6 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         </div>
 
-        {/* Right Fast Actions: WhatsApp, Guía, Shopping Bag */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <a
             href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent('¡Hola ' + BRAND_CONFIG.name + '! Quisiera hacer una consulta personalizada sobre el catálogo y talles.')}`}
@@ -125,28 +123,43 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* 3. Search and Quick Filter Navigation Tier */}
       <div className="border-t border-purple-100/80 bg-white/70 py-2.5 px-4 md:px-6">
         <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-          {/* Wide Search Bar */}
           <div className="w-full md:max-w-md lg:max-w-lg">
             <div className="relative w-full flex items-center bg-white border-2 border-purple-100 focus-within:border-[#26A4F8] rounded-full px-4 py-1.5 transition-all shadow-xs group">
               <Search className="w-4 h-4 text-[#FF6B57] mr-2 shrink-0 group-focus-within:scale-110 transition-transform" />
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => {
-                  onSearchChange(e.target.value);
+                onChange={(event) => {
+                  onSearchChange(event.target.value);
                   if (currentView !== 'catalog') onNavigate('catalog');
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    event.preventDefault();
+                    onSubmitSearch();
+                  }
                 }}
                 placeholder="Buscar enteritos, bodys, remeras, vestidos..."
                 className="w-full bg-transparent border-none outline-none font-medium text-xs sm:text-sm text-[#1E2046] placeholder:text-purple-300 focus:ring-0 p-0"
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onSearchChange('');
+                    if (currentView !== 'catalog') onNavigate('catalog');
+                  }}
+                  className="flex items-center justify-center rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 p-1 shrink-0 ml-1"
+                  aria-label="Limpiar búsqueda"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
               <button
                 type="button"
-                onClick={() => {
-                  if (currentView !== 'catalog') onNavigate('catalog');
-                }}
+                onClick={onSubmitSearch}
                 className="bg-[#26A4F8] hover:bg-sky-500 text-white rounded-full p-1 transition-colors flex items-center justify-center shrink-0 ml-1"
                 title="Buscar"
               >
@@ -155,63 +168,23 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Category Navigation Bar with stage quick links */}
           <nav className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none">
-            <button
-              type="button"
-              onClick={() => handleAgeGroupClick('recien-nacidos')}
-              className={`whitespace-nowrap px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all shadow-xs flex items-center gap-1 ${
-                selectedAgeGroup === 'recien-nacidos'
-                  ? 'bg-[#FF6B57] text-white border-[#FF6B57]'
-                  : 'bg-[#FFE9E5] border-[#FF6B57]/30 text-[#FF6B57] hover:bg-[#FF6B57] hover:text-white'
-              }`}
-            >
-              <span>🍼</span> Recién Nacidos 0–12m
-            </button>
-            <button
-              type="button"
-              onClick={() => handleAgeGroupClick('bebes')}
-              className={`whitespace-nowrap px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all shadow-xs flex items-center gap-1 ${
-                selectedAgeGroup === 'bebes'
-                  ? 'bg-[#FFD026] text-[#1E2046] border-[#FFD026]'
-                  : 'bg-[#FFF4D0] border-amber-200 text-amber-800 hover:bg-[#FFD026] hover:text-[#1E2046]'
-              }`}
-            >
-              <span>🧸</span> Bebés 1–3 años
-            </button>
-            <button
-              type="button"
-              onClick={() => handleAgeGroupClick('ninos')}
-              className={`whitespace-nowrap px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all shadow-xs flex items-center gap-1 ${
-                selectedAgeGroup === 'ninos'
-                  ? 'bg-[#26A4F8] text-white border-[#26A4F8]'
-                  : 'bg-[#E2F3FF] border-sky-200 text-sky-800 hover:bg-[#26A4F8] hover:text-white'
-              }`}
-            >
-              <span>🎨</span> Niños 4–10 años
-            </button>
-            <button
-              type="button"
-              onClick={() => handleCategoryClick('Pijamas & Abrigo')}
-              className={`whitespace-nowrap px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all shadow-xs flex items-center gap-1 ${
-                selectedCategory === 'Pijamas & Abrigo'
-                  ? 'bg-[#8B5CF6] text-white border-[#8B5CF6]'
-                  : 'bg-[#F1EAFE] border-purple-200 text-purple-800 hover:bg-[#8B5CF6] hover:text-white'
-              }`}
-            >
-              <span>🌙</span> Pijamas Suavecitos
-            </button>
-            <button
-              type="button"
-              onClick={() => handleCategoryClick('Accesorios & Packs')}
-              className={`whitespace-nowrap px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all shadow-xs flex items-center gap-1 ${
-                selectedCategory === 'Accesorios & Packs'
-                  ? 'bg-[#2DD382] text-white border-[#2DD382]'
-                  : 'bg-[#E3F9ED] border-emerald-200 text-emerald-800 hover:bg-[#2DD382] hover:text-white'
-              }`}
-            >
-              <span>🎁</span> Super Ofertas Packs
-            </button>
+            {QUICK_FILTERS.map((filter) => {
+              const isActive = filter.axis === 'stage' ? selectedAgeGroup === filter.value : selectedTag === filter.value;
+
+              return (
+                <button
+                  key={filter.id}
+                  type="button"
+                  onClick={() => handleQuickFilterClick(filter)}
+                  className={`whitespace-nowrap px-3.5 py-1.5 rounded-full border text-xs font-bold transition-all shadow-xs flex items-center gap-1 ${
+                    isActive ? filter.activeClass : filter.idleClass
+                  }`}
+                >
+                  <span>{filter.emoji}</span> {filter.label}
+                </button>
+              );
+            })}
           </nav>
         </div>
       </div>
