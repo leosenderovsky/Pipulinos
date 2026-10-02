@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product, ProductColor, PRODUCTS } from '../data/products';
 import { BRAND_CONFIG } from '../brand.config';
+import { calculateCouponDiscount } from '../lib/checkoutPricing';
 
 export interface CartItem {
   id: string; // unique item id: `${productId}-${size}-${colorName}`
@@ -76,7 +77,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const stored = localStorage.getItem('pipulinos_cart');
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       }
     } catch {
       // fallback to initial
@@ -142,15 +143,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const totalCount = items.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
 
-  // Descuento por cupón o promo pack
-  let discount = 0;
-  if (appliedCoupon === 'PROMO-PACK') {
-    discount = 5000;
-  } else if (appliedCoupon) {
-    discount = Math.round(subtotal * 0.1);
-  }
-  // No permitir que el descuento supere el subtotal
-  discount = Math.min(discount, subtotal);
+  const discount = calculateCouponDiscount(subtotal, appliedCoupon);
 
   const total = Math.max(0, subtotal - discount);
 

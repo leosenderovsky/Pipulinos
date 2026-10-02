@@ -3,6 +3,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
+import { BRAND_CONFIG } from './src/brand.config';
+import { calculateCheckout, CheckoutInputError } from './src/lib/checkoutPricing';
 
 dotenv.config();
 
@@ -12,7 +14,7 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3000;
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.CONTEXT === 'production';
 
   app.use(express.json());
 
@@ -25,103 +27,83 @@ async function startServer() {
    */
   const handleCreatePreference = async (req: Request, res: Response) => {
     try {
-      const { items, customer, shippingCost, shippingMethod } = req.body;
+      const { customer } = req.body;
+      const pricing = calculateCheckout(req.body);
+      const MP_ACCESS_TOKEN = process.env.MERCADO_PAGO_ACCESS_TOKEN;
+      const appUrl = (process.env.APP_URL || process.env.URL || `http://localhost:${PORT}`).replace(/\/+$/, '');
 
-      if (!items || !Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({ error: 'El carrito no contiene productos.' });
+      if (!MP_ACCESS_TOKEN && isProduction) {
+        return res.status(503).json({ error: 'mp_not_configured' });
       }
 
-      // =====================================================================
-      // CONFIGURACIÓN DE CREDENCIALES MERCADO PAGO:
-      // Reemplazar con el Access Token de producción de la cuenta del cliente:
-      // process.env.MERCADO_PAGO_ACCESS_TOKEN
-      // =====================================================================
-      const MP_ACCESS_TOKEN =
-        process.env.MERCADO_PAGO_ACCESS_TOKEN ||
-        'TEST-8492019384729104-092704-a9b8c7d6e5f41234567890abcdef-133596697';
-
-      const appUrl = process.env.APP_URL || `http://localhost:${PORT}`;
-
-      const mpItems = items.map((item: any) => ({
-        id: String(item.id),
-        title: `${item.title}${item.size ? ` (${item.size})` : ''}${item.color ? ` - ${item.color}` : ''}`,
-        description: `Prenda Pipulinos Infantil - Talle: ${item.size || 'Único'}`,
-        quantity: Math.max(1, Number(item.quantity) || 1),
-        currency_id: 'ARS',
-        unit_price: Number(item.unit_price) || 0,
-        picture_url: item.picture_url,
-      }));
-
-      if (shippingCost && Number(shippingCost) > 0) {
+      const mpItems = [...pricing.items];
+      if (pricing.shippingCost > 0) {
         mpItems.push({
           id: 'shipping-charge',
-          title: `Costo de Envío (${shippingMethod || 'Express'})`,
-          description: 'Envío puerta a puerta Pipulinos',
+          title: `Costo de envío (${pricing.shippingMethod})`,
+          description: `Envío ${BRAND_CONFIG.shortName}`,
           quantity: 1,
-          currency_id: 'ARS',
-          unit_price: Number(shippingCost),
-          picture_url: undefined,
+          currency_id: BRAND_CONFIG.commerce.currency,
+          unit_price: pricing.shippingCost,
         });
       }
 
-      const isRealToken =
-        MP_ACCESS_TOKEN &&
-        !MP_ACCESS_TOKEN.startsWith('TEST-8492019384729104') &&
-        MP_ACCESS_TOKEN.length > 25;
+      const preferencePayload = {
+        items: mpItems,
+        payer: {
+          name: customer?.name || BRAND_CONFIG.shortName,
+          email: customer?.email || BRAND_CONFIG.contact.email,
+          phone: { number: customer?.phone || BRAND_CONFIG.contact.whatsappRaw },
+        },
+        back_urls: {
+          success: `${appUrl}/?checkout=success`,
+          pending: `${appUrl}/?checkout=pending`,
+          failure: `${appUrl}/?checkout=failure`,
+        },
+        auto_return: 'approved',
+        statement_descriptor: process.env.MP_STATEMENT_DESCRIPTOR || BRAND_CONFIG.name.toUpperCase(),
+        external_reference: `PIP-${Date.now()}`,
+        metadata: { store: BRAND_CONFIG.shortName },
+      };
 
-      if (isRealToken) {
-        const preferencePayload = {
-          items: mpItems,
-          payer: {
-            name: customer?.name || 'Cliente Showroom',
-            email: customer?.email || 'cliente@pipulinos.kids',
-            phone: { number: customer?.phone || '1148209912' },
-          },
-          back_urls: {
-            success: `${appUrl}/?status=approved`,
-            pending: `${appUrl}/?status=pending`,
-            failure: `${appUrl}/?status=failure`,
-          },
-          auto_return: 'approved',
-          statement_descriptor: 'PIPULINOS',
-          external_reference: `PIP-${Date.now()}`,
-        };
-
-        const mpRes = await fetch('https://api.mercadopago.com/checkout/preferences', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${MP_ACCESS_TOKEN}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(preferencePayload),
-        });
-
-        if (mpRes.ok) {
-          const mpData = await mpRes.json();
-          return res.json({
-            preferenceId: mpData.id,
-            init_point: mpData.init_point,
-            sandbox_init_point: mpData.sandbox_init_point || mpData.init_point,
-            mode: 'live_sandbox_api',
-          });
-        }
+      if (!MP_ACCESS_TOKEN) {
+        const demoId = `DEV-${Date.now()}`;
+        const demoUrl = `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${demoId}`;
+        return res.json({ preferenceId: demoId, init_point: demoUrl, mode: 'development_demo' });
       }
 
-      // Modo de prueba / demostración seguro para la demo
-      const mockPrefId = `2027-${Math.floor(100000000 + Math.random() * 900000000)}`;
-      const mockInitPoint = `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${mockPrefId}&demo=true`;
+      const mpRes = await fetch('https://api.mercadopago.com/checkout/preferences', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${MP_ACCESS_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(preferencePayload),
+      });
+      const mpData = await mpRes.json().catch(() => ({}));
+
+      if (!mpRes.ok) {
+        return res.status(502).json({ error: 'mp_preference_failed', details: mpData });
+      }
 
       return res.json({
-        preferenceId: mockPrefId,
-        init_point: mockInitPoint,
-        sandbox_init_point: mockInitPoint,
-        mode: 'test_sandbox_demo',
-        totalItems: mpItems.length,
-        totalAmount: mpItems.reduce((acc: number, i: any) => acc + i.unit_price * i.quantity, 0),
-        message: 'Preferencia de prueba (sandbox) generada correctamente.',
+        preferenceId: mpData.id,
+        init_point: mpData.init_point,
+        sandbox_init_point: mpData.sandbox_init_point || mpData.init_point,
+        mode: 'mercadopago',
+        pricing: {
+          subtotal: pricing.subtotal,
+          couponDiscount: pricing.couponDiscount,
+          shippingCost: pricing.shippingCost,
+          transferDiscount: pricing.transferDiscount,
+          total: pricing.total,
+        },
       });
     } catch (error: any) {
       console.error('Error generando preferencia de Mercado Pago:', error);
+      if (error instanceof CheckoutInputError) {
+        return res.status(400).json({ error: 'invalid_checkout', details: error.message });
+      }
       return res.status(500).json({ error: 'Error procesando preferencia', details: error.message });
     }
   };
@@ -132,7 +114,7 @@ async function startServer() {
 
   // Health check
   app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', brand: 'PIPULINOS', timestamp: new Date().toISOString() });
+    res.json({ status: 'ok', brand: BRAND_CONFIG.name, timestamp: new Date().toISOString() });
   });
 
   if (!isProduction) {

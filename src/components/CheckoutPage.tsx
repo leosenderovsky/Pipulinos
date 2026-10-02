@@ -36,6 +36,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     isGiftPackaging,
     giftDedication,
     clearCart,
+    appliedCoupon,
   } = useCart();
 
   // Contact form state
@@ -85,12 +86,9 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     const payload = {
       items: items.map((i) => ({
         id: i.productId,
-        title: i.product.nombre,
         quantity: i.quantity,
-        unit_price: i.unitPrice,
         size: i.size,
         color: i.color.name,
-        picture_url: i.product.imagenes[0],
       })),
       customer: {
         name: fullName,
@@ -104,59 +102,45 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
         },
         notes: deliveryNotes,
       },
-      shippingCost,
-      shippingMethod:
-        shippingMethod === 'express'
-          ? 'Envío Express 24hs'
-          : shippingMethod === 'pickup'
-          ? 'Retiro Showroom'
-          : 'Envío Estándar Nacional',
+      shippingMethod,
+      paymentMethod: paymentGateway === 'mercadopago' ? 'mercadopago' : 'transfer',
+      couponCode: appliedCoupon,
     };
 
     try {
-      // 1. Intentamos llamar al endpoint del backend local o Netlify Function
-      let response: Response;
-      try {
-        response = await fetch('/api/create-preference', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-      } catch {
-        // Fallback a Netlify Function path
-        response = await fetch('/.netlify/functions/create-preference', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-      }
+      const response = await fetch('/api/create-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
       if (!response.ok) {
-        throw new Error(`Error en el servidor: código ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        const details = errorData.details?.message || errorData.details || errorData.error;
+        throw new Error(
+          response.status === 503
+            ? 'Mercado Pago no está configurado. Probá más tarde o contactanos por WhatsApp.'
+            : `No pudimos iniciar el pago (${response.status})${details ? `: ${JSON.stringify(details)}` : '.'}`
+        );
       }
 
       const data = await response.json();
       const initPoint = data.init_point || data.sandbox_init_point;
-      const prefId = data.preferenceId || `PREF-${Date.now()}`;
+      if (!initPoint || !data.preferenceId) {
+        throw new Error('Mercado Pago no devolvió una preferencia de pago válida.');
+      }
 
       setMpPreferenceResult({
         initPoint,
-        preferenceId: prefId,
+        preferenceId: data.preferenceId,
         mode: data.mode || 'sandbox',
       });
 
       // Si estamos en un navegador regular fuera de un iframe rígido, redirigimos
       // Para asegurar una experiencia fluida sin romper el contenedor, mostramos el modal interactivo
-    } catch (err: any) {
-      console.warn('Llamando a fallback de preferencia sandbox:', err);
-      // Fallback seguro de demostración
-      const fallbackPrefId = `2027-${Math.floor(100000000 + Math.random() * 900000000)}`;
-      const fallbackInitPoint = `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${fallbackPrefId}&demo=true`;
-      setMpPreferenceResult({
-        initPoint: fallbackInitPoint,
-        preferenceId: fallbackPrefId,
-        mode: 'demo_fallback',
-      });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error inesperado al iniciar el pago.';
+      setErrorMessage(message);
     } finally {
       setIsProcessing(false);
     }
@@ -627,6 +611,11 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
 
                     {/* MP CTA Button */}
                     <div className="pt-2">
+                      {errorMessage && (
+                        <p role="alert" className="mb-2 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-800">
+                          {errorMessage}
+                        </p>
+                      )}
                       <button
                         type="button"
                         onClick={handleMercadoPagoCheckout}
@@ -844,7 +833,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
 
             <div>
               <span className="bg-sky-100 text-[#009EE3] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-                Mercado Pago Checkout Pro (Sandbox)
+                Mercado Pago Checkout Pro
               </span>
               <h3 className="font-extrabold text-xl text-[#1E2046] mt-2">
                 ¡Preferencia Generada!
@@ -859,7 +848,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
               <p className="font-bold text-[11px] text-purple-700">Detalles técnicos del pedido:</p>
               <p className="truncate">• Pref ID: {mpPreferenceResult.preferenceId}</p>
               <p>• Moneda: ARS (Pesos Argentinos)</p>
-              <p>• Modo: Sandbox / Prueba segura</p>
+              <p>• Modo: {mpPreferenceResult.mode === 'development_demo' ? 'Demostración local' : 'Mercado Pago'}</p>
             </div>
 
             <div className="flex flex-col gap-2 pt-2">
@@ -877,16 +866,18 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                 <ExternalLink className="w-4 h-4" />
               </a>
 
-              <button
-                type="button"
-                onClick={() => {
-                  onOrderSuccess(mpPreferenceResult.preferenceId, 'Mercado Pago Simulado');
-                  clearCart();
-                }}
-                className="w-full py-2.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-extrabold text-xs transition-colors cursor-pointer border border-emerald-200"
-              >
-                Simular Pago Aprobado y Confirmar Pedido
-              </button>
+              {import.meta.env.DEV && mpPreferenceResult.mode === 'development_demo' && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onOrderSuccess(mpPreferenceResult.preferenceId, 'Mercado Pago (demo local)');
+                    clearCart();
+                  }}
+                  className="w-full py-2.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-extrabold text-xs transition-colors cursor-pointer border border-emerald-200"
+                >
+                  Simular pago aprobado
+                </button>
+              )}
 
               <button
                 type="button"
