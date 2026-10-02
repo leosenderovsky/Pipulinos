@@ -1,4 +1,6 @@
 import type { Product } from '../data/products';
+import SEARCH_SYNONYMS from '../data/searchSynonyms';
+import { productHasSize } from './sizes';
 
 const STOPWORDS = new Set([
   'de',
@@ -40,62 +42,118 @@ export const stem = (word: string): string => {
   return next;
 };
 
-const cache = new WeakMap<Product, string[]>();
+interface SearchFields {
+  name: string[];
+  metadata: string[];
+  description: string[];
+}
 
-const getWords = (product: Product): string[] => {
-  let words = cache.get(product);
+const cache = new WeakMap<Product, SearchFields>();
 
-  if (!words) {
-    const text = normalize(
-      [
-        product.nombre,
-        product.descripcion,
-        product.descripcionCorta,
-        product.tela,
-        product.etiqueta,
-        ...(product.caracteristicas ?? []),
-        ...product.coloresDisponibles.map((color) => color.name),
-        ...(product.tags ?? []),
-      ]
-        .filter(Boolean)
-        .join(' ')
-    );
+const getWords = (value: string): string[] =>
+  normalize(value).split(' ').filter(Boolean).map(stem);
 
-    words = Array.from(new Set(text.split(' ').filter(Boolean).map(stem)));
-    cache.set(product, words);
+const getFields = (product: Product): SearchFields => {
+  let fields = cache.get(product);
+
+  if (!fields) {
+    fields = {
+      name: getWords(product.nombre),
+      metadata: getWords([product.etiqueta, ...(product.tags ?? [])].filter(Boolean).join(' ')),
+      description: getWords(
+        [
+          product.descripcion,
+          product.descripcionCorta,
+          product.tela,
+          ...(product.caracteristicas ?? []),
+          ...product.coloresDisponibles.map((color) => color.name),
+        ]
+          .filter(Boolean)
+          .join(' ')
+      ),
+    };
+    cache.set(product, fields);
   }
 
-  return words;
+  return fields;
 };
+
+const parseSizeQuery = (query: string): string | null => {
+  if (/^(?:t\s*|talle\s+)(2|4|6|8|10)$/.test(query)) {
+    return `T${query.match(/(2|4|6|8|10)$/)?.[1]}`;
+  }
+  if (query === 'rn' || query === 'recien nacido' || query === 'recien nacidos') return 'RN';
+  if (/^0\s*3\s*m$/.test(query)) return '0-3m';
+  return null;
+};
+
+const matches = (field: string[], token: string): boolean =>
+  field.some((word) => word.startsWith(token));
+
+const matchesGroup = (product: Product, group: string[]): boolean => {
+  const fields = getFields(product);
+  return group.some(
+    (token) => matches(fields.name, token) || matches(fields.metadata, token) || matches(fields.description, token)
+  );
+};
+
+type RelevanceScore = [number, number, number];
+
+const relevance = (product: Product, tokenGroups: string[][]): RelevanceScore => {
+  const fields = getFields(product);
+  return tokenGroups.reduce<RelevanceScore>((score, group) => {
+    if (group.some((token) => matches(fields.name, token))) score[0] += 1;
+    else if (group.some((token) => matches(fields.metadata, token))) score[1] += 1;
+    else if (group.some((token) => matches(fields.description, token))) score[2] += 1;
+    return score;
+  }, [0, 0, 0]);
+};
+
+const sortByRelevance = (products: Product[], tokenGroups: string[][]): Product[] =>
+  products
+    .map((product) => ({ product, score: relevance(product, tokenGroups) }))
+    .sort((a, b) =>
+      b.score[0] - a.score[0] ||
+      b.score[1] - a.score[1] ||
+      b.score[2] - a.score[2] ||
+      Number(Boolean(b.product.destacado)) - Number(Boolean(a.product.destacado))
+    )
+    .map(({ product }) => product);
 
 export const searchProducts = (
   products: Product[],
   query: string
 ): { items: Product[]; relaxed: boolean } => {
-  const tokens = normalize(query)
+  const normalizedQuery = normalize(query);
+  const size = parseSizeQuery(normalizedQuery);
+  if (size) {
+    return { items: products.filter((product) => productHasSize(product, size)), relaxed: false };
+  }
+
+  const rawTokens = normalizedQuery
     .split(' ')
-    .filter((token) => token && !STOPWORDS.has(token))
-    .map(stem);
+    .filter((token) => token && !STOPWORDS.has(token));
 
-  if (tokens.length === 0) return { items: products, relaxed: false };
+  if (rawTokens.length === 0) return { items: products, relaxed: false };
 
-  const scored = products.map((product) => {
-    const words = getWords(product);
-    const score = tokens.filter((token) => words.some((word) => word.startsWith(token))).length;
-    return { product, score };
-  });
+  const tokenGroups = rawTokens.map((rawToken) => [
+    stem(rawToken),
+    ...(SEARCH_SYNONYMS[rawToken] ?? SEARCH_SYNONYMS[stem(rawToken)] ?? []).flatMap((synonym) => getWords(synonym)),
+  ]);
+  const scored = products.map((product) => ({ product, score: relevance(product, tokenGroups) }));
 
   const exact = scored
-    .filter((entry) => entry.score === tokens.length)
+    .filter((entry) => tokenGroups.every((group) => matchesGroup(entry.product, group)))
     .map((entry) => entry.product);
 
-  if (exact.length > 0) return { items: exact, relaxed: false };
+  if (exact.length > 0) return { items: sortByRelevance(exact, tokenGroups), relaxed: false };
 
   const partial = scored
-    .filter((entry) => entry.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .map((entry) => entry.product)
+    .filter((entry) => entry.score.some((score) => score > 0))
+    .map((entry) => entry.product);
+
+  const items = sortByRelevance(partial, tokenGroups)
     .slice(0, 4);
 
-  return { items: partial, relaxed: partial.length > 0 };
+  return { items, relaxed: items.length > 0 };
 };

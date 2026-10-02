@@ -51,13 +51,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
       className="group bg-white rounded-3xl shadow-sm hover:shadow-[0_15px_30px_-5px_rgba(255,107,87,0.18)] border-2 border-purple-100/70 hover:border-[#FF6B57]/50 transition-all duration-300 flex flex-col overflow-hidden relative cursor-pointer"
     >
       {/* Media Box */}
-      <div className="relative w-full aspect-square bg-purple-50/40 overflow-hidden">
-        <img
-          src={product.imagenes[0]}
-          alt={product.nombre}
-          loading="lazy"
-          className="w-full h-full object-cover group-hover:scale-106 transition-transform duration-500 ease-out"
-        />
+      <div className="relative w-full aspect-[4/5] bg-purple-50/40 overflow-hidden">
+        <picture className="block w-full h-full">
+          <source srcSet={product.imagenes[0].replace(/\.jpg$/i, '.webp')} type="image/webp" />
+          <img
+            src={product.imagenes[0]}
+            alt={product.nombre}
+            loading="lazy"
+            decoding="async"
+            width={1000}
+            height={1000}
+            className="w-full h-full object-contain"
+          />
+        </picture>
 
         {/* Floating badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start pointer-events-none">

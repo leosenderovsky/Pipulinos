@@ -226,11 +226,18 @@ export const CartPage: React.FC<CartPageProps> = ({
                         onClick={() => onOpenProduct(item.product)}
                         className="relative w-22 h-26 sm:w-26 sm:h-30 shrink-0 rounded-2xl overflow-hidden bg-purple-50 shadow-xs border border-purple-100 cursor-pointer group"
                       >
-                        <img
-                          src={item.product.imagenes[0]}
-                          alt={item.product.nombre}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                        />
+                        <picture className="block w-full h-full">
+                          <source srcSet={item.product.imagenes[0].replace(/\.jpg$/i, '.webp')} type="image/webp" />
+                          <img
+                            src={item.product.imagenes[0]}
+                            alt={item.product.nombre}
+                            loading="lazy"
+                            decoding="async"
+                            width={1000}
+                            height={1000}
+                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                          />
+                        </picture>
                         <span className="absolute bottom-1.5 left-1.5 text-[9px] font-extrabold bg-white/90 backdrop-blur-xs text-[#1E2046] px-1.5 py-0.5 rounded-full shadow-xs">
                           {item.size}
                         </span>
@@ -629,7 +636,18 @@ export const CartPage: React.FC<CartPageProps> = ({
                   onClick={() => onOpenProduct(prod)}
                   className="w-18 h-18 rounded-xl overflow-hidden bg-purple-50 shrink-0 cursor-pointer"
                 >
-                  <img src={prod.imagenes[0]} alt={prod.nombre} className="w-full h-full object-cover" />
+                  <picture className="block w-full h-full">
+                    <source srcSet={prod.imagenes[0].replace(/\.jpg$/i, '.webp')} type="image/webp" />
+                    <img
+                      src={prod.imagenes[0]}
+                      alt={prod.nombre}
+                      loading="lazy"
+                      decoding="async"
+                      width={1000}
+                      height={1000}
+                      className="w-full h-full object-contain"
+                    />
+                  </picture>
                 </div>
                 <div className="flex flex-col flex-1 min-w-0">
                   <span className="text-[10px] text-purple-400 font-bold">{prod.tela}</span>

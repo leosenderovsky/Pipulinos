@@ -78,6 +78,9 @@ export const Header: React.FC<HeaderProps> = ({
             <img
               src={BRAND_CONFIG.logo.url}
               alt={BRAND_CONFIG.logo.alt}
+              width={400}
+              height={242}
+              decoding="async"
               className="h-auto w-[min(56vw,220px)] max-w-full object-contain drop-shadow-sm transition-all duration-300"
             />
           </button>

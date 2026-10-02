@@ -210,6 +210,9 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
             <img
               src={BRAND_CONFIG.logo.url}
               alt={BRAND_CONFIG.logo.alt}
+              width={400}
+              height={242}
+              decoding="async"
               className="col-span-2 row-start-2 justify-self-center h-auto w-[min(64vw,220px)] max-w-full object-contain sm:w-[190px]"
             />
 
@@ -734,11 +737,18 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                     key={i.id}
                     className="flex items-center gap-3 bg-purple-50/50 p-2.5 rounded-2xl border border-purple-100/60"
                   >
-                    <img
-                      src={i.product.imagenes[0]}
-                      alt={i.product.nombre}
-                      className="w-14 h-14 rounded-xl object-cover bg-white shrink-0 border border-purple-100"
-                    />
+                    <picture className="block w-14 h-14 shrink-0">
+                      <source srcSet={i.product.imagenes[0].replace(/\.jpg$/i, '.webp')} type="image/webp" />
+                      <img
+                        src={i.product.imagenes[0]}
+                        alt={i.product.nombre}
+                        loading="lazy"
+                        decoding="async"
+                        width={1000}
+                        height={1000}
+                        className="w-full h-full rounded-xl object-contain bg-white border border-purple-100"
+                      />
+                    </picture>
                     <div className="flex-1 min-w-0 text-xs">
                       <h4 className="font-bold text-[#1E2046] truncate">{i.product.nombre}</h4>
                       <p className="text-[11px] text-purple-900/60 font-medium">

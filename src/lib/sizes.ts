@@ -8,8 +8,6 @@ export const STAGE_SIZES: Record<AgeStage, string[]> = {
   ninos: ['T4', 'T6', 'T8', 'T10'],
 };
 
-export const STAGE_MIN_SHARE = 0;
-
 const STAGE_SET: Record<AgeStage, Set<string>> = Object.fromEntries(
   (Object.keys(STAGE_SIZES) as AgeStage[]).map((stage) => [stage, new Set(STAGE_SIZES[stage])])
 ) as Record<AgeStage, Set<string>>;
@@ -41,7 +39,7 @@ export const stagesOf = (product: Product): AgeStage[] => {
     const total = product.tallesDisponibles.length;
     if (total === 0) return false;
     const inStage = product.tallesDisponibles.filter((size) => isSizeInStage(size, stage)).length;
-    return (inStage / total) > 0 && (inStage / total) >= STAGE_MIN_SHARE;
+    return inStage > 0;
   });
 };
 

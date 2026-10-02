@@ -128,13 +128,23 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               onClick={() => setIsZoomed(!isZoomed)}
               className="aspect-[4/5] w-full bg-purple-50/30 overflow-hidden flex items-center justify-center cursor-zoom-in relative"
             >
-              <img
-                src={product.imagenes[selectedPhotoIndex] || product.imagenes[0]}
-                alt={product.nombre}
-                className={`w-full h-full object-cover object-center transition-transform duration-500 ease-out ${
-                  isZoomed ? 'scale-125' : 'group-hover:scale-105'
-                }`}
-              />
+              <picture className="block w-full h-full">
+                <source
+                  srcSet={(product.imagenes[selectedPhotoIndex] || product.imagenes[0]).replace(/\.jpg$/i, '.webp')}
+                  type="image/webp"
+                />
+                <img
+                  src={product.imagenes[selectedPhotoIndex] || product.imagenes[0]}
+                  alt={product.nombre}
+                  loading="lazy"
+                  decoding="async"
+                  width={1000}
+                  height={1000}
+                  className={`w-full h-full object-contain object-center transition-transform duration-500 ease-out ${
+                    isZoomed ? 'scale-125' : ''
+                  }`}
+                />
+              </picture>
               <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-xs text-[#1E2046] px-3 py-1 rounded-full flex items-center gap-1.5 text-xs font-extrabold border border-purple-100 pointer-events-none shadow-xs">
                 <ZoomIn className="w-3.5 h-3.5 text-[#FF6B57]" />
                 <span>{isZoomed ? 'Tocar para alejar' : 'Tocar para ampliar'}</span>
@@ -159,11 +169,18 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                       : 'border-purple-100 hover:border-purple-300'
                   }`}
                 >
-                  <img
-                    src={img}
-                    alt={`Vista ${idx + 1}`}
-                    className="w-full h-full object-cover rounded-xl"
-                  />
+                  <picture className="block w-full h-full">
+                    <source srcSet={img.replace(/\.jpg$/i, '.webp')} type="image/webp" />
+                    <img
+                      src={img}
+                      alt={`Vista ${idx + 1}`}
+                      loading="lazy"
+                      decoding="async"
+                      width={1000}
+                      height={1000}
+                      className="w-full h-full object-contain rounded-xl"
+                    />
+                  </picture>
                 </button>
               ))}
             </div>

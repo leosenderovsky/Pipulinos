@@ -58,6 +58,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
             <img
               src={BRAND_CONFIG.hero.bannerImageUrl}
               alt={BRAND_CONFIG.hero.bannerImageAlt}
+              width={512}
+              height={286}
+              fetchPriority="high"
+              decoding="async"
               className="w-full h-full object-cover object-center"
             />
             <div className="hidden lg:block absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#FFFDF6] to-transparent pointer-events-none" />

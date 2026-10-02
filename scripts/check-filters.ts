@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PRODUCTS, CATALOG_CATEGORIES, FABRICS_LIST, MAX_CATALOG_PRICE, TAG_VOCAB, type ProductTag } from '../src/data/products';
 import { BABY_SIZES, KIDS_SIZES, COLOR_SWATCHES } from '../src/data/filterOptions';
-import { applyCatalogFilters } from '../src/lib/catalogFilters';
+import { applyCatalogFilters, type CatalogFilters } from '../src/lib/catalogFilters';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,6 +12,12 @@ const expected = JSON.parse(fs.readFileSync(expectedFile, 'utf8')) as {
   stages: Record<string, string[]>;
   chips: Record<string, string[]>;
   stageXchip: Record<string, Record<string, string[]>>;
+  stageXsize: Record<string, Record<string, string[]>>;
+  stageXcolor: Record<string, Record<string, string[]>>;
+  colorXfabric: Record<string, Record<string, string[]>>;
+  priceRanges: Record<string, { maxPrice: number; ids: string[] }>;
+  chipXsearch: Record<string, Record<string, string[]>>;
+  searches: Record<string, { ids: string[]; relaxed: boolean }>;
 };
 
 const toSet = (values: string[]) => new Set(values);
@@ -28,6 +34,19 @@ const diff = (actual: string[], expectedValues: string[]) => {
 
 const rows: Array<{ name: string; ok: boolean; actual: string; expected: string; sobrantes: string; faltantes: string }> = [];
 
+const filterIds = (options: Partial<CatalogFilters>) =>
+  applyCatalogFilters(PRODUCTS, {
+    searchQuery: '',
+    category: 'todos',
+    ageGroup: 'all',
+    size: null,
+    color: null,
+    maxPrice: MAX_CATALOG_PRICE,
+    fabrics: [],
+    tag: null,
+    ...options,
+  }).items.map((product) => product.id);
+
 const checkSet = (name: string, actual: string[], expectedValues: string[]) => {
   const { sobrantes, faltantes } = diff(actual, expectedValues);
   const ok = actual.length === expectedValues.length && sobrantes.length === 0 && faltantes.length === 0;
@@ -42,28 +61,10 @@ const checkSet = (name: string, actual: string[], expectedValues: string[]) => {
 };
 
 const realStage = (stage: string) =>
-  applyCatalogFilters(PRODUCTS, {
-    searchQuery: '',
-    category: 'todos',
-    ageGroup: stage,
-    size: null,
-    color: null,
-    maxPrice: MAX_CATALOG_PRICE,
-    fabrics: [],
-    tag: null,
-  }).items.map((product) => product.id);
+  filterIds({ ageGroup: stage });
 
 const realTag = (tag: string) =>
-  applyCatalogFilters(PRODUCTS, {
-    searchQuery: '',
-    category: 'todos',
-    ageGroup: 'all',
-    size: null,
-    color: null,
-    maxPrice: MAX_CATALOG_PRICE,
-    fabrics: [],
-    tag,
-  }).items.map((product) => product.id);
+  filterIds({ tag });
 
 for (const [stage, expectedIds] of Object.entries(expected.stages)) {
   checkSet(`Etapa ${stage}`, realStage(stage), expectedIds);
@@ -89,6 +90,34 @@ for (const [stage, stageTags] of Object.entries(expected.stageXchip)) {
   }
 }
 
+for (const [stage, stageSizes] of Object.entries(expected.stageXsize)) {
+  for (const [size, expectedIds] of Object.entries(stageSizes)) {
+    checkSet(`Etapa ${stage} x talle ${size}`, filterIds({ ageGroup: stage, size }), expectedIds);
+  }
+}
+
+for (const [stage, stageColors] of Object.entries(expected.stageXcolor)) {
+  for (const [color, expectedIds] of Object.entries(stageColors)) {
+    checkSet(`Etapa ${stage} x color ${color}`, filterIds({ ageGroup: stage, color }), expectedIds);
+  }
+}
+
+for (const [color, fabrics] of Object.entries(expected.colorXfabric)) {
+  for (const [fabric, expectedIds] of Object.entries(fabrics)) {
+    checkSet(`Color ${color} x tela ${fabric}`, filterIds({ color, fabrics: [fabric] }), expectedIds);
+  }
+}
+
+for (const [range, { maxPrice, ids }] of Object.entries(expected.priceRanges)) {
+  checkSet(`Rango de precio ${range}`, filterIds({ maxPrice }), ids);
+}
+
+for (const [tag, queries] of Object.entries(expected.chipXsearch)) {
+  for (const [searchQuery, expectedIds] of Object.entries(queries)) {
+    checkSet(`Chip ${tag} x búsqueda ${searchQuery}`, filterIds({ tag, searchQuery }), expectedIds);
+  }
+}
+
 for (const category of CATALOG_CATEGORIES.filter((item) => item.id !== 'todos')) {
   const actual = applyCatalogFilters(PRODUCTS, {
     searchQuery: '',
@@ -105,9 +134,7 @@ for (const category of CATALOG_CATEGORIES.filter((item) => item.id !== 'todos'))
 }
 
 for (const swatch of COLOR_SWATCHES) {
-  const actual = PRODUCTS.filter((product) =>
-    product.coloresDisponibles.some((color) => color.colorFamily === swatch.id)
-  ).map((product) => product.id);
+  const actual = filterIds({ color: swatch.id });
   const expectedSwatch = PRODUCTS.filter((product) =>
     product.coloresDisponibles.some((color) => color.colorFamily === swatch.id)
   ).map((product) => product.id);
@@ -141,12 +168,12 @@ for (const size of [...BABY_SIZES, ...KIDS_SIZES]) {
 }
 
 for (const fabric of FABRICS_LIST) {
-  const actual = PRODUCTS.filter((product) => product.tela === fabric).map((product) => product.id);
+  const actual = filterIds({ fabrics: [fabric] });
   const expectedFabric = PRODUCTS.filter((product) => product.tela === fabric).map((product) => product.id);
   checkSet(`Tela ${fabric}`, actual, expectedFabric);
 }
 
-for (const query of ['pijamas suavecitos', 'pijama', 'PIJAMAS', 'termico', 'body pima', 'escarpines', 'naranja']) {
+for (const [query, searchCase] of Object.entries(expected.searches)) {
   const result = applyCatalogFilters(PRODUCTS, {
     searchQuery: query,
     category: 'todos',
@@ -157,16 +184,26 @@ for (const query of ['pijamas suavecitos', 'pijama', 'PIJAMAS', 'termico', 'body
     fabrics: [],
     tag: null,
   });
-
-  const ids = result.items.map((product) => product.id);
-  const low = query.toLowerCase();
-  const containsPijamaSet = ['pijama-enterizo-antideslizante', 'pijama-dos-piezas-algodon-suavecito', 'pijama-enterito-pima-recien-nacido'];
-  const ok = low === 'pijama' || low === 'pijamas suavecitos' || low === 'pijamas'
-    ? containsPijamaSet.every((id) => ids.includes(id))
-    : ids.length >= 1;
-
-  checkSet(`Buscar: ${query}`, ids, ok ? (low.includes('pijama') ? containsPijamaSet : ids) : ids);
+  checkSet(`Buscar: ${query}`, result.items.map((product) => product.id), searchCase.ids);
+  rows.push({
+    name: `Buscar relaxed: ${query}`,
+    ok: result.relaxed === searchCase.relaxed,
+    actual: String(result.relaxed),
+    expected: String(searchCase.relaxed),
+    sobrantes: '(ninguno)',
+    faltantes: '(ninguno)',
+  });
 }
+
+const firstCalzaResult = filterIds({ searchQuery: 'calza' })[0] ?? '(ninguno)';
+rows.push({
+  name: 'Buscar calza prioriza coincidencia en nombre',
+  ok: firstCalzaResult === 'calza-termica-suave-estampada',
+  actual: firstCalzaResult,
+  expected: 'calza-termica-suave-estampada',
+  sobrantes: firstCalzaResult === 'calza-termica-suave-estampada' ? '(ninguno)' : firstCalzaResult,
+  faltantes: firstCalzaResult === 'calza-termica-suave-estampada' ? '(ninguno)' : 'calza-termica-suave-estampada',
+});
 
 const xyz = applyCatalogFilters(PRODUCTS, {
   searchQuery: 'xyz',

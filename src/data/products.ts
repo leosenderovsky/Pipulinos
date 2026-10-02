@@ -67,7 +67,6 @@ export interface Product {
   tela: string;
   etiqueta?: string;
   badgeType?: 'destacado' | 'oferta' | 'nuevo' | 'termico' | 'pima';
-  edadEtapa: AgeStage;
   etapasOverride?: AgeStage[];
   caracteristicas: string[];
   cuidados: string[];
@@ -104,7 +103,6 @@ export const PRODUCTS: Product[] = [
     tela: '100% Algodón Pima',
     etiqueta: '¡Más pedido!',
     badgeType: 'pima',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: [
       'Algodón Pima peruano de fibra extra larga',
       'Cuello americano expandible anti-tirones',
@@ -144,7 +142,6 @@ export const PRODUCTS: Product[] = [
     tela: 'Plush & Friza Abrigada',
     etiqueta: 'Térmico Plush',
     badgeType: 'termico',
-    edadEtapa: 'bebes',
     caracteristicas: [
       'Plush térmico de alto gramaje ultra mullido',
       'Cierre frontal doble dirección desde cuello hasta piernita',
@@ -179,7 +176,6 @@ export const PRODUCTS: Product[] = [
     tela: 'Algodón Peinado 24/1',
     etiqueta: '15% OFF Pack',
     badgeType: 'oferta',
-    edadEtapa: 'ninos',
     caracteristicas: [
       'Algodón 100% peinado cardado premium',
       'Cuello en rib elastizado con cubre-costura reforzada',
@@ -216,7 +212,6 @@ export const PRODUCTS: Product[] = [
     tela: 'Plush & Friza Abrigada',
     etiqueta: 'Nuevo Lanzamiento',
     badgeType: 'nuevo',
-    edadEtapa: 'ninos',
     caracteristicas: [
       'Friza invisible peinada que no hace bolitas',
       'Cintura elastizada con puños en rib en tobillos',
@@ -250,7 +245,6 @@ export const PRODUCTS: Product[] = [
     tela: 'Rústico con Lycra',
     etiqueta: 'Con Antideslizante',
     badgeType: 'destacado',
-    edadEtapa: 'bebes',
     caracteristicas: [
       'Suela antideslizante con textura de estrellitas',
       'Cierre frontal de cuello a tobillo con protector de barbilla',
@@ -281,7 +275,6 @@ export const PRODUCTS: Product[] = [
     tela: 'Denim Ultra Soft',
     etiqueta: 'Denim Ultra Soft',
     badgeType: 'destacado',
-    edadEtapa: 'bebes',
     caracteristicas: [
       'Denim liviano de 5.5 oz (no acalora ni pesa)',
       'Tiradores ajustables con 2 posiciones de ojal',
@@ -313,7 +306,6 @@ export const PRODUCTS: Product[] = [
     tela: 'Muselina Pura',
     etiqueta: 'Muselina Pura',
     badgeType: 'destacado',
-    edadEtapa: 'ninos',
     caracteristicas: [
       'Doble gasa de muselina 100% algodón',
       'Textura pre-lavada que no necesita planchado',
@@ -345,7 +337,6 @@ export const PRODUCTS: Product[] = [
     tela: 'Rústico con Lycra',
     etiqueta: 'Básico Esencial',
     badgeType: 'destacado',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: [
       'Interlock de algodón con spandex hipoalergénico',
       'Cintura ancha que no marca la piel del bebé',
@@ -374,7 +365,6 @@ export const PRODUCTS: Product[] = [
       'Dúo de escarpines tejidos en hilo de algodón hipoalergénico con puño doble que sujeta suavemente sin caerse.',
     descripcionCorta: 'Dúo de escarpines con puño elastizado que no se cae.',
     tela: '100% Algodón Pima',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: ['Hilo 100% algodón', 'Puño elastizado anatómico', 'Sin costuras internas'],
     cuidados: ['Lavar a mano'],
     stockPorTalle: { '0-12m': 25 },
@@ -397,7 +387,6 @@ export const PRODUCTS: Product[] = [
       'Babero bandana con triple capa absorbente: gasa de muselina externa y toalla de algodón interna para absorber babitas durante la dentición.',
     descripcionCorta: 'Gasa muselina con reverso de toalla absorbente y doble broche.',
     tela: 'Muselina Pura',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: ['Triple capa absorbente', '2 broches para regular el cuello', 'Secado ultra rápido'],
     cuidados: ['Lavar en lavarropas con agua tibia'],
     stockPorTalle: { 'Talle Único': 30 },
@@ -420,7 +409,6 @@ export const PRODUCTS: Product[] = [
       'Gorrito de maternidad en morley elastizado ultra suave con nudo regulable para ajustar la profundidad a la cabecita del bebé.',
     descripcionCorta: 'Morley elastizado con nudo superior regulable.',
     tela: '100% Algodón Pima',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: ['Nudo regulable', 'Tejido morley elástico', 'Ideal para primeras horas de vida'],
     cuidados: ['Lavar con agua fría'],
     stockPorTalle: { RN: 18, '0-3m': 20 },
@@ -448,7 +436,6 @@ export const PRODUCTS: Product[] = [
     tela: '100% Algodón Pima',
     etiqueta: 'Nuevo en la colección',
     badgeType: 'nuevo',
-    edadEtapa: 'bebes',
     caracteristicas: [
       'Algodón pima suave y respirable',
       'Estampado de nubes y estrellas en tonos pastel',
@@ -486,7 +473,6 @@ export const PRODUCTS: Product[] = [
     descripcionCorta: 'Enterito de algodón pima con cierre frontal y tela suave para recién nacidos.',
     tela: '100% Algodón Pima',
     etiqueta: 'Ideal para recién nacidos',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: [
       'Algodón pima elastizado con tacto aterciopelado',
       'Cierre frontal práctico para cambios rápidos',
@@ -523,7 +509,6 @@ export const PRODUCTS: Product[] = [
       'Buzo canguro de friza ultra suave para los días más frescos del año. Tiene capucha, bolsillo canguro y un corte cómodo que deja mover brazos y piernas sin esfuerzo. Es una prenda ideal para andar abrigado y seguir jugando en casa o afuera.',
     descripcionCorta: 'Buzo con capucha y bolsillo en friza suave para días frescos.',
     tela: 'Plush & Friza Abrigada',
-    edadEtapa: 'bebes',
     caracteristicas: [
       'Friza suave y abrigada sin ser pesada',
       'Capucha con ajuste cómodo para la cabeza',
@@ -562,7 +547,6 @@ export const PRODUCTS: Product[] = [
     tela: 'Plush & Friza Abrigada',
     etiqueta: 'Polar suave',
     badgeType: 'termico',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: [
       'Polar suave con abrigo térmico interior',
       'Capucha con orejitas para un look adorable',
@@ -600,7 +584,6 @@ export const PRODUCTS: Product[] = [
     tela: '100% Algodón Pima',
     etiqueta: 'Oferta del pack',
     badgeType: 'oferta',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: [
       '3 bodys esenciales para el día a día',
       'Algodón pima suave y muy cómodo',
@@ -638,7 +621,6 @@ export const PRODUCTS: Product[] = [
       'La remera manga larga de algodón pima tiene ese toque alegre y fresco que les encanta a los más chiquitos. La tela es fresca, suave y muy cómoda para vestir todos los días con un look juguetón. El estampado de dinos felices suma color y ternura sin perder la esencia básica.',
     descripcionCorta: 'Remera de manga larga en algodón pima con estampado divertido y suave.',
     tela: '100% Algodón Pima',
-    edadEtapa: 'bebes',
     caracteristicas: [
       'Algodón pima de alta suavidad',
       'Diseño con estampado de dinos felices',
@@ -675,7 +657,6 @@ export const PRODUCTS: Product[] = [
       'Este jogging se siente cómodo desde el primer uso y acompaña cada movimiento sin perder la forma. La cintura elástica y la tela combinan suavidad y flexibilidad, ideales para jugar, correr y descansar. Con detalles simples y un corte relajado, es una base que siempre suma en el guardarropa.',
     descripcionCorta: 'Pantalón jogging en rústico con lycra y cintura elástica para moverse con libertad.',
     tela: 'Rústico con Lycra',
-    edadEtapa: 'bebes',
     caracteristicas: [
       'Tela rústica con lycra para mayor flexibilidad',
       'Cintura elástica que acompaña cómodamente',
@@ -710,7 +691,6 @@ export const PRODUCTS: Product[] = [
       'Estas medias suaves son ideales para acompañar cada paso de tu bebé con más seguridad. La base de algodón soft y las suelas antideslizantes ayudan a moverse mejor en casas y pisos lisos, con una sensación agradable sobre la piel. Son un básico práctico, cómodo y siempre útil en el guardarropa.',
     descripcionCorta: 'Pack de 3 medias antideslizantes de algodón soft para bebés activos.',
     tela: '100% Algodón Pima',
-    edadEtapa: 'recien-nacidos',
     caracteristicas: [
       'Antepié con suela antideslizante',
       'Algodón soft muy suave',

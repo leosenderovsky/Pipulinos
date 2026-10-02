@@ -84,5 +84,142 @@
         "pack-x3-remeras-basicas"
       ]
     }
+  },
+  "stageXsize": {
+    "bebes": {
+      "T2": [
+        "pack-x3-remeras-basicas",
+        "jardinero-denim-liviano",
+        "vestido-solero-muselina",
+        "calza-termica-suave-estampada",
+        "babero-bandana-gotitas",
+        "pijama-dos-piezas-algodon-suavecito",
+        "buzo-canguro-friza-ninos",
+        "remera-manga-larga-pima-estampada",
+        "pantalon-jogging-rustico-ninos"
+      ]
+    }
+  },
+  "stageXcolor": {
+    "bebes": {
+      "celeste": [
+        "body-manga-larga-algodon-pima",
+        "enterito-osito-termico-plush",
+        "pijama-enterizo-antideslizante",
+        "jardinero-denim-liviano",
+        "pijama-dos-piezas-algodon-suavecito",
+        "campera-polar-soft-orejitas",
+        "remera-manga-larga-pima-estampada",
+        "pantalon-jogging-rustico-ninos",
+        "pack-x3-medias-antideslizantes"
+      ]
+    }
+  },
+  "colorXfabric": {
+    "lila": {
+      "Rústico con Lycra": [
+        "pijama-enterizo-antideslizante",
+        "calza-termica-suave-estampada"
+      ]
+    }
+  },
+  "priceRanges": {
+    "hasta-18000": {
+      "maxPrice": 18000,
+      "ids": [
+        "body-manga-larga-algodon-pima",
+        "pijama-enterizo-antideslizante",
+        "calza-termica-suave-estampada",
+        "pack-x2-escarpines-soft",
+        "babero-bandana-gotitas",
+        "gorro-nudo-recien-nacido",
+        "pijama-dos-piezas-algodon-suavecito",
+        "pijama-enterito-pima-recien-nacido",
+        "remera-manga-larga-pima-estampada",
+        "pantalon-jogging-rustico-ninos",
+        "pack-x3-medias-antideslizantes"
+      ]
+    }
+  },
+  "chipXsearch": {
+    "pijama": {
+      "naranja": [
+        "pijama-enterizo-antideslizante"
+      ]
+    }
+  },
+  "searches": {
+    "t4": {
+      "relaxed": false,
+      "ids": ["pack-x3-remeras-basicas", "conjunto-jogging-friza-soft", "jardinero-denim-liviano", "vestido-solero-muselina", "calza-termica-suave-estampada", "pijama-dos-piezas-algodon-suavecito", "buzo-canguro-friza-ninos", "remera-manga-larga-pima-estampada", "pantalon-jogging-rustico-ninos"]
+    },
+    "T 4": {
+      "relaxed": false,
+      "ids": ["pack-x3-remeras-basicas", "conjunto-jogging-friza-soft", "jardinero-denim-liviano", "vestido-solero-muselina", "calza-termica-suave-estampada", "pijama-dos-piezas-algodon-suavecito", "buzo-canguro-friza-ninos", "remera-manga-larga-pima-estampada", "pantalon-jogging-rustico-ninos"]
+    },
+    "talle 4": {
+      "relaxed": false,
+      "ids": ["pack-x3-remeras-basicas", "conjunto-jogging-friza-soft", "jardinero-denim-liviano", "vestido-solero-muselina", "calza-termica-suave-estampada", "pijama-dos-piezas-algodon-suavecito", "buzo-canguro-friza-ninos", "remera-manga-larga-pima-estampada", "pantalon-jogging-rustico-ninos"]
+    },
+    "rn": {
+      "relaxed": false,
+      "ids": ["body-manga-larga-algodon-pima", "calza-termica-suave-estampada", "pack-x2-escarpines-soft", "babero-bandana-gotitas", "gorro-nudo-recien-nacido", "pijama-enterito-pima-recien-nacido", "pack-x3-bodys-manga-corta-pima"]
+    },
+    "0-3m": {
+      "relaxed": false,
+      "ids": ["body-manga-larga-algodon-pima", "enterito-osito-termico-plush", "calza-termica-suave-estampada", "pack-x2-escarpines-soft", "babero-bandana-gotitas", "gorro-nudo-recien-nacido", "pijama-enterito-pima-recien-nacido", "pack-x3-bodys-manga-corta-pima"]
+    },
+    "recien nacido": {
+      "relaxed": false,
+      "ids": ["body-manga-larga-algodon-pima", "calza-termica-suave-estampada", "pack-x2-escarpines-soft", "babero-bandana-gotitas", "gorro-nudo-recien-nacido", "pijama-enterito-pima-recien-nacido", "pack-x3-bodys-manga-corta-pima"]
+    },
+    "leggins": {
+      "relaxed": false,
+      "ids": ["calza-termica-suave-estampada", "remera-manga-larga-pima-estampada"]
+    },
+    "bodies": {
+      "relaxed": false,
+      "ids": ["body-manga-larga-algodon-pima", "pack-x3-bodys-manga-corta-pima"]
+    },
+    "nena": {
+      "relaxed": false,
+      "ids": ["jardinero-denim-liviano", "vestido-solero-muselina"]
+    },
+    "jean": {
+      "relaxed": false,
+      "ids": ["jardinero-denim-liviano"]
+    },
+    "regalo": {
+      "relaxed": false,
+      "ids": ["pack-x3-remeras-basicas", "pack-x3-bodys-manga-corta-pima", "pack-x3-medias-antideslizantes", "pack-x2-escarpines-soft"]
+    },
+    "calza": {
+      "relaxed": false,
+      "ids": ["calza-termica-suave-estampada", "remera-manga-larga-pima-estampada"]
+    },
+    "pijama": {
+      "relaxed": false,
+      "ids": ["pijama-dos-piezas-algodon-suavecito", "pijama-enterito-pima-recien-nacido", "pijama-enterizo-antideslizante"]
+    },
+    "pijamas suavecitos": {
+      "relaxed": false,
+      "ids": ["pijama-dos-piezas-algodon-suavecito", "pijama-enterito-pima-recien-nacido", "pijama-enterizo-antideslizante"]
+    },
+    "termico": {
+      "relaxed": false,
+      "ids": ["enterito-osito-termico-plush", "calza-termica-suave-estampada", "campera-polar-soft-orejitas"]
+    },
+    "body pima": {
+      "relaxed": false,
+      "ids": ["body-manga-larga-algodon-pima", "pack-x3-bodys-manga-corta-pima"]
+    },
+    "escarpines": {
+      "relaxed": false,
+      "ids": ["pack-x2-escarpines-soft"]
+    },
+    "naranja": {
+      "relaxed": false,
+      "ids": ["conjunto-jogging-friza-soft", "buzo-canguro-friza-ninos", "pantalon-jogging-rustico-ninos", "pijama-enterizo-antideslizante"]
+    }
   }
 }
