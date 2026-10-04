@@ -213,6 +213,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
               alt={BRAND_CONFIG.logo.alt}
               width={400}
               height={242}
+              loading="lazy"
               decoding="async"
               className="col-span-2 row-start-2 justify-self-center h-auto w-[min(64vw,220px)] max-w-full object-contain sm:w-[190px]"
             />

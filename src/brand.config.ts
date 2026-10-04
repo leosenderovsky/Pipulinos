@@ -6,6 +6,8 @@
  * Define identidad, redes, WhatsApp, reglas comerciales, promociones y textos globales.
  */
 
+import { getDemoLegend } from './demoBanner.config.ts';
+
 export interface BrandConfig {
   name: string;
   shortName: string;
@@ -253,7 +255,7 @@ export const BRAND_CONFIG: BrandConfig = {
     giftPackagingTitle: '¿Es para regalo? 🎁',
     giftPackagingDescription: 'Te enviamos la bolsita ilustrada Pipulinos con moño, papel de seda y tarjetita con dedicatoria lista para sorprender.',
     footerAbout: 'Showroom oficial de ropa tierna y noble para bebés y peques de 0 a 10 años. Diseñado con amor para jugar, explorar y dormir felices.',
-    footerDisclaimer: 'Marca, productos y precios de ejemplo — prototipo de demostración de sender.ia',
+    footerDisclaimer: getDemoLegend(),
     whatsappShippingMessage: 'tengo una consulta sobre envíos y cambios',
     whatsappFaqMessage: 'tengo preguntas frecuentes',
     whatsappSizeMessage: 'tengo dudas con las medidas para mi bebé',

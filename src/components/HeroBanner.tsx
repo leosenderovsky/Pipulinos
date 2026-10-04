@@ -61,6 +61,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
               width={512}
               height={286}
               fetchPriority="high"
+              loading="eager"
               decoding="async"
               className="w-full h-full object-cover object-center"
             />

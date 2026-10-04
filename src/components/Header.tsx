@@ -80,6 +80,8 @@ export const Header: React.FC<HeaderProps> = ({
               alt={BRAND_CONFIG.logo.alt}
               width={400}
               height={242}
+              loading="eager"
+              fetchPriority="high"
               decoding="async"
               className="h-auto w-[min(56vw,220px)] max-w-full object-contain drop-shadow-sm transition-all duration-300"
             />
