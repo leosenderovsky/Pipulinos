@@ -11,6 +11,8 @@
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "check:filters": "tsx scripts/check-filters.ts",
+    "check:images": "node scripts/check-images.mjs",
+    "check:images:strict": "node scripts/check-images.mjs --strict",
     "images:optimize": "node scripts/optimize-images.mjs"
   },
   "dependencies": {

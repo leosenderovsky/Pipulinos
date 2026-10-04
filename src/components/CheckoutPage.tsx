@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { BRAND_CONFIG } from '../brand.config';
+import { ProductPicture } from './ProductPicture';
 import {
   ArrowLeft,
   ShieldCheck,
@@ -737,18 +738,16 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                     key={i.id}
                     className="flex items-center gap-3 bg-purple-50/50 p-2.5 rounded-2xl border border-purple-100/60"
                   >
-                    <picture className="block w-14 h-14 shrink-0">
-                      <source srcSet={i.product.imagenes[0].replace(/\.jpg$/i, '.webp')} type="image/webp" />
-                      <img
-                        src={i.product.imagenes[0]}
-                        alt={i.product.nombre}
-                        loading="lazy"
-                        decoding="async"
-                        width={1000}
-                        height={1000}
-                        className="w-full h-full rounded-xl object-contain bg-white border border-purple-100"
-                      />
-                    </picture>
+                    <ProductPicture
+                      src={i.product.imagenes[0]}
+                      alt={i.product.nombre}
+                      loading="lazy"
+                      decoding="async"
+                      width={800}
+                      height={1000}
+                      className="w-full h-full rounded-xl object-cover object-center bg-white border border-purple-100"
+                      pictureClassName="block w-14 h-14 shrink-0"
+                    />
                     <div className="flex-1 min-w-0 text-xs">
                       <h4 className="font-bold text-[#1E2046] truncate">{i.product.nombre}</h4>
                       <p className="text-[11px] text-purple-900/60 font-medium">
@@ -845,6 +844,11 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
               <span className="bg-sky-100 text-[#009EE3] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
                 Mercado Pago Checkout Pro
               </span>
+              {mpPreferenceResult.mode === 'development_demo' && (
+                <p role="status" className="mt-2 rounded-xl bg-amber-100 px-3 py-2 text-xs font-extrabold text-amber-950">
+                  Modo demostración: no se realiza ningún cobro
+                </p>
+              )}
               <h3 className="font-extrabold text-xl text-[#1E2046] mt-2">
                 ¡Preferencia Generada!
               </h3>
@@ -866,10 +870,6 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                 href={mpPreferenceResult.initPoint}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => {
-                  onOrderSuccess(mpPreferenceResult.preferenceId, 'Mercado Pago');
-                  clearCart();
-                }}
                 className="w-full py-3.5 rounded-2xl bg-[#009EE3] hover:bg-[#0089c7] text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
               >
                 <span>Abrir Checkout Pro de Mercado Pago</span>

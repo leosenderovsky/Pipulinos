@@ -1,5 +1,6 @@
 import { BRAND_CONFIG } from '../../src/brand.config';
 import { calculateCheckout, CheckoutInput, CheckoutInputError } from '../../src/lib/checkoutPricing';
+import { createExternalReference } from '../../src/lib/externalReference';
 
 interface CustomerPayload {
   name: string;
@@ -54,7 +55,7 @@ export const handler = async (event: {
     const MP_ACCESS_TOKEN = process.env.MERCADO_PAGO_ACCESS_TOKEN;
     const appUrl = (process.env.APP_URL || process.env.URL || 'http://localhost:8888').replace(/\/+$/, '');
 
-    if (!MP_ACCESS_TOKEN && process.env.CONTEXT === 'production') {
+    if (!MP_ACCESS_TOKEN && process.env.CONTEXT === 'production' && process.env.MP_DEMO_MODE !== 'true') {
       return { statusCode: 503, headers, body: JSON.stringify({ error: 'mp_not_configured' }) };
     }
 
@@ -92,8 +93,9 @@ export const handler = async (event: {
         failure: `${appUrl}/?checkout=failure`,
       },
       auto_return: 'approved',
+      notification_url: `${appUrl}/api/mp-webhook`,
       statement_descriptor: process.env.MP_STATEMENT_DESCRIPTOR || BRAND_CONFIG.name.toUpperCase(),
-      external_reference: `PIP-${Date.now()}`,
+      external_reference: createExternalReference(),
       metadata: {
         store: BRAND_CONFIG.shortName,
         gift_order: Boolean(body.customer?.notes),

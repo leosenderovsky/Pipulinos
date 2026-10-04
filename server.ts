@@ -5,6 +5,8 @@ import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
 import { BRAND_CONFIG } from './src/brand.config';
 import { calculateCheckout, CheckoutInputError } from './src/lib/checkoutPricing';
+import { createExternalReference } from './src/lib/externalReference';
+import { handler as handleMercadoPagoWebhook } from './netlify/functions/mp-webhook';
 
 dotenv.config();
 
@@ -32,7 +34,7 @@ async function startServer() {
       const MP_ACCESS_TOKEN = process.env.MERCADO_PAGO_ACCESS_TOKEN;
       const appUrl = (process.env.APP_URL || process.env.URL || `http://localhost:${PORT}`).replace(/\/+$/, '');
 
-      if (!MP_ACCESS_TOKEN && isProduction) {
+      if (!MP_ACCESS_TOKEN && isProduction && process.env.MP_DEMO_MODE !== 'true') {
         return res.status(503).json({ error: 'mp_not_configured' });
       }
 
@@ -61,8 +63,9 @@ async function startServer() {
           failure: `${appUrl}/?checkout=failure`,
         },
         auto_return: 'approved',
+        notification_url: `${appUrl}/api/mp-webhook`,
         statement_descriptor: process.env.MP_STATEMENT_DESCRIPTOR || BRAND_CONFIG.name.toUpperCase(),
-        external_reference: `PIP-${Date.now()}`,
+        external_reference: createExternalReference(),
         metadata: { store: BRAND_CONFIG.shortName },
       };
 
@@ -111,6 +114,18 @@ async function startServer() {
   // Rutas disponibles tanto para llamada local /api como para compatibilidad /.netlify/functions
   app.post('/api/create-preference', handleCreatePreference);
   app.post('/.netlify/functions/create-preference', handleCreatePreference);
+  const handleMpWebhook = async (req: Request, res: Response) => {
+    const result = await handleMercadoPagoWebhook({
+      httpMethod: req.method,
+      body: JSON.stringify(req.body ?? {}),
+      queryStringParameters: Object.fromEntries(
+        new URLSearchParams(req.originalUrl.split('?')[1] ?? '')
+      ),
+    });
+    return res.status(result.statusCode).set(result.headers).send(result.body);
+  };
+  app.post('/api/mp-webhook', handleMpWebhook);
+  app.post('/.netlify/functions/mp-webhook', handleMpWebhook);
 
   // Health check
   app.get('/api/health', (_req, res) => {

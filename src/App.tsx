@@ -164,13 +164,7 @@ export default function App() {
 
   return (
     <CartProvider>
-      <CheckoutReturnHandler
-        onSuccess={(orderId) => {
-          setCompletedOrder({ orderId, method: 'Mercado Pago' });
-          setCurrentView('catalog');
-        }}
-        onNotice={setCheckoutNotice}
-      />
+      <CheckoutReturnHandler onNotice={setCheckoutNotice} />
       <div className="min-h-screen flex flex-col bg-[#FFFDF9] text-[#1E2046]">
         <div className="sticky top-0 z-50 [&>header]:static">
           <PrototypeBanner />
@@ -324,10 +318,8 @@ export default function App() {
 }
 
 function CheckoutReturnHandler({
-  onSuccess,
   onNotice,
 }: {
-  onSuccess: (orderId: string) => void;
   onNotice: (notice: { status: 'pending' | 'failure'; message: string } | null) => void;
 }) {
   const { clearCart } = useCart();
@@ -337,19 +329,21 @@ function CheckoutReturnHandler({
     const checkout = params.get('checkout');
     const status = params.get('status');
     const paymentId = params.get('payment_id');
-    const externalReference = params.get('external_reference');
-    const result = checkout || (status === 'approved' ? 'success' : status);
-
-    if (result === 'success' || result === 'approved') {
-      clearCart();
-      onSuccess(externalReference || paymentId || 'MP');
-    } else if (result === 'pending' || result === 'in_process') {
+    if (checkout === 'success') {
+      if (paymentId && status === 'approved') {
+        // El webhook de Mercado Pago es la confirmación definitiva del pago.
+        clearCart();
+        onNotice({ status: 'pending', message: 'Pago recibido, estamos confirmándolo.' });
+      } else {
+        onNotice({ status: 'pending', message: 'No pudimos verificar el estado del pago. Conservamos tu carrito mientras lo confirmamos.' });
+      }
+    } else if (status === 'pending' || status === 'in_process' || checkout === 'pending') {
       onNotice({ status: 'pending', message: 'Tu pago está pendiente de confirmación. Te avisaremos cuando se acredite.' });
-    } else if (result === 'failure' || result === 'rejected') {
+    } else if (status === 'rejected' || checkout === 'failure') {
       onNotice({ status: 'failure', message: 'El pago no se completó. Podés volver al checkout e intentarlo nuevamente.' });
     }
 
-    if (checkout || status || paymentId || externalReference) {
+    if (checkout || status || paymentId || params.has('external_reference')) {
       params.delete('checkout');
       params.delete('payment_id');
       params.delete('status');

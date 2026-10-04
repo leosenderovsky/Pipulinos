@@ -143,7 +143,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const totalCount = items.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
 
-  const discount = calculateCouponDiscount(subtotal, appliedCoupon);
+  const discount = calculateCouponDiscount(subtotal, appliedCoupon).discount;
 
   const total = Math.max(0, subtotal - discount);
 
@@ -154,11 +154,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const applyCoupon = (code: string): boolean => {
     const clean = code.trim().toUpperCase();
-    if (clean === 'PIPULINOS10' || clean === 'PROMO-PACK' || clean === 'BIENVENIDA') {
-      setAppliedCoupon(clean);
-      return true;
-    }
-    return false;
+    if (!clean) return false;
+    const result = calculateCouponDiscount(subtotal, clean);
+    if (!result.valid) return false;
+    setAppliedCoupon(clean);
+    return true;
   };
 
   const removeCoupon = () => {

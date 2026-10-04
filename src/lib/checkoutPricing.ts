@@ -28,11 +28,16 @@ interface MercadoPagoItem {
 export class CheckoutInputError extends Error {}
 
 export function calculateCouponDiscount(subtotal: number, couponCode?: string | null) {
-  if (couponCode === 'PROMO-PACK') return Math.min(5000, subtotal);
-  if (couponCode === 'PIPULINOS10' || couponCode === 'BIENVENIDA') {
-    return Math.min(Math.round(subtotal * 0.1), subtotal);
-  }
-  return 0;
+  const cleanCode = couponCode?.trim().toUpperCase();
+  if (!cleanCode) return { valid: true, discount: 0 };
+
+  const coupon = BRAND_CONFIG.commerce.coupons.find(({ code }) => code === cleanCode);
+  if (!coupon) return { valid: false, discount: 0 };
+
+  const discount = coupon.type === 'percent'
+    ? Math.round(subtotal * coupon.value / 100)
+    : coupon.value;
+  return { valid: true, discount: Math.min(discount, subtotal) };
 }
 
 export function calculateCheckout(input: CheckoutInput) {
@@ -71,7 +76,7 @@ export function calculateCheckout(input: CheckoutInput) {
   });
 
   const subtotal = items.reduce((sum, item) => sum + item.unit_price * item.quantity, 0);
-  const couponDiscount = calculateCouponDiscount(subtotal, input.couponCode);
+  const couponDiscount = calculateCouponDiscount(subtotal, input.couponCode).discount;
   const subtotalAfterCoupon = subtotal - couponDiscount;
   const shippingMethod = input.shippingMethod || 'standard';
   if (!['standard', 'express', 'pickup'].includes(shippingMethod)) {

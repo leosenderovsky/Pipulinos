@@ -3,6 +3,7 @@ import { Product } from '../data/products';
 import { BRAND_CONFIG } from '../brand.config';
 import { Heart, ShoppingBag, Check } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { ProductPicture } from './ProductPicture';
 
 interface ProductCardProps {
   product: Product;
@@ -52,18 +53,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
     >
       {/* Media Box */}
       <div className="relative w-full aspect-[4/5] bg-purple-50/40 overflow-hidden">
-        <picture className="block w-full h-full">
-          <source srcSet={product.imagenes[0].replace(/\.jpg$/i, '.webp')} type="image/webp" />
-          <img
-            src={product.imagenes[0]}
-            alt={product.nombre}
-            loading="lazy"
-            decoding="async"
-            width={1000}
-            height={1000}
-            className="w-full h-full object-contain"
-          />
-        </picture>
+        <ProductPicture
+          src={product.imagenes[0]}
+          alt={product.nombre}
+          loading="lazy"
+          decoding="async"
+          width={800}
+          height={1000}
+          className="w-full h-full object-cover object-center"
+          pictureClassName="block w-full h-full"
+        />
 
         {/* Floating badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start pointer-events-none">

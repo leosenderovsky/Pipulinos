@@ -30,6 +30,7 @@ export interface BrandConfig {
   commerce: {
     currency: string;
     currencySymbol: string;
+    coupons: Array<{ code: string; type: 'percent' | 'fixed'; value: number }>;
     freeShippingThreshold: number;
     transferDiscountPercent: number;
     installmentsWithoutInterest: number;
@@ -85,6 +86,11 @@ export const BRAND_CONFIG: BrandConfig = {
   commerce: {
     currency: 'ARS',
     currencySymbol: '$',
+    coupons: [
+      { code: 'PIPULINOS10', type: 'percent', value: 10 },
+      { code: 'PROMO-PACK', type: 'fixed', value: 5000 },
+      { code: 'BIENVENIDA', type: 'percent', value: 10 },
+    ],
     freeShippingThreshold: 45000,
     transferDiscountPercent: 10,
     installmentsWithoutInterest: 3,
