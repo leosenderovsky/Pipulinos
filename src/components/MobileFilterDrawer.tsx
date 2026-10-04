@@ -43,11 +43,11 @@ export const MobileFilterDrawer: React.FC<MobileFilterDrawerProps> = (props) => 
         <div className="pt-3 px-5 pb-3 border-b border-purple-100 flex items-center justify-between shrink-0 bg-purple-50/50">
           <div className="flex items-center gap-2">
             <span className="w-8 h-1 bg-purple-200 rounded-full mx-auto block absolute top-2 left-1/2 -translate-x-1/2" />
-            <h3 className="font-extrabold text-base text-[#1E2046] mt-1">
+            <h3 className="font-extrabold text-base text-brand-text mt-1">
               Filtrar Catálogo Showroom
             </h3>
             {props.activeFiltersCount > 0 && (
-              <span className="bg-[#FF6B57] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full mt-1">
+              <span className="bg-brand-primary text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full mt-1">
                 {props.activeFiltersCount}
               </span>
             )}
@@ -81,7 +81,7 @@ export const MobileFilterDrawer: React.FC<MobileFilterDrawerProps> = (props) => 
           <button
             type="button"
             onClick={props.onClose}
-            className="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-[#FF6B57] to-[#FF8A1E] text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all"
+            className="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-brand-primary to-brand-primary-hover text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all"
           >
             <Check className="w-4 h-4" />
             <span>Ver {props.filteredCount} modelos</span>

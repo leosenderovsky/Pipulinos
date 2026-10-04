@@ -35,41 +35,41 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
               {BRAND_CONFIG.copy.footerAbout}
             </p>
             <div className="flex items-center gap-2 pt-1">
-              <span className="w-3 h-3 rounded-full bg-[#FFD026]" />
-              <span className="w-3 h-3 rounded-full bg-[#FF6B57]" />
-              <span className="w-3 h-3 rounded-full bg-[#26A4F8]" />
-              <span className="w-3 h-3 rounded-full bg-[#2DD382]" />
-              <span className="w-3 h-3 rounded-full bg-[#8B5CF6]" />
+              <span className="w-3 h-3 rounded-full bg-brand-secondary" />
+              <span className="w-3 h-3 rounded-full bg-brand-primary" />
+              <span className="w-3 h-3 rounded-full bg-brand-accent-blue" />
+              <span className="w-3 h-3 rounded-full bg-brand-success" />
+              <span className="w-3 h-3 rounded-full bg-brand-text-muted" />
             </div>
           </div>
 
           {/* Col 2: Ayuda & Compras */}
           <div className="flex flex-col gap-2">
-            <span className="font-extrabold text-sm text-[#1E2046] mb-1 flex items-center gap-1.5">
+            <span className="font-extrabold text-sm text-brand-text mb-1 flex items-center gap-1.5">
               <span>🧸</span> Ayuda &amp; Compras
             </span>
             <button
               type="button"
               onClick={onOpenSizeGuideModal}
-              className="text-xs font-bold text-purple-800 hover:text-[#FF6B57] transition-colors flex items-center gap-1.5 text-left cursor-pointer"
+              className="text-xs font-bold text-purple-800 hover:text-brand-primary transition-colors flex items-center gap-1.5 text-left cursor-pointer"
             >
-              <Ruler className="w-3.5 h-3.5 text-[#26A4F8]" />
+              <Ruler className="w-3.5 h-3.5 text-brand-accent-blue" />
               <span>Guía de Talles y Medidas</span>
             </button>
             <a
-              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent('Hola Pipulinos, tengo una consulta sobre envíos y cambios')}`}
+              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(`Hola ${BRAND_CONFIG.shortName}, ${BRAND_CONFIG.copy.whatsappShippingMessage}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-purple-800 hover:text-[#FF6B57] transition-colors flex items-center gap-1.5"
+              className="text-xs font-bold text-purple-800 hover:text-brand-primary transition-colors flex items-center gap-1.5"
             >
-              <Truck className="w-3.5 h-3.5 text-[#2DD382]" />
+              <Truck className="w-3.5 h-3.5 text-brand-success" />
               <span>Envíos y Cambios Fáciles</span>
             </a>
             <a
-              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent('Hola Pipulinos, tengo preguntas frecuentes')}`}
+              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(`Hola ${BRAND_CONFIG.shortName}, ${BRAND_CONFIG.copy.whatsappFaqMessage}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-purple-800 hover:text-[#FF6B57] transition-colors flex items-center gap-1.5"
+              className="text-xs font-bold text-purple-800 hover:text-brand-primary transition-colors flex items-center gap-1.5"
             >
               <HelpCircle className="w-3.5 h-3.5 text-amber-600" />
               <span>Preguntas Frecuentes</span>
@@ -78,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
 
           {/* Col 3: Medios de Pago & Envíos */}
           <div className="flex flex-col gap-2">
-            <span className="font-extrabold text-sm text-[#1E2046] mb-1 flex items-center gap-1.5">
+            <span className="font-extrabold text-sm text-brand-text mb-1 flex items-center gap-1.5">
               <span>💳</span> Medios de Pago &amp; Envíos
             </span>
             <p className="text-xs font-bold text-purple-900">
@@ -97,11 +97,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
 
           {/* Col 4: Contacto Showroom */}
           <div className="flex flex-col gap-2">
-            <span className="font-extrabold text-sm text-[#1E2046] mb-1 flex items-center gap-1.5">
+            <span className="font-extrabold text-sm text-brand-text mb-1 flex items-center gap-1.5">
               <span>📍</span> Contacto Showroom
             </span>
             <p className="text-xs font-bold text-purple-900 flex items-center gap-1.5">
-              <MessageCircle className="w-4 h-4 text-[#25D366]" />
+              <MessageCircle className="w-4 h-4 text-brand-whatsapp" />
               <span>WhatsApp: {BRAND_CONFIG.contact.whatsappNumberFormatted}</span>
             </p>
             <a
@@ -133,7 +133,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-extrabold text-[#FF6B57] bg-white px-3 py-1 rounded-full border border-purple-100 shadow-xs flex items-center gap-1">
+            <span className="text-xs font-extrabold text-brand-primary bg-white px-3 py-1 rounded-full border border-purple-100 shadow-xs flex items-center gap-1">
               Hecho con mucho amor para las infancias 🎈⭐
             </span>
           </div>

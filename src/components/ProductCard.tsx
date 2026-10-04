@@ -22,7 +22,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
     const defaultSize = product.tallesDisponibles[0] || 'Único';
-    const defaultColor = product.coloresDisponibles[0] || { name: 'Estándar', hex: '#FF6B57' };
+    const defaultColor = product.coloresDisponibles[0] || {
+      name: 'Estándar',
+      hex: BRAND_CONFIG.theme.primary,
+    };
     addToCart(product, defaultSize, defaultColor, 1);
 
     setShowQuickAddFeedback(true);
@@ -34,22 +37,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
   const getBadgeStyle = () => {
     switch (product.badgeType) {
       case 'pima':
-        return 'bg-[#FF6B57] text-white';
+        return 'bg-brand-primary text-white';
       case 'termico':
-        return 'bg-[#FFD026] text-[#1E2046]';
+        return 'bg-brand-secondary text-brand-text';
       case 'oferta':
-        return 'bg-[#2DD382] text-white';
+        return 'bg-brand-success text-white';
       case 'nuevo':
-        return 'bg-[#8B5CF6] text-white';
+        return 'bg-brand-text-muted text-white';
       default:
-        return 'bg-[#26A4F8] text-white';
+        return 'bg-brand-accent-blue text-white';
     }
   };
 
   return (
     <article
       onClick={() => onOpenProduct(product)}
-      className="group bg-white rounded-3xl shadow-sm hover:shadow-[0_15px_30px_-5px_rgba(255,107,87,0.18)] border-2 border-purple-100/70 hover:border-[#FF6B57]/50 transition-all duration-300 flex flex-col overflow-hidden relative cursor-pointer"
+      className="group bg-white rounded-3xl shadow-sm hover:shadow-[0_15px_30px_-5px_color-mix(in_srgb,var(--brand-primary)_18%,transparent)] border-2 border-purple-100/70 hover:border-brand-primary/50 transition-all duration-300 flex flex-col overflow-hidden relative cursor-pointer"
     >
       {/* Media Box */}
       <div className="relative w-full aspect-[4/5] bg-purple-50/40 overflow-hidden">
@@ -72,7 +75,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
             <span>✨</span> {product.tela}
           </span>
           {product.etiqueta && (
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FFD026] text-[#1E2046] font-extrabold text-[10px] shadow-xs">
+            <span className="px-2.5 py-0.5 rounded-full bg-brand-secondary text-brand-text font-extrabold text-[10px] shadow-xs">
               {product.etiqueta}
             </span>
           )}
@@ -86,15 +89,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
             setIsFavorite(!isFavorite);
           }}
           className={`absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md transition-all hover:scale-110 cursor-pointer ${
-            isFavorite ? 'text-[#FF6B57]' : 'text-purple-300 hover:text-[#FF6B57]'
+            isFavorite ? 'text-brand-primary' : 'text-purple-300 hover:text-brand-primary'
           }`}
           title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
         >
-          <Heart className={`w-4 h-4 ${isFavorite ? 'fill-[#FF6B57]' : ''}`} />
+          <Heart className={`w-4 h-4 ${isFavorite ? 'fill-brand-primary' : ''}`} />
         </button>
 
         {/* Size range badge */}
-        <span className="absolute bottom-3 left-3 text-[11px] font-extrabold px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#1E2046] border border-purple-100 shadow-xs flex items-center gap-1 pointer-events-none">
+        <span className="absolute bottom-3 left-3 text-[11px] font-extrabold px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-brand-text border border-purple-100 shadow-xs flex items-center gap-1 pointer-events-none">
           <span>👶</span> {product.tallesDisponibles[0]} a{' '}
           {product.tallesDisponibles[product.tallesDisponibles.length - 1]}
         </span>
@@ -120,14 +123,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
             )}
           </div>
 
-          <h3 className="font-bold text-sm text-[#1E2046] line-clamp-2 group-hover:text-[#FF6B57] transition-colors leading-snug">
+          <h3 className="font-bold text-sm text-brand-text line-clamp-2 group-hover:text-brand-primary transition-colors leading-snug">
             {product.nombre}
           </h3>
         </div>
 
         <div className="pt-1 border-t border-purple-50">
           <div className="flex items-baseline gap-2 mb-0.5">
-            <span className="font-extrabold text-lg text-[#FF6B57]">
+            <span className="font-extrabold text-lg text-brand-primary">
               ${product.precio.toLocaleString('es-AR')}
             </span>
             {product.precioAnterior && (
@@ -142,7 +145,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
 
           <p className="text-[11px] font-semibold text-purple-600">
             3 cuotas de{' '}
-            <strong className="text-[#1E2046] font-bold">
+            <strong className="text-brand-text font-bold">
               ${installmentAmount.toLocaleString('es-AR')}
             </strong>{' '}
             sin interés
@@ -152,7 +155,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
             <button
               type="button"
               onClick={() => onOpenProduct(product)}
-              className="col-span-3 py-2 px-2 rounded-2xl bg-purple-50 hover:bg-[#FFD026] hover:text-[#1E2046] text-purple-900 text-center font-bold text-xs transition-all border border-purple-100 flex items-center justify-center gap-1 cursor-pointer"
+              className="col-span-3 py-2 px-2 rounded-2xl bg-purple-50 hover:bg-brand-secondary hover:text-brand-text text-purple-900 text-center font-bold text-xs transition-all border border-purple-100 flex items-center justify-center gap-1 cursor-pointer"
             >
               <span>Elegir talle</span>
             </button>
@@ -161,7 +164,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
               type="button"
               onClick={handleQuickAdd}
               className={`col-span-1 py-2 flex items-center justify-center rounded-2xl text-white transition-all shadow-sm hover:scale-105 cursor-pointer ${
-                showQuickAddFeedback ? 'bg-emerald-500' : 'bg-[#FF6B57] hover:bg-[#FF8A1E]'
+                showQuickAddFeedback ? 'bg-emerald-500' : 'bg-brand-primary hover:bg-brand-primary-hover'
               }`}
               title="Agregar al carrito"
             >

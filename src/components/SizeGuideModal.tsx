@@ -32,11 +32,11 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
 
         {/* Modal Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-2xl bg-[#FFF4D0] text-amber-900 flex items-center justify-center shadow-xs">
+          <div className="w-10 h-10 rounded-2xl bg-brand-secondary-soft text-amber-900 flex items-center justify-center shadow-xs">
             <Ruler className="w-5 h-5 text-amber-800" />
           </div>
           <div>
-            <h3 className="font-extrabold text-xl text-[#1E2046]">Tabla Oficial de Talles &amp; Medidas</h3>
+            <h3 className="font-extrabold text-xl text-brand-text">Tabla Oficial de Talles &amp; Medidas</h3>
             <p className="text-xs text-purple-900/70 font-medium">
               Medidas corporales y de prenda para elegir con total tranquilidad.
             </p>
@@ -50,8 +50,8 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
             onClick={() => setActiveTab('baby')}
             className={`px-4 py-2 rounded-xl font-extrabold text-xs transition-all cursor-pointer ${
               activeTab === 'baby'
-                ? 'bg-white text-[#1E2046] shadow-xs'
-                : 'text-purple-700 hover:text-[#1E2046]'
+                ? 'bg-white text-brand-text shadow-xs'
+                : 'text-purple-700 hover:text-brand-text'
             }`}
           >
             🍼 Etapa Bebé (RN a 24 Meses)
@@ -61,8 +61,8 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
             onClick={() => setActiveTab('kids')}
             className={`px-4 py-2 rounded-xl font-extrabold text-xs transition-all cursor-pointer ${
               activeTab === 'kids'
-                ? 'bg-white text-[#1E2046] shadow-xs'
-                : 'text-purple-700 hover:text-[#1E2046]'
+                ? 'bg-white text-brand-text shadow-xs'
+                : 'text-purple-700 hover:text-brand-text'
             }`}
           >
             🎈 Etapa Niños (T2 a T10 Años)
@@ -86,7 +86,7 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
               <tbody className="divide-y divide-purple-50 text-purple-900">
                 {BABY_SIZE_GUIDE.map((row) => (
                   <tr key={row.talle} className="hover:bg-purple-50/40">
-                    <td className="p-3 font-extrabold text-[#FF6B57]">{row.talle}</td>
+                    <td className="p-3 font-extrabold text-brand-primary">{row.talle}</td>
                     <td className="p-3">{row.edadSugerida}</td>
                     <td className="p-3">{row.alturaCm}</td>
                     <td className="p-3">{row.pesoKg}</td>
@@ -114,7 +114,7 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
               <tbody className="divide-y divide-purple-50 text-purple-900">
                 {KIDS_SIZE_GUIDE.map((row) => (
                   <tr key={row.talle} className="hover:bg-purple-50/40">
-                    <td className="p-3 font-extrabold text-[#26A4F8]">{row.talle}</td>
+                    <td className="p-3 font-extrabold text-brand-accent-blue">{row.talle}</td>
                     <td className="p-3">{row.edadSugerida}</td>
                     <td className="p-3">{row.alturaCm}</td>
                     <td className="p-3">{row.pesoKg}</td>
@@ -129,9 +129,9 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
         )}
 
         {/* Tips Box */}
-        <div className="bg-[#FFFDF6] border border-amber-200 p-4 rounded-2xl mb-5 space-y-2">
+        <div className="bg-brand-surface-warm border border-amber-200 p-4 rounded-2xl mb-5 space-y-2">
           <p className="text-xs font-bold text-amber-950 flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-[#FFD026]" />
+            <Sparkles className="w-4 h-4 text-brand-secondary" />
             <span>{SIZE_GUIDE_TIPS.mainTip}</span>
           </p>
           <p className="text-xs text-purple-900/80 font-medium leading-relaxed">
@@ -142,7 +142,7 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
         <button
           type="button"
           onClick={onClose}
-          className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#FF6B57] to-[#FF8A1E] text-white font-extrabold text-sm shadow-md hover:opacity-95 transition-all cursor-pointer"
+          className="w-full py-3 rounded-2xl bg-gradient-to-r from-brand-primary to-brand-primary-hover text-white font-extrabold text-sm shadow-md hover:opacity-95 transition-all cursor-pointer"
         >
           Entendido, volver a las prendas
         </button>

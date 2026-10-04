@@ -41,14 +41,14 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   } = useCart();
 
   // Contact form state
-  const [email, setEmail] = useState('laura.gomez@gmail.com');
-  const [phone, setPhone] = useState('+54 9 11 4820-9912');
-  const [fullName, setFullName] = useState('Laura Gómez');
+  const [email, setEmail] = useState(BRAND_CONFIG.checkoutDefaults.email);
+  const [phone, setPhone] = useState(BRAND_CONFIG.contact.whatsappNumberFormatted);
+  const [fullName, setFullName] = useState(BRAND_CONFIG.checkoutDefaults.name);
   const [shippingMethod, setShippingMethod] = useState<'standard' | 'express' | 'pickup'>('standard');
-  const [streetAddress, setStreetAddress] = useState('Av. Coronel Díaz 2145');
-  const [apartment, setApartment] = useState('6to A');
-  const [zipCode, setZipCode] = useState('C1425');
-  const [city, setCity] = useState('Palermo, CABA');
+  const [streetAddress, setStreetAddress] = useState(BRAND_CONFIG.checkoutDefaults.streetAddress);
+  const [apartment, setApartment] = useState(BRAND_CONFIG.checkoutDefaults.apartment);
+  const [zipCode, setZipCode] = useState(BRAND_CONFIG.checkoutDefaults.zipCode);
+  const [city, setCity] = useState(BRAND_CONFIG.checkoutDefaults.city);
   const [deliveryNotes, setDeliveryNotes] = useState(
     isGiftPackaging ? `Incluir dedicatoria: "${giftDedication}"` : 'Tocar timbre en portería'
   );
@@ -162,7 +162,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
         ? `Envío Express 24hs a ${streetAddress}, ${apartment}, ${city} ($${shippingCost.toLocaleString('es-AR')})`
         : `Envío Estándar GRATIS a ${streetAddress}, ${apartment}, ${city}`;
 
-    const message = `🛍️ *NUEVO PEDIDO PIPULINOS SHOWROOM*
+    const message = `🛍️ *${BRAND_CONFIG.copy.checkoutOrderHeading} ${BRAND_CONFIG.shortName.toUpperCase()} SHOWROOM*
 ----------------------------------------
 *Cliente:* ${fullName}
 *WhatsApp:* ${phone}
@@ -190,11 +190,11 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
   };
 
   return (
-    <div className="w-full bg-[#FAF9FF] min-h-screen py-6 px-4 md:px-6">
+    <div className="w-full bg-brand-surface-checkout min-h-screen py-6 px-4 md:px-6">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Minimalist Checkout Header */}
         <header className="w-full flex flex-col bg-white rounded-3xl shadow-sm border-2 border-purple-100 overflow-hidden">
-          <div className="w-full bg-gradient-to-r from-[#FFD026] via-[#FF8A1E] to-[#FF6B57] text-white py-2 px-4 text-center text-xs font-bold flex items-center justify-center gap-2">
+          <div className="w-full bg-gradient-to-r from-brand-secondary via-brand-primary-hover to-brand-primary text-white py-2 px-4 text-center text-xs font-bold flex items-center justify-center gap-2">
             <span>✨ Compra 100% Segura • 3 y 6 cuotas sin interés • Despachos garantizados a todo el país ✨</span>
           </div>
 
@@ -202,7 +202,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
             <button
               type="button"
               onClick={onBackToCart}
-              className="col-start-1 row-start-1 inline-flex items-center gap-1.5 text-purple-900/80 hover:text-[#FF6B57] font-bold text-xs transition-colors cursor-pointer"
+              className="col-start-1 row-start-1 inline-flex items-center gap-1.5 text-purple-900/80 hover:text-brand-primary font-bold text-xs transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Volver al carrito</span>
@@ -218,9 +218,9 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
             />
 
             <div className="col-start-2 row-start-1 flex items-center gap-2 bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-100">
-              <ShieldCheck className="w-4 h-4 text-[#FF6B57]" />
+              <ShieldCheck className="w-4 h-4 text-brand-primary" />
               <div className="flex flex-col text-left">
-                <span className="font-extrabold text-[10px] text-[#1E2046] uppercase leading-tight">
+                <span className="font-extrabold text-[10px] text-brand-text uppercase leading-tight">
                   Compra Segura
                 </span>
                 <span className="text-[9px] text-purple-400 leading-tight">SSL 256-bit</span>
@@ -231,14 +231,14 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
 
         {/* Step Indicator Bar */}
         <div className="w-full grid grid-cols-3 gap-2 px-1">
-          <div className="flex items-center justify-center gap-2 py-2 px-3 bg-[#FF6B57] text-white rounded-full shadow-xs text-xs font-bold">
-            <span className="w-5 h-5 rounded-full bg-white text-[#FF6B57] text-[11px] flex items-center justify-center font-extrabold">
+          <div className="flex items-center justify-center gap-2 py-2 px-3 bg-brand-primary text-white rounded-full shadow-xs text-xs font-bold">
+            <span className="w-5 h-5 rounded-full bg-white text-brand-primary text-[11px] flex items-center justify-center font-extrabold">
               1
             </span>
             <span>1. Envío</span>
           </div>
-          <div className="flex items-center justify-center gap-2 py-2 px-3 bg-[#E2F3FF] text-[#0284C7] rounded-full shadow-xs text-xs font-bold">
-            <span className="w-5 h-5 rounded-full bg-[#0284C7] text-white text-[11px] flex items-center justify-center font-extrabold">
+          <div className="flex items-center justify-center gap-2 py-2 px-3 bg-brand-surface-blue text-brand-accent-blue-dark rounded-full shadow-xs text-xs font-bold">
+            <span className="w-5 h-5 rounded-full bg-brand-accent-blue-dark text-white text-[11px] flex items-center justify-center font-extrabold">
               2
             </span>
             <span>2. Pago</span>
@@ -259,12 +259,12 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
             <section className="bg-white p-6 rounded-3xl shadow-sm border-2 border-purple-100 space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-purple-50">
                 <div className="flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-xl bg-[#FFE9E5] text-[#FF6B57] font-extrabold text-xs flex items-center justify-center">
+                  <span className="w-7 h-7 rounded-xl bg-brand-surface-pink text-brand-primary font-extrabold text-xs flex items-center justify-center">
                     1
                   </span>
-                  <h2 className="font-extrabold text-base text-[#1E2046]">Contacto y Envío</h2>
+                  <h2 className="font-extrabold text-base text-brand-text">Contacto y Envío</h2>
                 </div>
-                <span className="bg-[#FFF4D0] text-amber-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase">
+                <span className="bg-brand-secondary-soft text-amber-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase">
                   Paso 1 de 2
                 </span>
               </div>
@@ -278,7 +278,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="ejemplo@correo.com"
-                    className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-[#1E2046] border border-purple-100 focus:border-[#FF6B57] outline-none"
+                    className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                   />
                 </div>
 
@@ -288,10 +288,10 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+54 9 11 5555-8888"
-                    className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-[#1E2046] border border-purple-100 focus:border-[#FF6B57] outline-none"
+                    placeholder={BRAND_CONFIG.contact.whatsappNumberFormatted}
+                    className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                   />
-                  <p className="text-[10px] text-[#25D366] font-bold flex items-center gap-1 mt-0.5">
+                  <p className="text-[10px] text-brand-whatsapp font-bold flex items-center gap-1 mt-0.5">
                     <MessageCircle className="w-3 h-3" />
                     Te enviaremos el código de seguimiento por WhatsApp
                   </p>
@@ -306,8 +306,8 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Ej. Laura Gómez"
-                  className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-[#1E2046] border border-purple-100 focus:border-[#FF6B57] outline-none"
+                  placeholder={`Ej. ${BRAND_CONFIG.checkoutDefaults.name}`}
+                  className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                 />
               </div>
 
@@ -323,7 +323,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                     onClick={() => setShippingMethod('standard')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl cursor-pointer transition-all border-2 ${
                       shippingMethod === 'standard'
-                        ? 'border-[#FF6B57] bg-[#FFE9E5]/30 shadow-xs'
+                        ? 'border-brand-primary bg-brand-surface-pink/30 shadow-xs'
                         : 'border-purple-100 bg-purple-50/40 hover:bg-purple-50'
                     }`}
                   >
@@ -333,12 +333,12 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                         name="shipping"
                         checked={shippingMethod === 'standard'}
                         onChange={() => setShippingMethod('standard')}
-                        className="accent-[#FF6B57] w-4 h-4 cursor-pointer"
+                        className="accent-brand-primary w-4 h-4 cursor-pointer"
                       />
                       <div>
-                        <div className="font-extrabold text-xs text-[#1E2046] flex items-center gap-2">
+                        <div className="font-extrabold text-xs text-brand-text flex items-center gap-2">
                           <span>Envío a domicilio Estándar</span>
-                          <span className="bg-[#FFF4D0] text-amber-900 text-[10px] px-2 py-0.2 rounded-full font-bold">
+                          <span className="bg-brand-secondary-soft text-amber-900 text-[10px] px-2 py-0.2 rounded-full font-bold">
                             📦 3 a 5 días
                           </span>
                         </div>
@@ -347,7 +347,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                         </p>
                       </div>
                     </div>
-                    <span className="font-extrabold text-xs text-[#FF6B57] uppercase">GRATIS</span>
+                    <span className="font-extrabold text-xs text-brand-primary uppercase">GRATIS</span>
                   </label>
 
                   {/* Express 24hs */}
@@ -355,7 +355,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                     onClick={() => setShippingMethod('express')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl cursor-pointer transition-all border-2 ${
                       shippingMethod === 'express'
-                        ? 'border-[#FF6B57] bg-[#FFE9E5]/30 shadow-xs'
+                        ? 'border-brand-primary bg-brand-surface-pink/30 shadow-xs'
                         : 'border-purple-100 bg-purple-50/40 hover:bg-purple-50'
                     }`}
                   >
@@ -365,12 +365,12 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                         name="shipping"
                         checked={shippingMethod === 'express'}
                         onChange={() => setShippingMethod('express')}
-                        className="accent-[#FF6B57] w-4 h-4 cursor-pointer"
+                        className="accent-brand-primary w-4 h-4 cursor-pointer"
                       />
                       <div>
-                        <div className="font-extrabold text-xs text-[#1E2046] flex items-center gap-2">
+                        <div className="font-extrabold text-xs text-brand-text flex items-center gap-2">
                           <span>Envío Express 24hs CABA/GBA</span>
-                          <span className="bg-[#E2F3FF] text-[#0284C7] text-[10px] px-2 py-0.2 rounded-full font-bold">
+                          <span className="bg-brand-surface-blue text-brand-accent-blue-dark text-[10px] px-2 py-0.2 rounded-full font-bold">
                             ⚡ Llega mañana
                           </span>
                         </div>
@@ -379,7 +379,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                         </p>
                       </div>
                     </div>
-                    <span className="font-extrabold text-xs text-[#1E2046]">
+                    <span className="font-extrabold text-xs text-brand-text">
                       ${BRAND_CONFIG.commerce.expressShippingCost.toLocaleString('es-AR')}
                     </span>
                   </label>
@@ -389,7 +389,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                     onClick={() => setShippingMethod('pickup')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl cursor-pointer transition-all border-2 ${
                       shippingMethod === 'pickup'
-                        ? 'border-[#FF6B57] bg-[#FFE9E5]/30 shadow-xs'
+                        ? 'border-brand-primary bg-brand-surface-pink/30 shadow-xs'
                         : 'border-purple-100 bg-purple-50/40 hover:bg-purple-50'
                     }`}
                   >
@@ -399,13 +399,13 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                         name="shipping"
                         checked={shippingMethod === 'pickup'}
                         onChange={() => setShippingMethod('pickup')}
-                        className="accent-[#FF6B57] w-4 h-4 cursor-pointer"
+                        className="accent-brand-primary w-4 h-4 cursor-pointer"
                       />
                       <div>
-                        <div className="font-extrabold text-xs text-[#1E2046] flex items-center gap-2">
-                          <span>Retiro en Showroom Pipulinos</span>
-                          <span className="bg-[#F1EAFE] text-[#8B5CF6] text-[10px] px-2 py-0.2 rounded-full font-bold">
-                            📍 Palermo Soho
+                        <div className="font-extrabold text-xs text-brand-text flex items-center gap-2">
+                          <span>Retiro en Showroom {BRAND_CONFIG.shortName}</span>
+                          <span className="bg-brand-surface-purple text-brand-text-muted text-[10px] px-2 py-0.2 rounded-full font-bold">
+                            📍 {BRAND_CONFIG.contact.showroomAddress}
                           </span>
                         </div>
                         <p className="text-[11px] text-purple-900/60 font-medium">
@@ -428,7 +428,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                       value={streetAddress}
                       onChange={(e) => setStreetAddress(e.target.value)}
                       placeholder="Ej. Av. Santa Fe 3421"
-                      className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-[#1E2046] border border-purple-100 focus:border-[#FF6B57] outline-none"
+                      className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                     />
                   </div>
 
@@ -439,7 +439,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                       value={apartment}
                       onChange={(e) => setApartment(e.target.value)}
                       placeholder="Ej. 6to A"
-                      className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-[#1E2046] border border-purple-100 focus:border-[#FF6B57] outline-none"
+                      className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                     />
                   </div>
 
@@ -450,7 +450,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                       value={zipCode}
                       onChange={(e) => setZipCode(e.target.value)}
                       placeholder="C1425"
-                      className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-[#1E2046] border border-purple-100 focus:border-[#FF6B57] outline-none"
+                      className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                     />
                   </div>
 
@@ -460,8 +460,8 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                       type="text"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      placeholder="Palermo, CABA"
-                      className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-[#1E2046] border border-purple-100 focus:border-[#FF6B57] outline-none"
+                      placeholder={BRAND_CONFIG.checkoutDefaults.city}
+                      className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                     />
                   </div>
                 </div>
@@ -477,7 +477,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                   value={deliveryNotes}
                   onChange={(e) => setDeliveryNotes(e.target.value)}
                   placeholder="Tocar timbre en portería. Si es regalo incluir dedicatoria."
-                  className="w-full px-3.5 py-2 bg-purple-50/50 rounded-xl text-xs text-[#1E2046] border border-purple-100 focus:border-[#FF6B57] outline-none"
+                  className="w-full px-3.5 py-2 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                 />
               </div>
             </section>
@@ -486,12 +486,12 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
             <section className="bg-white p-6 rounded-3xl shadow-sm border-2 border-purple-100 space-y-5">
               <div className="flex items-center justify-between pb-2 border-b border-purple-50">
                 <div className="flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-xl bg-[#FFE9E5] text-[#FF6B57] font-extrabold text-xs flex items-center justify-center">
+                  <span className="w-7 h-7 rounded-xl bg-brand-surface-pink text-brand-primary font-extrabold text-xs flex items-center justify-center">
                     2
                   </span>
-                  <h2 className="font-extrabold text-base text-[#1E2046]">Selección del Medio de Pago</h2>
+                  <h2 className="font-extrabold text-base text-brand-text">Selección del Medio de Pago</h2>
                 </div>
-                <span className="font-extrabold text-[10px] text-[#0284C7] bg-[#E2F3FF] px-2.5 py-0.5 rounded-full uppercase">
+                <span className="font-extrabold text-[10px] text-brand-accent-blue-dark bg-brand-surface-blue px-2.5 py-0.5 rounded-full uppercase">
                   Pago Seguro
                 </span>
               </div>
@@ -500,7 +500,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
               <div
                 className={`p-5 rounded-2xl transition-all border-2 ${
                   paymentGateway === 'mercadopago'
-                    ? 'border-[#009EE3] bg-sky-50/40 shadow-xs'
+                    ? 'border-brand-payment bg-sky-50/40 shadow-xs'
                     : 'border-purple-100 bg-purple-50/20'
                 }`}
               >
@@ -511,13 +511,13 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                       name="paymentGateway"
                       checked={paymentGateway === 'mercadopago'}
                       onChange={() => setPaymentGateway('mercadopago')}
-                      className="accent-[#009EE3] w-4 h-4 cursor-pointer"
+                      className="accent-brand-payment w-4 h-4 cursor-pointer"
                     />
-                    <span className="font-extrabold text-sm text-[#1E2046]">
+                    <span className="font-extrabold text-sm text-brand-text">
                       Mercado Pago Checkout Pro
                     </span>
                   </label>
-                  <span className="bg-[#FF6B57] text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">
+                  <span className="bg-brand-primary text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">
                     Opción Recomendada
                   </span>
                 </div>
@@ -547,7 +547,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                   <span className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs">
                     🏪 Rapipago / Pago Fácil
                   </span>
-                  <span className="bg-sky-100 text-[#009EE3] font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-sky-200 shadow-xs">
+                  <span className="bg-sky-100 text-brand-payment font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-sky-200 shadow-xs">
                     💙 Saldo Mercado Pago
                   </span>
                 </div>
@@ -555,7 +555,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                 {/* Installments Selector */}
                 {paymentGateway === 'mercadopago' && (
                   <div className="space-y-2 pt-4 pl-6">
-                    <label className="font-extrabold text-xs text-[#1E2046]">
+                    <label className="font-extrabold text-xs text-brand-text">
                       Seleccioná plan de cuotas:
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -563,7 +563,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                         onClick={() => setSelectedInstallmentPlan('1_payment')}
                         className={`flex items-center justify-between p-3 rounded-xl cursor-pointer border-2 transition-all ${
                           selectedInstallmentPlan === '1_payment'
-                            ? 'border-[#009EE3] bg-white shadow-xs'
+                            ? 'border-brand-payment bg-white shadow-xs'
                             : 'border-purple-100 bg-white/70'
                         }`}
                       >
@@ -573,11 +573,11 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                             name="installments"
                             checked={selectedInstallmentPlan === '1_payment'}
                             onChange={() => setSelectedInstallmentPlan('1_payment')}
-                            className="accent-[#009EE3] w-3.5 h-3.5"
+                            className="accent-brand-payment w-3.5 h-3.5"
                           />
-                          <span className="text-xs font-bold text-[#1E2046]">1 Pago Débito/Crédito</span>
+                          <span className="text-xs font-bold text-brand-text">1 Pago Débito/Crédito</span>
                         </div>
-                        <span className="font-extrabold text-xs text-[#1E2046]">
+                        <span className="font-extrabold text-xs text-brand-text">
                           ${finalTotal.toLocaleString('es-AR')}
                         </span>
                       </label>
@@ -586,7 +586,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                         onClick={() => setSelectedInstallmentPlan('3_installments')}
                         className={`flex items-center justify-between p-3 rounded-xl cursor-pointer border-2 transition-all ${
                           selectedInstallmentPlan === '3_installments'
-                            ? 'border-[#009EE3] bg-white shadow-xs'
+                            ? 'border-brand-payment bg-white shadow-xs'
                             : 'border-purple-100 bg-white/70'
                         }`}
                       >
@@ -596,18 +596,18 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                             name="installments"
                             checked={selectedInstallmentPlan === '3_installments'}
                             onChange={() => setSelectedInstallmentPlan('3_installments')}
-                            className="accent-[#009EE3] w-3.5 h-3.5"
+                            className="accent-brand-payment w-3.5 h-3.5"
                           />
                           <div>
-                            <span className="text-xs font-bold text-[#1E2046] block">
+                            <span className="text-xs font-bold text-brand-text block">
                               3 Cuotas sin interés
                             </span>
-                            <span className="text-[11px] text-[#0284C7] font-semibold">
+                            <span className="text-[11px] text-brand-accent-blue-dark font-semibold">
                               3 de ${installmentPerMonth.toLocaleString('es-AR')}
                             </span>
                           </div>
                         </div>
-                        <span className="bg-[#FFF4D0] text-amber-900 text-[10px] font-extrabold px-2 py-0.5 rounded">
+                        <span className="bg-brand-secondary-soft text-amber-900 text-[10px] font-extrabold px-2 py-0.5 rounded">
                           0% CFT
                         </span>
                       </label>
@@ -624,7 +624,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                         type="button"
                         onClick={handleMercadoPagoCheckout}
                         disabled={isProcessing}
-                        className="w-full py-3.5 px-6 bg-[#009EE3] hover:bg-[#0089c7] text-white rounded-2xl font-extrabold text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95 transition-all cursor-pointer disabled:opacity-70"
+                        className="w-full py-3.5 px-6 bg-brand-payment hover:bg-brand-payment-hover text-white rounded-2xl font-extrabold text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95 transition-all cursor-pointer disabled:opacity-70"
                       >
                         {isProcessing ? (
                           <>
@@ -661,7 +661,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
               <div
                 className={`p-5 rounded-2xl transition-all border-2 ${
                   paymentGateway === 'whatsapp'
-                    ? 'border-[#25D366] bg-emerald-50/40 shadow-xs'
+                    ? 'border-brand-whatsapp bg-emerald-50/40 shadow-xs'
                     : 'border-purple-100 bg-purple-50/20'
                 }`}
               >
@@ -672,13 +672,13 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                       name="paymentGateway"
                       checked={paymentGateway === 'whatsapp'}
                       onChange={() => setPaymentGateway('whatsapp')}
-                      className="accent-[#25D366] w-4 h-4 cursor-pointer"
+                      className="accent-brand-whatsapp w-4 h-4 cursor-pointer"
                     />
-                    <span className="font-extrabold text-sm text-[#1E2046]">
+                    <span className="font-extrabold text-sm text-brand-text">
                       Coordinar y Pagar por WhatsApp
                     </span>
                   </label>
-                  <span className="bg-[#FFF4D0] text-amber-900 font-extrabold text-xs px-2.5 py-0.5 rounded-lg border border-amber-200">
+                  <span className="bg-brand-secondary-soft text-amber-900 font-extrabold text-xs px-2.5 py-0.5 rounded-lg border border-amber-200">
                     10% OFF
                   </span>
                 </div>
@@ -710,7 +710,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                     <button
                       type="button"
                       onClick={handleWhatsAppCheckout}
-                      className="w-full py-3.5 px-6 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-2xl font-extrabold text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95 transition-all cursor-pointer"
+                      className="w-full py-3.5 px-6 bg-brand-whatsapp hover:bg-brand-whatsapp-hover text-white rounded-2xl font-extrabold text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95 transition-all cursor-pointer"
                     >
                       <MessageCircle className="w-5 h-5" />
                       <span>Finalizar pedido y coordinar por WhatsApp</span>
@@ -725,7 +725,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
           <aside className="lg:col-span-5 flex flex-col gap-4 lg:sticky lg:top-24">
             <div className="bg-white p-6 rounded-3xl shadow-sm border-2 border-purple-100 space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-purple-100">
-                <h3 className="font-extrabold text-base text-[#1E2046]">Resumen de Compra</h3>
+                <h3 className="font-extrabold text-base text-brand-text">Resumen de Compra</h3>
                 <span className="bg-purple-50 text-purple-700 text-xs font-bold px-2 py-0.5 rounded-full">
                   {items.length} artículos
                 </span>
@@ -749,13 +749,13 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                       pictureClassName="block w-14 h-14 shrink-0"
                     />
                     <div className="flex-1 min-w-0 text-xs">
-                      <h4 className="font-bold text-[#1E2046] truncate">{i.product.nombre}</h4>
+                      <h4 className="font-bold text-brand-text truncate">{i.product.nombre}</h4>
                       <p className="text-[11px] text-purple-900/60 font-medium">
                         Talle: {i.size} • Color: {i.color.name}
                       </p>
                       <div className="flex items-baseline justify-between mt-0.5">
                         <span className="text-[11px] text-purple-400">Cant: {i.quantity}</span>
-                        <span className="font-extrabold text-[#FF6B57]">
+                        <span className="font-extrabold text-brand-primary">
                           ${(i.unitPrice * i.quantity).toLocaleString('es-AR')}
                         </span>
                       </div>
@@ -768,11 +768,11 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
               <div className="space-y-2 pt-2 border-t border-purple-100 text-xs font-semibold">
                 <div className="flex justify-between text-purple-900/80">
                   <span>Subtotal</span>
-                  <span className="font-bold text-[#1E2046]">${subtotal.toLocaleString('es-AR')}</span>
+                  <span className="font-bold text-brand-text">${subtotal.toLocaleString('es-AR')}</span>
                 </div>
 
                 {discount > 0 && (
-                  <div className="flex justify-between text-[#FF6B57]">
+                  <div className="flex justify-between text-brand-primary">
                     <span>Descuento Promo</span>
                     <span className="font-extrabold">-${discount.toLocaleString('es-AR')}</span>
                   </div>
@@ -786,9 +786,9 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                 </div>
 
                 <div className="pt-2 border-t border-purple-100 flex justify-between items-baseline">
-                  <span className="font-extrabold text-sm text-[#1E2046]">Total final:</span>
+                  <span className="font-extrabold text-sm text-brand-text">Total final:</span>
                   <div className="text-right">
-                    <span className="text-2xl font-extrabold text-[#FF6B57] tracking-tight block">
+                    <span className="text-2xl font-extrabold text-brand-primary tracking-tight block">
                       ${finalTotal.toLocaleString('es-AR')}
                     </span>
                     <span className="text-[11px] font-bold text-emerald-800">
@@ -799,7 +799,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
               </div>
 
               {/* 30-Day Guarantee */}
-              <div className="p-3.5 bg-[#E2F3FF]/60 rounded-2xl flex items-start gap-2.5 border border-sky-200">
+              <div className="p-3.5 bg-brand-surface-blue/60 rounded-2xl flex items-start gap-2.5 border border-sky-200">
                 <span className="text-base">⭐</span>
                 <div>
                   <h5 className="font-extrabold text-xs text-sky-950">
@@ -813,17 +813,17 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
               </div>
 
               {/* Trust Badges under summary */}
-              <div className="grid grid-cols-3 gap-2 pt-2 text-center text-[10px] font-extrabold text-[#1E2046]">
+              <div className="grid grid-cols-3 gap-2 pt-2 text-center text-[10px] font-extrabold text-brand-text">
                 <div className="flex flex-col items-center gap-1 bg-purple-50/60 p-2 rounded-xl">
-                  <RefreshCw className="w-4 h-4 text-[#2DD382]" />
+                  <RefreshCw className="w-4 h-4 text-brand-success" />
                   <span>Cambio Fácil</span>
                 </div>
                 <div className="flex flex-col items-center gap-1 bg-purple-50/60 p-2 rounded-xl">
-                  <Gift className="w-4 h-4 text-[#FF6B57]" />
+                  <Gift className="w-4 h-4 text-brand-primary" />
                   <span>Embalaje Regalo</span>
                 </div>
                 <div className="flex flex-col items-center gap-1 bg-purple-50/60 p-2 rounded-xl">
-                  <Headphones className="w-4 h-4 text-[#0284C7]" />
+                  <Headphones className="w-4 h-4 text-brand-accent-blue-dark" />
                   <span>Atención 1 a 1</span>
                 </div>
               </div>
@@ -835,13 +835,13 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
       {/* POPUP / MODAL: Mercado Pago Sandbox Init Point Modal */}
       {mpPreferenceResult && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-2 border-[#009EE3] relative text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-sky-100 text-[#009EE3] flex items-center justify-center mx-auto text-2xl">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-2 border-brand-payment relative text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-sky-100 text-brand-payment flex items-center justify-center mx-auto text-2xl">
               💙
             </div>
 
             <div>
-              <span className="bg-sky-100 text-[#009EE3] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="bg-sky-100 text-brand-payment text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
                 Mercado Pago Checkout Pro
               </span>
               {mpPreferenceResult.mode === 'development_demo' && (
@@ -849,7 +849,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                   Modo demostración: no se realiza ningún cobro
                 </p>
               )}
-              <h3 className="font-extrabold text-xl text-[#1E2046] mt-2">
+              <h3 className="font-extrabold text-xl text-brand-text mt-2">
                 ¡Preferencia Generada!
               </h3>
               <p className="text-xs text-purple-900/80 font-medium mt-1">
@@ -870,7 +870,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                 href={mpPreferenceResult.initPoint}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 rounded-2xl bg-[#009EE3] hover:bg-[#0089c7] text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
+                className="w-full py-3.5 rounded-2xl bg-brand-payment hover:bg-brand-payment-hover text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
               >
                 <span>Abrir Checkout Pro de Mercado Pago</span>
                 <ExternalLink className="w-4 h-4" />

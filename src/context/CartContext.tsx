@@ -47,7 +47,7 @@ const INITIAL_ITEMS: CartItem[] = [
     productId: 'body-manga-larga-algodon-pima',
     product: PRODUCTS[0],
     size: '3-6 Meses',
-    color: { name: 'Blanco Nube / Amarillo', hex: '#FFD026' },
+    color: { name: 'Blanco Nube / Amarillo', hex: BRAND_CONFIG.theme.secondary },
     quantity: 2,
     unitPrice: 12500,
   },
@@ -56,7 +56,7 @@ const INITIAL_ITEMS: CartItem[] = [
     productId: 'enterito-osito-termico-plush',
     product: PRODUCTS[1],
     size: '6-9 Meses',
-    color: { name: 'Celeste Pastel', hex: '#93C5FD' },
+    color: { name: 'Celeste Pastel', hex: BRAND_CONFIG.theme.productPastelBlue },
     quantity: 1,
     unitPrice: 22900,
   },
@@ -65,7 +65,7 @@ const INITIAL_ITEMS: CartItem[] = [
     productId: 'pack-x3-remeras-basicas',
     product: PRODUCTS[2],
     size: '4 Años',
-    color: { name: 'Surtido Estrellas', hex: '#FB7185' },
+    color: { name: 'Surtido Estrellas', hex: BRAND_CONFIG.theme.productCoral },
     quantity: 1,
     unitPrice: 26800,
   },
@@ -74,7 +74,7 @@ const INITIAL_ITEMS: CartItem[] = [
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
     try {
-      const stored = localStorage.getItem('pipulinos_cart');
+      const stored = localStorage.getItem(BRAND_CONFIG.storage.cartKey);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) return parsed;
@@ -92,7 +92,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     try {
-      localStorage.setItem('pipulinos_cart', JSON.stringify(items));
+      localStorage.setItem(BRAND_CONFIG.storage.cartKey, JSON.stringify(items));
     } catch {
       // ignore
     }

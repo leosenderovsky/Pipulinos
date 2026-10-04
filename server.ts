@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import { readFile } from 'node:fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
@@ -136,6 +137,24 @@ async function startServer() {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
+    });
+    app.use(async (req, res, next) => {
+      if (
+        req.method !== 'GET' ||
+        !req.get('accept')?.includes('text/html') ||
+        path.extname(req.path)
+      ) {
+        next();
+        return;
+      }
+
+      try {
+        const template = await readFile(path.resolve(__dirname, 'index.html'), 'utf8');
+        const html = await vite.transformIndexHtml(req.originalUrl, template);
+        res.status(200).type('html').send(html);
+      } catch (error) {
+        next(error);
+      }
     });
     app.use(vite.middlewares);
   } else {

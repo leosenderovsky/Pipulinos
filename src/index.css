@@ -1,1 +1,44 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-hover: var(--brand-primary-hover);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-secondary-soft: var(--brand-secondary-soft);
+  --color-brand-background: var(--brand-background);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-surface-checkout: var(--brand-surface-checkout);
+  --color-brand-surface-lilac: var(--brand-surface-lilac);
+  --color-brand-surface-pink: var(--brand-surface-pink);
+  --color-brand-surface-pink-strong: var(--brand-surface-pink-strong);
+  --color-brand-surface-blue: var(--brand-surface-blue);
+  --color-brand-surface-green: var(--brand-surface-green);
+  --color-brand-surface-purple: var(--brand-surface-purple);
+  --color-brand-surface-warm: var(--brand-surface-warm);
+  --color-brand-text: var(--brand-text);
+  --color-brand-text-muted: var(--brand-text-muted);
+  --color-brand-accent-blue: var(--brand-accent-blue);
+  --color-brand-accent-blue-dark: var(--brand-accent-blue-dark);
+  --color-brand-payment: var(--brand-payment);
+  --color-brand-payment-hover: var(--brand-payment-hover);
+  --color-brand-success: var(--brand-success);
+  --color-brand-whatsapp: var(--brand-whatsapp);
+  --color-brand-whatsapp-hover: var(--brand-whatsapp-hover);
+  --color-brand-neutral: var(--brand-neutral);
+  --color-brand-blue-tint: var(--brand-blue-tint);
+  --color-brand-product-pastel-blue: var(--brand-product-pastel-blue);
+  --color-brand-product-coral: var(--brand-product-coral);
+  --font-brand-body: var(--brand-font-body);
+  --font-brand-headings: var(--brand-font-headings);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--brand-font-headings);
+  }
+}

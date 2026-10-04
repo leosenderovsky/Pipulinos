@@ -171,9 +171,9 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
 
   return (
     <div className="flex flex-col w-full relative overflow-hidden">
-      <div className="pointer-events-none absolute -top-10 left-10 w-64 h-64 bg-[#FFD026]/15 rounded-full blur-3xl -z-10" />
-      <div className="pointer-events-none absolute top-40 right-10 w-80 h-80 bg-[#26A4F8]/10 rounded-full blur-3xl -z-10" />
-      <div className="pointer-events-none absolute top-96 left-1/3 w-72 h-72 bg-[#8B5CF6]/10 rounded-full blur-3xl -z-10" />
+      <div className="pointer-events-none absolute -top-10 left-10 w-64 h-64 bg-brand-secondary/15 rounded-full blur-3xl -z-10" />
+      <div className="pointer-events-none absolute top-40 right-10 w-80 h-80 bg-brand-accent-blue/10 rounded-full blur-3xl -z-10" />
+      <div className="pointer-events-none absolute top-96 left-1/3 w-72 h-72 bg-brand-text-muted/10 rounded-full blur-3xl -z-10" />
 
       <HeroBanner onScrollToCatalog={scrollToCatalogAnchor} />
 
@@ -181,24 +181,24 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
         <div className="max-w-[1280px] mx-auto flex flex-wrap items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-1.5 font-bold text-purple-900/80">
             <span className="flex items-center gap-1">
-              <Home className="w-3.5 h-3.5 text-[#FF6B57]" />
+              <Home className="w-3.5 h-3.5 text-brand-primary" />
               <span>Inicio</span>
             </span>
             <span className="text-purple-300">/</span>
-            <span className="text-[#FF6B57] bg-[#FFE9E5] px-2.5 py-0.5 rounded-full border border-[#FF6B57]/20 font-extrabold">
-              Catálogo Showroom Pipulinos 2027
+            <span className="text-brand-primary bg-brand-surface-pink px-2.5 py-0.5 rounded-full border border-brand-primary/20 font-extrabold">
+              {BRAND_CONFIG.copy.catalogTitle} {BRAND_CONFIG.shortName} {BRAND_CONFIG.catalogYear}
             </span>
           </div>
 
           <div className="flex items-center gap-3 font-semibold text-purple-900/70 text-xs">
-            <span className="inline-flex items-center gap-1.5 bg-[#E3F9ED] text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-[#2DD382] animate-ping" />
+            <span className="inline-flex items-center gap-1.5 bg-brand-surface-green text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-200">
+              <span className="w-2 h-2 rounded-full bg-brand-success animate-ping" />
               Stock renovado hoy
             </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 bg-[#E2F3FF] text-sky-800 px-2.5 py-0.5 rounded-full border border-sky-200">
+            <span className="hidden sm:inline-flex items-center gap-1.5 bg-brand-surface-blue text-sky-800 px-2.5 py-0.5 rounded-full border border-sky-200">
               ⚡ Envíos express 24/48hs
             </span>
-            <span className="hidden md:inline-flex items-center gap-1 text-amber-800 bg-[#FFF4D0] px-2.5 py-0.5 rounded-full border border-amber-200 font-bold">
+            <span className="hidden md:inline-flex items-center gap-1 text-amber-800 bg-brand-secondary-soft px-2.5 py-0.5 rounded-full border border-amber-200 font-bold">
               ★ 100% Amor garantizado
             </span>
           </div>
@@ -210,7 +210,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
           <button
             type="button"
             onClick={onOpenMobileFilters}
-            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF6B57] to-[#FF8A1E] text-white py-2.5 px-4 rounded-xl font-extrabold text-xs shadow-xs hover:opacity-95 transition-all cursor-pointer"
+            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-brand-primary to-brand-primary-hover text-white py-2.5 px-4 rounded-xl font-extrabold text-xs shadow-xs hover:opacity-95 transition-all cursor-pointer"
           >
             <SlidersHorizontal className="w-4 h-4" />
             <span>
@@ -218,7 +218,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
             </span>
           </button>
           <div className="flex items-center gap-1 px-3 py-1 bg-purple-50 rounded-xl border border-purple-100">
-            <span className="font-extrabold text-xs text-[#8B5CF6]">{sortedProducts.length} prendas</span>
+            <span className="font-extrabold text-xs text-brand-text-muted">{sortedProducts.length} prendas</span>
           </div>
         </div>
 
@@ -248,13 +248,14 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-0.5">
                   <span className="text-base sm:text-lg">⭐</span>
-                  <h1 className="font-extrabold text-lg sm:text-xl text-[#1E2046] tracking-tight">
-                    Colección Showroom Pipulinos 2027
+                  <h1 className="font-extrabold text-lg sm:text-xl text-brand-text tracking-tight">
+                    {BRAND_CONFIG.copy.catalogCollectionTitle} {BRAND_CONFIG.shortName}{' '}
+                    {BRAND_CONFIG.catalogYear}
                   </h1>
                 </div>
                 <p className="text-xs font-semibold text-purple-900/80 flex items-center gap-1.5 flex-wrap">
                   Prendas suaves, amorosas y listas para jugar •{' '}
-                  <span className="bg-[#FFE9E5] text-[#FF6B57] px-2 py-0.5 rounded-full font-extrabold">
+                  <span className="bg-brand-surface-pink text-brand-primary px-2 py-0.5 rounded-full font-extrabold">
                     {sortedProducts.length} modelos disponibles
                   </span>
                 </p>
@@ -270,7 +271,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                     id="sortOrderSelect"
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
-                    className="bg-transparent text-xs font-extrabold text-[#1E2046] outline-none cursor-pointer pr-1"
+                    className="bg-transparent text-xs font-extrabold text-brand-text outline-none cursor-pointer pr-1"
                   >
                     <option value="populares">Más vendidos ⭐</option>
                     <option value="menor_precio">Menor precio</option>
@@ -297,7 +298,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                 <button
                   type="button"
                   onClick={onResetFilters}
-                  className="ml-auto rounded-full bg-[#FFE9E5] px-3 py-1 text-[11px] font-extrabold text-[#FF6B57] hover:bg-[#FFD4CC]"
+                  className="ml-auto rounded-full bg-brand-surface-pink px-3 py-1 text-[11px] font-extrabold text-brand-primary hover:bg-brand-surface-pink-strong"
                 >
                   Limpiar todo
                 </button>
@@ -319,8 +320,8 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
 
             {sortedProducts.length === 0 ? (
               <div className="w-full bg-white rounded-3xl p-10 border-2 border-purple-100 text-center flex flex-col items-center gap-3">
-                <div className="w-16 h-16 rounded-full bg-[#FFF4D0] text-amber-800 flex items-center justify-center text-2xl">🔍</div>
-                <h3 className="text-base font-extrabold text-[#1E2046]">No encontramos prendas con esos filtros</h3>
+                <div className="w-16 h-16 rounded-full bg-brand-secondary-soft text-amber-800 flex items-center justify-center text-2xl">🔍</div>
+                <h3 className="text-base font-extrabold text-brand-text">No encontramos prendas con esos filtros</h3>
                 <p className="text-xs text-purple-900/70 font-medium max-w-sm">
                   Probá restableciendo los filtros o buscando con otros términos para ver toda la colección.
                 </p>
@@ -340,7 +341,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                   <button
                     type="button"
                     onClick={onResetFilters}
-                    className="mt-2 px-5 py-2.5 rounded-full bg-[#FF6B57] text-white font-extrabold text-xs shadow-xs hover:bg-[#FF8A1E] transition-all cursor-pointer"
+                    className="mt-2 px-5 py-2.5 rounded-full bg-brand-primary text-white font-extrabold text-xs shadow-xs hover:bg-brand-primary-hover transition-all cursor-pointer"
                   >
                     Limpiar todo
                   </button>
@@ -363,19 +364,19 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
 
             <div className="mt-4 bg-white/90 backdrop-blur-md p-4 rounded-3xl shadow-xs border border-purple-100 flex flex-col sm:flex-row items-center justify-between gap-3">
               <p className="text-xs font-bold text-purple-800">
-                Página <strong className="text-[#1E2046] bg-[#FFF4D0] px-2 py-0.5 rounded-md">1</strong> de 1 •
+                Página <strong className="text-brand-text bg-brand-secondary-soft px-2 py-0.5 rounded-md">1</strong> de 1 •
                 Mostrando {sortedProducts.length} de {PRODUCTS.length} prendas mimadas
               </p>
               <div className="flex items-center gap-1 font-bold text-xs">
                 <button type="button" disabled className="w-8 h-8 rounded-xl bg-purple-50 text-purple-300 flex items-center justify-center cursor-not-allowed border border-purple-100">‹</button>
-                <button type="button" className="w-8 h-8 rounded-xl bg-[#FF6B57] text-white font-extrabold flex items-center justify-center shadow-xs">1</button>
+                <button type="button" className="w-8 h-8 rounded-xl bg-brand-primary text-white font-extrabold flex items-center justify-center shadow-xs">1</button>
                 <button type="button" disabled className="w-8 h-8 rounded-xl bg-purple-50 text-purple-300 flex items-center justify-center cursor-not-allowed border border-purple-100">›</button>
               </div>
             </div>
 
             <div className="mt-4 bg-gradient-to-r from-emerald-50 via-teal-50 to-sky-50 border-2 border-emerald-200/80 p-5 sm:p-6 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-4 relative overflow-hidden shadow-xs">
               <div className="flex items-center gap-3.5 text-left relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#25D366] to-emerald-400 text-white flex items-center justify-center shrink-0 shadow-md">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-whatsapp to-emerald-400 text-white flex items-center justify-center shrink-0 shadow-md">
                   <MessageCircle className="w-7 h-7" />
                 </div>
                 <div>
@@ -388,10 +389,10 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
               </div>
 
               <a
-                href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent('Hola Pipulinos, tengo dudas con las medidas para mi bebé')}`}
+                href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(`Hola ${BRAND_CONFIG.shortName}, ${BRAND_CONFIG.copy.whatsappSizeMessage}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full md:w-auto shrink-0 px-6 py-3 rounded-full bg-[#25D366] hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all text-center"
+                className="w-full md:w-auto shrink-0 px-6 py-3 rounded-full bg-brand-whatsapp hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all text-center"
               >
                 <MessageCircle className="w-4 h-4" />
                 Consultá por talle

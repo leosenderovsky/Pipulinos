@@ -165,7 +165,7 @@ export default function App() {
   return (
     <CartProvider>
       <CheckoutReturnHandler onNotice={setCheckoutNotice} />
-      <div className="min-h-screen flex flex-col bg-[#FFFDF9] text-[#1E2046]">
+      <div className="min-h-screen flex flex-col bg-brand-background text-brand-text">
         <div className="sticky top-0 z-50 [&>header]:static">
           <PrototypeBanner />
           <Header
