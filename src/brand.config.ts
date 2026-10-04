@@ -55,6 +55,12 @@ export interface BrandConfig {
   storage: {
     cartKey: string;
   };
+  demo: {
+    prefillCart: boolean;
+    giftDedication: string;
+    coupon: string | null;
+    giftPackaging: boolean;
+  };
   checkoutDefaults: {
     name: string;
     email: string;
@@ -124,6 +130,7 @@ export interface BrandConfig {
     checkoutOrderHeading: string;
     thankYouMessage: string;
     orderPreparationMessage: string;
+    giftDedicationPlaceholder: string;
   };
 }
 
@@ -177,6 +184,13 @@ export const BRAND_CONFIG: BrandConfig = {
   },
   storage: {
     cartKey: 'pipulinos_cart',
+  },
+  // Solo para demostraciones comerciales; desactivar o borrar al entregar a un cliente real.
+  demo: {
+    prefillCart: false,
+    giftDedication: '¡Bienvenido Benicio al mundo! Te amamos tus tíos Sofi y Lucas 💕 ⭐',
+    coupon: 'PROMO-PACK',
+    giftPackaging: true,
   },
   checkoutDefaults: {
     name: 'Laura Gómez',
@@ -252,5 +266,6 @@ export const BRAND_CONFIG: BrandConfig = {
     checkoutOrderHeading: 'NUEVO PEDIDO SHOWROOM',
     thankYouMessage: '¡Gracias por elegir!',
     orderPreparationMessage: 'Preparamos tus prendas con todo el amor en nuestro showroom.',
+    giftDedicationPlaceholder: 'Ej: ¡Bienvenido al mundo! Con mucho cariño',
   },
 };

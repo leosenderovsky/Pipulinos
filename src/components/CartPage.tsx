@@ -380,7 +380,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                     value={giftDedication}
                     onChange={(e) => setGiftDedication(e.target.value)}
                     rows={2}
-                    placeholder="Ej: ¡Bienvenido Benicio al mundo! Te amamos tus tíos Sofi y Lucas 💕 ⭐"
+                    placeholder={BRAND_CONFIG.copy.giftDedicationPlaceholder}
                     className="w-full bg-white text-brand-text text-xs rounded-xl p-2.5 border border-amber-200 focus:border-brand-primary outline-none shadow-xs resize-none transition-all"
                   />
                 </div>
@@ -468,7 +468,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                     type="text"
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value)}
-                    placeholder="Cupón (ej. BIENVENIDA)"
+                    placeholder="Código de cupón"
                     className="flex-1 px-3 py-1.5 rounded-xl border border-purple-100 text-xs text-brand-text uppercase font-bold focus:border-brand-primary outline-none"
                   />
                   <button
@@ -481,7 +481,7 @@ export const CartPage: React.FC<CartPageProps> = ({
 
                 {couponError && (
                   <p className="text-[10px] text-rose-500 font-bold">
-                    Cupón no válido. Probá con BIENVENIDA o PROMO-PACK.
+                    Cupón no válido.
                   </p>
                 )}
 

@@ -40,36 +40,22 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Carrito inicial con 3 productos para reflejar fielmente la maqueta importada de Stitch
-const INITIAL_ITEMS: CartItem[] = [
-  {
-    id: 'body-manga-larga-algodon-pima-3-6m-Blanco Nube',
-    productId: 'body-manga-larga-algodon-pima',
-    product: PRODUCTS[0],
-    size: '3-6 Meses',
-    color: { name: 'Blanco Nube / Amarillo', hex: BRAND_CONFIG.theme.secondary },
-    quantity: 2,
-    unitPrice: 12500,
-  },
-  {
-    id: 'enterito-osito-termico-plush-6-9m-Celeste Suave',
-    productId: 'enterito-osito-termico-plush',
-    product: PRODUCTS[1],
-    size: '6-9 Meses',
-    color: { name: 'Celeste Pastel', hex: BRAND_CONFIG.theme.productPastelBlue },
-    quantity: 1,
-    unitPrice: 22900,
-  },
-  {
-    id: 'pack-x3-remeras-basicas-T4-Trío Selva & Sol',
-    productId: 'pack-x3-remeras-basicas',
-    product: PRODUCTS[2],
-    size: '4 Años',
-    color: { name: 'Surtido Estrellas', hex: BRAND_CONFIG.theme.productCoral },
-    quantity: 1,
-    unitPrice: 26800,
-  },
-];
+const DEMO_ITEMS: CartItem[] = BRAND_CONFIG.demo.prefillCart
+  ? PRODUCTS.slice(0, 3).map((product) => {
+      const size = product.tallesDisponibles[0];
+      const color = product.coloresDisponibles[0];
+
+      return {
+        id: `${product.id}-${size}-${color.name}`,
+        productId: product.id,
+        product,
+        size,
+        color,
+        quantity: 1,
+        unitPrice: product.precio,
+      };
+    })
+  : [];
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
@@ -82,12 +68,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // fallback to initial
     }
-    return INITIAL_ITEMS;
+    return DEMO_ITEMS;
   });
 
-  const [isGiftPackaging, setIsGiftPackaging] = useState<boolean>(true);
-  const [giftDedication, setGiftDedication] = useState<string>('¡Bienvenido Benicio al mundo! Te amamos tus tíos Sofi y Lucas 💕 ⭐');
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>('PROMO-PACK');
+  const [isGiftPackaging, setIsGiftPackaging] = useState<boolean>(
+    BRAND_CONFIG.demo.prefillCart ? BRAND_CONFIG.demo.giftPackaging : false
+  );
+  const [giftDedication, setGiftDedication] = useState<string>(
+    BRAND_CONFIG.demo.prefillCart ? BRAND_CONFIG.demo.giftDedication : ''
+  );
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(
+    BRAND_CONFIG.demo.prefillCart ? BRAND_CONFIG.demo.coupon : null
+  );
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState<boolean>(false);
 
   useEffect(() => {
