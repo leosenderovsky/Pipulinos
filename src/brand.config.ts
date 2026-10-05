@@ -59,17 +59,20 @@ export interface BrandConfig {
   };
   demo: {
     prefillCart: boolean;
+    prefillCheckout: boolean;
     giftDedication: string;
     coupon: string | null;
     giftPackaging: boolean;
-  };
-  checkoutDefaults: {
-    name: string;
-    email: string;
-    streetAddress: string;
-    apartment: string;
-    zipCode: string;
-    city: string;
+    checkout: {
+      name: string;
+      email: string;
+      phone: string;
+      streetAddress: string;
+      apartment: string;
+      zipCode: string;
+      city: string;
+      deliveryNotes: string;
+    };
   };
   logo: {
     url: string;
@@ -133,6 +136,16 @@ export interface BrandConfig {
     thankYouMessage: string;
     orderPreparationMessage: string;
     giftDedicationPlaceholder: string;
+    checkoutPlaceholders: {
+      name: string;
+      email: string;
+      phone: string;
+      street: string;
+      apartment: string;
+      zip: string;
+      city: string;
+      notes: string;
+    };
   };
 }
 
@@ -190,17 +203,21 @@ export const BRAND_CONFIG: BrandConfig = {
   // Solo para demostraciones comerciales; desactivar o borrar al entregar a un cliente real.
   demo: {
     prefillCart: false,
+    prefillCheckout: false,
     giftDedication: '¡Bienvenido Benicio al mundo! Te amamos tus tíos Sofi y Lucas 💕 ⭐',
     coupon: 'PROMO-PACK',
     giftPackaging: true,
-  },
-  checkoutDefaults: {
-    name: 'Laura Gómez',
-    email: 'laura.gomez@gmail.com',
-    streetAddress: 'Av. Coronel Díaz 2145',
-    apartment: '6to A',
-    zipCode: 'C1425',
-    city: 'Palermo, CABA',
+    // Datos de ejemplo visibles únicamente cuando prefillCheckout está habilitado.
+    checkout: {
+      name: 'Laura Gómez',
+      email: 'laura.gomez@gmail.com',
+      phone: '+54 9 11 5555-1234',
+      streetAddress: 'Av. Coronel Díaz 2145',
+      apartment: '6to A',
+      zipCode: 'C1425',
+      city: 'Palermo, CABA',
+      deliveryNotes: 'Entregar por la tarde.',
+    },
   },
   logo: {
     url: '/assets/logo/logo.png',
@@ -269,5 +286,15 @@ export const BRAND_CONFIG: BrandConfig = {
     thankYouMessage: '¡Gracias por elegir!',
     orderPreparationMessage: 'Preparamos tus prendas con todo el amor en nuestro showroom.',
     giftDedicationPlaceholder: 'Ej: ¡Bienvenido al mundo! Con mucho cariño',
+    checkoutPlaceholders: {
+      name: 'Nombre y apellido',
+      email: 'tu@email.com',
+      phone: '11 2345 6789',
+      street: 'Calle y número',
+      apartment: 'Piso / depto (opcional)',
+      zip: 'Código postal',
+      city: 'Localidad',
+      notes: 'Indicaciones para la entrega (opcional)',
+    },
   },
 };

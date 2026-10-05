@@ -24,6 +24,9 @@ interface CheckoutPageProps {
   onOrderSuccess: (orderId: string, method: string) => void;
 }
 
+type CheckoutField = 'name' | 'email' | 'phone' | 'streetAddress' | 'zipCode' | 'city';
+type CheckoutFieldErrors = Partial<Record<CheckoutField, string>>;
+
 export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   initialMethod = 'mercadopago',
   onBackToCart,
@@ -40,18 +43,23 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     appliedCoupon,
   } = useCart();
 
+  const demoCheckout = BRAND_CONFIG.demo.prefillCheckout ? BRAND_CONFIG.demo.checkout : null;
+
   // Contact form state
-  const [email, setEmail] = useState(BRAND_CONFIG.checkoutDefaults.email);
-  const [phone, setPhone] = useState(BRAND_CONFIG.contact.whatsappNumberFormatted);
-  const [fullName, setFullName] = useState(BRAND_CONFIG.checkoutDefaults.name);
+  const [email, setEmail] = useState(demoCheckout?.email ?? '');
+  const [phone, setPhone] = useState(demoCheckout?.phone ?? '');
+  const [fullName, setFullName] = useState(demoCheckout?.name ?? '');
   const [shippingMethod, setShippingMethod] = useState<'standard' | 'express' | 'pickup'>('standard');
-  const [streetAddress, setStreetAddress] = useState(BRAND_CONFIG.checkoutDefaults.streetAddress);
-  const [apartment, setApartment] = useState(BRAND_CONFIG.checkoutDefaults.apartment);
-  const [zipCode, setZipCode] = useState(BRAND_CONFIG.checkoutDefaults.zipCode);
-  const [city, setCity] = useState(BRAND_CONFIG.checkoutDefaults.city);
+  const [streetAddress, setStreetAddress] = useState(demoCheckout?.streetAddress ?? '');
+  const [apartment, setApartment] = useState(demoCheckout?.apartment ?? '');
+  const [zipCode, setZipCode] = useState(demoCheckout?.zipCode ?? '');
+  const [city, setCity] = useState(demoCheckout?.city ?? '');
   const [deliveryNotes, setDeliveryNotes] = useState(
-    isGiftPackaging ? `Incluir dedicatoria: "${giftDedication}"` : 'Tocar timbre en portería'
+    isGiftPackaging && giftDedication.trim()
+      ? `Incluir dedicatoria: "${giftDedication}"`
+      : demoCheckout?.deliveryNotes ?? ''
   );
+  const [fieldErrors, setFieldErrors] = useState<CheckoutFieldErrors>({});
 
   // Payment method selection
   const [paymentGateway, setPaymentGateway] = useState<'mercadopago' | 'whatsapp'>(initialMethod);
@@ -77,12 +85,42 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     finalTotal / BRAND_CONFIG.commerce.installmentsWithoutInterest
   );
 
+  const clearFieldError = (field: CheckoutField) => {
+    setFieldErrors((current) => {
+      if (!current[field]) return current;
+      const next = { ...current };
+      delete next[field];
+      return next;
+    });
+  };
+
+  const validateCheckout = () => {
+    const errors: CheckoutFieldErrors = {};
+    if (!fullName.trim()) errors.name = 'Ingresá el nombre y apellido de quien recibe.';
+    if (!email.trim()) {
+      errors.email = 'Ingresá un email.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      errors.email = 'Ingresá un email válido.';
+    }
+    if (!phone.trim()) errors.phone = 'Ingresá un teléfono de contacto.';
+    if (shippingMethod !== 'pickup') {
+      if (!streetAddress.trim()) errors.streetAddress = 'Ingresá la calle y el número.';
+      if (!zipCode.trim()) errors.zipCode = 'Ingresá el código postal.';
+      if (!city.trim()) errors.city = 'Ingresá la localidad.';
+    }
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   // =========================================================================
   // SUBMIT 1: MERCADO PAGO CHECKOUT PRO
   // =========================================================================
   const handleMercadoPagoCheckout = async () => {
-    setIsProcessing(true);
     setErrorMessage(null);
+    if (!validateCheckout()) return;
+
+    setIsProcessing(true);
 
     const payload = {
       items: items.map((i) => ({
@@ -92,16 +130,16 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
         color: i.color.name,
       })),
       customer: {
-        name: fullName,
-        email,
-        phone,
+        name: fullName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
         address: {
-          street_name: streetAddress,
+          street_name: streetAddress.trim(),
           street_number: '1',
-          zip_code: zipCode,
-          city,
+          zip_code: zipCode.trim(),
+          city: city.trim(),
         },
-        notes: deliveryNotes,
+        notes: deliveryNotes.trim(),
       },
       shippingMethod,
       paymentMethod: paymentGateway === 'mercadopago' ? 'mercadopago' : 'transfer',
@@ -151,28 +189,34 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   // SUBMIT 2: COORDINAR POR WHATSAPP (10% OFF)
   // =========================================================================
   const handleWhatsAppCheckout = () => {
+    if (!validateCheckout()) return;
+
     const itemsText = items
       .map((i) => `• ${i.quantity}x ${i.product.nombre} (Talle: ${i.size} | Color: ${i.color.name}) - $${(i.unitPrice * i.quantity).toLocaleString('es-AR')}`)
       .join('\n');
 
+    const deliveryAddress = [streetAddress, apartment, city, zipCode]
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .join(', ');
     const shippingText =
       shippingMethod === 'pickup'
         ? `Retiro sin cargo en Showroom (${BRAND_CONFIG.contact.showroomAddress})`
         : shippingMethod === 'express'
-        ? `Envío Express 24hs a ${streetAddress}, ${apartment}, ${city} ($${shippingCost.toLocaleString('es-AR')})`
-        : `Envío Estándar GRATIS a ${streetAddress}, ${apartment}, ${city}`;
+        ? `Envío Express 24hs a ${deliveryAddress} ($${shippingCost.toLocaleString('es-AR')})`
+        : `Envío Estándar GRATIS a ${deliveryAddress}`;
 
     const message = `🛍️ *${BRAND_CONFIG.copy.checkoutOrderHeading} ${BRAND_CONFIG.shortName.toUpperCase()} SHOWROOM*
 ----------------------------------------
-*Cliente:* ${fullName}
-*WhatsApp:* ${phone}
-*Email:* ${email}
+*Cliente:* ${fullName.trim()}
+*WhatsApp:* ${phone.trim()}
+*Email:* ${email.trim()}
 
 *Prendas elegidas:*
 ${itemsText}
 
 *Entrega:* ${shippingText}
-${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
+${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
 *Total lista:* $${finalTotal.toLocaleString('es-AR')}
 *TOTAL CON 10% OFF TRANSFERENCIA:* $${transferTotal.toLocaleString('es-AR')} (Ahorrás $${transferSavings.toLocaleString('es-AR')})
 
@@ -275,23 +319,37 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                 <div className="space-y-1">
                   <label className="font-extrabold text-xs text-purple-900">Email para confirmación</label>
                   <input
+                    id="checkout-email"
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="ejemplo@correo.com"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      clearFieldError('email');
+                    }}
+                    placeholder={BRAND_CONFIG.copy.checkoutPlaceholders.email}
+                    aria-invalid={Boolean(fieldErrors.email)}
+                    aria-describedby={fieldErrors.email ? 'checkout-email-error' : undefined}
                     className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                   />
+                  {fieldErrors.email && <p id="checkout-email-error" role="alert" className="text-xs text-rose-700">{fieldErrors.email}</p>}
                 </div>
 
                 <div className="space-y-1">
                   <label className="font-extrabold text-xs text-purple-900">Teléfono celular / WhatsApp</label>
                   <input
+                    id="checkout-phone"
                     type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder={BRAND_CONFIG.contact.whatsappNumberFormatted}
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                      clearFieldError('phone');
+                    }}
+                    placeholder={BRAND_CONFIG.copy.checkoutPlaceholders.phone}
+                    aria-invalid={Boolean(fieldErrors.phone)}
+                    aria-describedby={fieldErrors.phone ? 'checkout-phone-error' : undefined}
                     className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                   />
+                  {fieldErrors.phone && <p id="checkout-phone-error" role="alert" className="text-xs text-rose-700">{fieldErrors.phone}</p>}
                   <p className="text-[10px] text-brand-whatsapp font-bold flex items-center gap-1 mt-0.5">
                     <MessageCircle className="w-3 h-3" />
                     Te enviaremos el código de seguimiento por WhatsApp
@@ -304,12 +362,19 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                   Nombre y Apellido de quien recibe
                 </label>
                 <input
+                  id="checkout-name"
                   type="text"
                   value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder={`Ej. ${BRAND_CONFIG.checkoutDefaults.name}`}
+                  onChange={(e) => {
+                    setFullName(e.target.value);
+                    clearFieldError('name');
+                  }}
+                  placeholder={BRAND_CONFIG.copy.checkoutPlaceholders.name}
+                  aria-invalid={Boolean(fieldErrors.name)}
+                  aria-describedby={fieldErrors.name ? 'checkout-name-error' : undefined}
                   className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                 />
+                {fieldErrors.name && <p id="checkout-name-error" role="alert" className="text-xs text-rose-700">{fieldErrors.name}</p>}
               </div>
 
               {/* Delivery Methods Selector */}
@@ -425,12 +490,19 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                   <div className="sm:col-span-2 space-y-1">
                     <label className="text-[11px] font-extrabold text-purple-900">Calle y Altura</label>
                     <input
+                      id="checkout-street"
                       type="text"
                       value={streetAddress}
-                      onChange={(e) => setStreetAddress(e.target.value)}
-                      placeholder="Ej. Av. Santa Fe 3421"
+                      onChange={(e) => {
+                        setStreetAddress(e.target.value);
+                        clearFieldError('streetAddress');
+                      }}
+                      placeholder={BRAND_CONFIG.copy.checkoutPlaceholders.street}
+                      aria-invalid={Boolean(fieldErrors.streetAddress)}
+                      aria-describedby={fieldErrors.streetAddress ? 'checkout-street-error' : undefined}
                       className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                     />
+                    {fieldErrors.streetAddress && <p id="checkout-street-error" role="alert" className="text-xs text-rose-700">{fieldErrors.streetAddress}</p>}
                   </div>
 
                   <div className="space-y-1">
@@ -439,7 +511,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                       type="text"
                       value={apartment}
                       onChange={(e) => setApartment(e.target.value)}
-                      placeholder="Ej. 6to A"
+                      placeholder={BRAND_CONFIG.copy.checkoutPlaceholders.apartment}
                       className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                     />
                   </div>
@@ -447,23 +519,37 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                   <div className="space-y-1">
                     <label className="text-[11px] font-extrabold text-purple-900">Código Postal</label>
                     <input
+                      id="checkout-zip"
                       type="text"
                       value={zipCode}
-                      onChange={(e) => setZipCode(e.target.value)}
-                      placeholder="C1425"
+                      onChange={(e) => {
+                        setZipCode(e.target.value);
+                        clearFieldError('zipCode');
+                      }}
+                      placeholder={BRAND_CONFIG.copy.checkoutPlaceholders.zip}
+                      aria-invalid={Boolean(fieldErrors.zipCode)}
+                      aria-describedby={fieldErrors.zipCode ? 'checkout-zip-error' : undefined}
                       className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                     />
+                    {fieldErrors.zipCode && <p id="checkout-zip-error" role="alert" className="text-xs text-rose-700">{fieldErrors.zipCode}</p>}
                   </div>
 
                   <div className="sm:col-span-2 space-y-1">
                     <label className="text-[11px] font-extrabold text-purple-900">Ciudad / Localidad</label>
                     <input
+                      id="checkout-city"
                       type="text"
                       value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      placeholder={BRAND_CONFIG.checkoutDefaults.city}
+                      onChange={(e) => {
+                        setCity(e.target.value);
+                        clearFieldError('city');
+                      }}
+                      placeholder={BRAND_CONFIG.copy.checkoutPlaceholders.city}
+                      aria-invalid={Boolean(fieldErrors.city)}
+                      aria-describedby={fieldErrors.city ? 'checkout-city-error' : undefined}
                       className="w-full px-3.5 py-2.5 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                     />
+                    {fieldErrors.city && <p id="checkout-city-error" role="alert" className="text-xs text-rose-700">{fieldErrors.city}</p>}
                   </div>
                 </div>
               )}
@@ -477,7 +563,7 @@ ${deliveryNotes ? `*Indicaciones:* ${deliveryNotes}\n` : ''}
                   type="text"
                   value={deliveryNotes}
                   onChange={(e) => setDeliveryNotes(e.target.value)}
-                  placeholder="Tocar timbre en portería. Si es regalo incluir dedicatoria."
+                  placeholder={BRAND_CONFIG.copy.checkoutPlaceholders.notes}
                   className="w-full px-3.5 py-2 bg-purple-50/50 rounded-xl text-xs text-brand-text border border-purple-100 focus:border-brand-primary outline-none"
                 />
               </div>
