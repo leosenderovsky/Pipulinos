@@ -79,6 +79,8 @@ export interface BrandConfig {
     alt: string;
     faviconUrl: string;
     appleTouchIconUrl: string;
+    iconBackground?: string;
+    iconCrop?: { left: number; top: number; width: number; height: number };
   };
   contact: {
     whatsappNumberFormatted: string;
@@ -160,7 +162,7 @@ export const BRAND_CONFIG: BrandConfig = {
     titleSuffix: 'Showroom & Catálogo de Indumentaria Infantil',
     description:
       'Showroom y catálogo de indumentaria infantil. Ropa tierna para bebés y niños de 0 a 10 años, compra online con Mercado Pago y WhatsApp.',
-    socialImage: '/assets/hero/hero-1.jpg',
+    socialImage: '/assets/misc/og-image.jpg',
   },
   typography: {
     headings: 'Plus Jakarta Sans, sans-serif',
@@ -224,6 +226,8 @@ export const BRAND_CONFIG: BrandConfig = {
     alt: 'Pipulinos - Indumentaria Infantil',
     faviconUrl: '/assets/logo/favicon-32.png',
     appleTouchIconUrl: '/assets/logo/apple-touch-icon.png',
+    iconBackground: '#FFFDF9',
+    iconCrop: { left: 0, top: 0, width: 1, height: 0.58 },
   },
   contact: {
     whatsappNumberFormatted: '+54 9 11 4820-9912',
