@@ -122,6 +122,10 @@ enviados por el navegador. `src/lib/checkoutPricing.ts` valida productos y canti
 aplica el cupón, calcula el envío express y el descuento por transferencia cuando
 corresponde. Los cupones y reglas comerciales se editan en `BRAND_CONFIG.commerce`.
 
+`netlify/functions/health.ts` expone `/api/health` para revisar, sin revelar valores,
+si Netlify ve las variables necesarias para Functions. Configurá las variables privadas
+con alcance `Functions` para que aparezcan como cargadas en ese endpoint.
+
 `netlify/functions/mp-webhook.ts` valida la notificación consultando el pago a Mercado
 Pago y registra su estado y referencia en los logs. Hoy no guarda órdenes ni envía emails.
 
@@ -154,9 +158,27 @@ Revisá el flujo y sus URLs de retorno antes de reemplazar las credenciales por 
 | `OG_IMAGE_QUALITY` | Calidad inicial de la imagen social: entero de 1 a 100; por defecto, 85. |
 
 El orden real de `VITE_SITE_URL` en `vite.config.ts` es:
-`VITE_SITE_URL` → `DEPLOY_PRIME_URL` → `URL` → cadena vacía.
+`VITE_SITE_URL` → `URL` en `CONTEXT=production` → `DEPLOY_PRIME_URL` en otros contextos
+→ `URL` → `DEPLOY_PRIME_URL` → cadena vacía.
 Los tres valores se leen con `trim`; si hay URL, Vite la valida.
 Las variables de marca demo y `BRAND_ICON_BACKGROUND` están listadas en `.env.example`.
+
+## Verificar un deploy
+
+Cada build genera `dist/build-info.json` con commit, rama, contexto, URL pública y
+booleanos de variables `VITE_*`; Netlify lo publica como `/build-info.json` con
+`Cache-Control: no-store` y `X-Robots-Tag: noindex`. El HTML también incluye
+`<meta name="build-commit">` en el `<head>`.
+
+El endpoint `/api/health` responde solo datos seguros: contexto, booleanos de variables
+de runtime, `MP_DEMO_MODE` y el modo del token de Mercado Pago (`test`, `production`,
+`unknown` o `null`), nunca el token ni valores secretos.
+
+Para comparar el deploy con `origin/main` y revisar checkout, URL canónica y `og:image`:
+
+```sh
+npm run verify:deploy -- https://<sitio>.netlify.app
+```
 
 ## Modo demo
 

@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { BRAND_CONFIG } from './src/brand.config';
 import { calculateCheckout, CheckoutInputError } from './src/lib/checkoutPricing';
 import { createExternalReference } from './src/lib/externalReference';
+import { getHealthPayload } from './netlify/functions/health';
 import { handler as handleMercadoPagoWebhook } from './netlify/functions/mp-webhook';
 
 dotenv.config();
@@ -128,10 +129,18 @@ async function startServer() {
   app.post('/api/mp-webhook', handleMpWebhook);
   app.post('/.netlify/functions/mp-webhook', handleMpWebhook);
 
-  // Health check
-  app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', brand: BRAND_CONFIG.name, timestamp: new Date().toISOString() });
-  });
+  const handleHealth = (req: Request, res: Response) => {
+    res.set({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store',
+    });
+    if (req.method !== 'GET') {
+      return res.status(405).json({ error: 'Método no permitido.' });
+    }
+    return res.status(200).json(getHealthPayload());
+  };
+  app.all('/api/health', handleHealth);
+  app.all('/.netlify/functions/health', handleHealth);
 
   if (!isProduction) {
     const vite = await createViteServer({

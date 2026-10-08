@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx server.ts",
     "build": "vite build",
+    "verify:deploy": "node scripts/verify-deploy.mjs",
     "start": "tsx server.ts",
     "preview": "vite preview",
     "icons:make": "node scripts/make-icons.mjs",
