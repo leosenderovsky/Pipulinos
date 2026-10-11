@@ -85,68 +85,95 @@ const warnings = [];
 
 try {
   const siteUrl = normalizeSiteUrl(siteArg);
-  const [buildInfo, health, html, main] = await Promise.all([
+  const results = await Promise.allSettled([
     fetchJson(`${siteUrl}/build-info.json`),
     fetchJson(`${siteUrl}/api/health`),
     fetchText(`${siteUrl}/`),
     Promise.resolve().then(mainCommit),
   ]);
 
-  const publishedCommit = String(buildInfo.commit ?? 'unknown');
-  const commitIsCurrent = sameCommit(publishedCommit, main);
-  if (!commitIsCurrent) {
-    failures.push('El commit publicado esta desactualizado respecto de origin/main.');
-  }
+  const buildInfo = results[0].status === 'fulfilled' ? results[0].value : null;
+  const health = results[1].status === 'fulfilled' ? results[1].value : null;
+  const html = results[2].status === 'fulfilled' ? results[2].value : null;
+  const main = results[3].status === 'fulfilled' ? results[3].value : 'unknown';
 
-  if (buildInfo.context === 'production' && buildInfo.siteUrlSource === 'DEPLOY_PRIME_URL') {
-    warnings.push('ATENCION: production esta usando DEPLOY_PRIME_URL como URL canonica.');
-  }
+  const rows = [];
 
-  const runtime = health.runtime ?? {};
-  const checkoutCannotWork =
-    runtime.MERCADO_PAGO_ACCESS_TOKEN !== true && runtime.MP_DEMO_MODE !== 'true';
-  if (checkoutCannotWork) {
-    failures.push('El checkout no puede funcionar: falta MERCADO_PAGO_ACCESS_TOKEN y MP_DEMO_MODE no es true.');
-  }
-  if (buildInfo.context === 'production' && runtime.tokenMode === 'test') {
-    warnings.push('ATENCION: production tiene tokenMode test.');
-  }
-
-  const canonical = absoluteUrl(getAttr(html, 'rel', 'canonical', 'href'), siteUrl);
-  const ogImage = absoluteUrl(getAttr(html, 'property', 'og:image', 'content'), siteUrl);
-  const assetChecks = await Promise.all([
-    checkGet200('canonical', canonical),
-    checkGet200('og:image', ogImage),
-  ]);
-
-  for (const check of assetChecks) {
-    if (check.status !== '200 OK') {
-      warnings.push(`ATENCION: ${check.label} no respondio 200 (${check.status}).`);
+  // Commit publicado
+  if (buildInfo) {
+    const publishedCommit = String(buildInfo.commit ?? 'unknown');
+    const commitIsCurrent = sameCommit(publishedCommit, main);
+    rows.push(['Commit publicado', commitIsCurrent ? 'OK' : 'ATENCIÓN', `${publishedCommit.slice(0, 12)} vs main ${main.slice(0, 12)}`]);
+    if (!commitIsCurrent) {
+      failures.push('El commit publicado esta desactualizado respecto de origin/main.');
     }
+
+    rows.push(['Contexto', 'INFO', String(buildInfo.context ?? 'unknown')]);
+    rows.push(['URL/fuente', 'INFO', `${buildInfo.siteUrl || '(vacia)'} (${buildInfo.siteUrlSource ?? 'unknown'})`]);
+    rows.push(['VITE_SITE_URL', 'INFO', yesNo(buildInfo.env?.VITE_SITE_URL)]);
+    rows.push(['VITE_DEMO_BRAND_NAME', 'INFO', yesNo(buildInfo.env?.VITE_DEMO_BRAND_NAME)]);
+    rows.push(['VITE_DEMO_BRAND_URL', 'INFO', yesNo(buildInfo.env?.VITE_DEMO_BRAND_URL)]);
+
+    if (buildInfo.context === 'production' && buildInfo.siteUrlSource === 'DEPLOY_PRIME_URL') {
+      warnings.push('ATENCION: production esta usando DEPLOY_PRIME_URL como URL canonica.');
+    }
+  } else {
+    rows.push(['build-info.json', 'ERROR', results[0].reason.message]);
+    failures.push('No se pudo leer build-info.json');
   }
 
-  const rows = [
-    ['Commit publicado', `${publishedCommit.slice(0, 12)} vs main ${main.slice(0, 12)}: ${commitIsCurrent ? 'OK' : 'DESACTUALIZADO'}`],
-    ['Contexto', String(buildInfo.context ?? 'unknown')],
-    ['URL/fuente', `${buildInfo.siteUrl || '(vacia)'} (${buildInfo.siteUrlSource ?? 'unknown'})`],
-    ['VITE_SITE_URL', yesNo(buildInfo.env?.VITE_SITE_URL)],
-    ['VITE_DEMO_BRAND_NAME', yesNo(buildInfo.env?.VITE_DEMO_BRAND_NAME)],
-    ['VITE_DEMO_BRAND_URL', yesNo(buildInfo.env?.VITE_DEMO_BRAND_URL)],
-    ['Token Mercado Pago', `${yesNo(runtime.MERCADO_PAGO_ACCESS_TOKEN)} (${runtime.tokenMode ?? 'null'})`],
-    ['APP_URL', yesNo(runtime.APP_URL)],
-    ['MP_DEMO_MODE', String(runtime.MP_DEMO_MODE ?? 'false')],
-    ['Canonical GET', `${assetChecks[0].status} - ${assetChecks[0].url}`],
-    ['og:image GET', `${assetChecks[1].status} - ${assetChecks[1].url}`],
-  ];
+  // Health check
+  if (health) {
+    const runtime = health.runtime ?? {};
+    rows.push(['/api/health', 'OK', 'Respondió correctamente']);
+    rows.push(['Token Mercado Pago', 'INFO', `${yesNo(runtime.MERCADO_PAGO_ACCESS_TOKEN)} (${runtime.tokenMode ?? 'null'})`]);
+    rows.push(['APP_URL', 'INFO', yesNo(runtime.APP_URL)]);
+    rows.push(['MP_DEMO_MODE', 'INFO', String(runtime.MP_DEMO_MODE ?? 'false')]);
 
-  console.table(rows.map(([item, estado]) => ({ item, estado })));
+    const checkoutCannotWork = runtime.MERCADO_PAGO_ACCESS_TOKEN !== true && runtime.MP_DEMO_MODE !== 'true';
+    if (checkoutCannotWork) {
+      failures.push('El checkout no puede funcionar: falta MERCADO_PAGO_ACCESS_TOKEN y MP_DEMO_MODE no es true.');
+    }
+    if (buildInfo?.context === 'production' && runtime.tokenMode === 'test') {
+      warnings.push('ATENCION: production tiene tokenMode test.');
+    }
+  } else {
+    const httpStatus = results[1].reason.message.match(/HTTP (\d+)/)?.[1] || 'error';
+    rows.push(['/api/health', 'ERROR', `HTTP ${httpStatus} (Functions no desplegadas o ruta incorrecta)`]);
+    failures.push('Endpoint /api/health no responde');
+  }
 
-  for (const warning of warnings) console.warn(warning);
-  for (const failure of failures) console.error(`ERROR: ${failure}`);
+  // HTML principal
+  if (html) {
+    rows.push(['HTML principal', 'OK', 'Cargado correctamente']);
+    const canonical = absoluteUrl(getAttr(html, 'rel', 'canonical', 'href'), siteUrl);
+    const ogImage = absoluteUrl(getAttr(html, 'property', 'og:image', 'content'), siteUrl);
+    const assetChecks = await Promise.all([
+      checkGet200('canonical', canonical),
+      checkGet200('og:image', ogImage),
+    ]);
+
+    for (const check of assetChecks) {
+      const status = check.status === '200 OK' ? 'OK' : 'ATENCIÓN';
+      rows.push([`${check.label} GET`, status, `${check.status} - ${check.url}`]);
+      if (check.status !== '200 OK') {
+        warnings.push(`ATENCION: ${check.label} no respondio 200 (${check.status}).`);
+      }
+    }
+  } else {
+    rows.push(['HTML principal', 'ERROR', results[2].reason.message]);
+    failures.push('No se pudo cargar el HTML principal');
+  }
+
+  console.table(rows.map(([verificacion, estado, detalle]) => ({ 'Verificación': verificacion, 'Estado': estado, 'Detalle': detalle })));
+
+  console.log('');
+  for (const warning of warnings) console.warn(`⚠️  ${warning}`);
+  for (const failure of failures) console.error(`❌ ${failure}`);
 
   if (failures.length > 0) exitCode = 1;
 } catch (error) {
-  console.error(`ERROR: ${error.message}`);
+  console.error(`ERROR GENERAL: ${error.message}`);
   exitCode = 1;
 }
 

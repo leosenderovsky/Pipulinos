@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { BRAND_CONFIG } from '../src/brand.config.ts';
 
+export { BRAND_CONFIG };
+
 const root = process.cwd();
 const logoPath = path.join(root, 'public', 'assets', 'logo', 'logo.png');
 const outputDirectory = path.dirname(logoPath);
@@ -50,8 +52,8 @@ export async function buildIcons({
 
   const icons = [];
   for (const [filename, size, padding] of [
-    ['favicon-32.png', 32, 2],
-    ['apple-touch-icon.png', 180, 18],
+    ['favicon-32.png', 32, 2], // 6% de 32 = ~2px
+    ['apple-touch-icon.png', 180, 14], // ~7.8% de 180
   ]) {
     const innerSize = size - padding * 2;
     const icon = await logo

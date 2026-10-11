@@ -227,7 +227,7 @@ export const BRAND_CONFIG: BrandConfig = {
     faviconUrl: '/assets/logo/favicon-32.png',
     appleTouchIconUrl: '/assets/logo/apple-touch-icon.png',
     iconBackground: '#FFFDF9',
-    iconCrop: { left: 0, top: 0, width: 1, height: 0.58 },
+    iconCrop: { left: 0.27, top: 0.11, width: 0.46, height: 0.46 },
   },
   contact: {
     whatsappNumberFormatted: '+54 9 11 4820-9912',
