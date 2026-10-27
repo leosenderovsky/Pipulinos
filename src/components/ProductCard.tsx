@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Txt } from './Txt';
 import { Product } from '../data/products';
-import { BRAND_CONFIG } from '../brand.config';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { Heart, ShoppingBag, Check } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { ProductPicture } from './ProductPicture';
@@ -21,9 +22,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const defaultSize = product.tallesDisponibles[0] || 'Único';
+    const defaultSize = product.tallesDisponibles[0] || BRAND_CONFIG.ui.defaults.size;
     const defaultColor = product.coloresDisponibles[0] || {
-      name: 'Estándar',
+      name: BRAND_CONFIG.ui.defaults.color,
       hex: BRAND_CONFIG.theme.primary,
     };
     addToCart(product, defaultSize, defaultColor, 1);
@@ -91,7 +92,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
           className={`absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md transition-all hover:scale-110 cursor-pointer ${
             isFavorite ? 'text-brand-primary' : 'text-purple-300 hover:text-brand-primary'
           }`}
-          title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+          title={isFavorite ? BRAND_CONFIG.ui.productCard.removeFavorite : BRAND_CONFIG.ui.productCard.addFavorite}
         >
           <Heart className={`w-4 h-4 ${isFavorite ? 'fill-brand-primary' : ''}`} />
         </button>
@@ -118,7 +119,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
             ))}
             {product.coloresDisponibles.length > 3 && (
               <span className="text-[10px] font-extrabold text-purple-400 ml-1">
-                +{product.coloresDisponibles.length - 3} tonos
+                {formatText(BRAND_CONFIG.ui.productCard.moreColors, { count: String(product.coloresDisponibles.length - 3) })}
               </span>
             )}
           </div>
@@ -138,17 +139,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
                 ${product.precioAnterior.toLocaleString('es-AR')}
               </span>
             )}
-            <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full ml-auto">
-              Mercado Pago
-            </span>
+            <Txt as="span" className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full ml-auto" value={BRAND_CONFIG.ui.productCard.mercadoPago} />
           </div>
 
           <p className="text-[11px] font-semibold text-purple-600">
-            3 cuotas de{' '}
+            {formatText(BRAND_CONFIG.ui.productCard.installmentsStart, { count: String(BRAND_CONFIG.commerce.installmentsWithoutInterest) })}{' '}
             <strong className="text-brand-text font-bold">
               ${installmentAmount.toLocaleString('es-AR')}
             </strong>{' '}
-            sin interés
+            {BRAND_CONFIG.ui.productCard.noInterest}
           </p>
 
           <div className="mt-3 grid grid-cols-4 gap-2">
@@ -157,7 +156,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
               onClick={() => onOpenProduct(product)}
               className="col-span-3 py-2 px-2 rounded-2xl bg-purple-50 hover:bg-brand-secondary hover:text-brand-text text-purple-900 text-center font-bold text-xs transition-all border border-purple-100 flex items-center justify-center gap-1 cursor-pointer"
             >
-              <span>Elegir talle</span>
+              <Txt as="span" value={BRAND_CONFIG.ui.productCard.chooseSize} />
             </button>
 
             <button
@@ -166,7 +165,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
               className={`col-span-1 py-2 flex items-center justify-center rounded-2xl text-white transition-all shadow-sm hover:scale-105 cursor-pointer ${
                 showQuickAddFeedback ? 'bg-emerald-500' : 'bg-brand-primary hover:bg-brand-primary-hover'
               }`}
-              title="Agregar al carrito"
+              title={BRAND_CONFIG.ui.productCard.addToCart}
             >
               {showQuickAddFeedback ? (
                 <Check className="w-4 h-4 text-white" />

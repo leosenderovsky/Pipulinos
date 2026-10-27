@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Txt } from './Txt';
 import { useCart } from '../context/CartContext';
 import { ProductPicture } from './ProductPicture';
-import { BRAND_CONFIG } from '../brand.config';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { PRODUCTS, Product } from '../data/products';
 import {
   ArrowLeft,
@@ -89,16 +90,14 @@ export const CartPage: React.FC<CartPageProps> = ({
           <div className="w-20 h-20 rounded-full bg-brand-secondary-soft text-amber-800 flex items-center justify-center text-3xl">
             🧸
           </div>
-          <h2 className="text-2xl font-extrabold text-brand-text">Tu carrito está vacío</h2>
-          <p className="text-xs sm:text-sm text-purple-900/70 font-medium">
-            ¡Descubrí las prendas más suaves y tiernas de la nueva temporada en el showroom!
-          </p>
+          <Txt as="h2" className="text-2xl font-extrabold text-brand-text" value={BRAND_CONFIG.ui.cart.emptyTitle} />
+          <Txt as="p" className="text-xs sm:text-sm text-purple-900/70 font-medium" value={BRAND_CONFIG.ui.cart.emptyDescription} />
           <button
             type="button"
             onClick={onBackToCatalog}
             className="mt-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-primary to-brand-primary-hover text-white font-extrabold text-sm shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
           >
-            Explorar Catálogo {BRAND_CONFIG.shortName}
+            {formatText(BRAND_CONFIG.ui.cart.emptyButton, { name: BRAND_CONFIG.shortName })}
           </button>
         </div>
       </div>
@@ -116,21 +115,18 @@ export const CartPage: React.FC<CartPageProps> = ({
             className="hover:text-brand-primary transition-colors flex items-center gap-1 font-bold text-purple-900 cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Seguir comprando</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.cart.keepShopping} />
             <span className="text-purple-300 mx-1">•</span>
-            <span className="text-brand-primary font-extrabold">Carrito de Compras</span>
+            <Txt as="span" className="text-brand-primary font-extrabold" value={BRAND_CONFIG.ui.cart.title} />
           </button>
 
           <div className="hidden sm:flex items-center gap-4 text-purple-900/80 font-bold text-[11px]">
             <span className="flex items-center gap-1 text-brand-primary">
-              <ShieldCheck className="w-3.5 h-3.5" /> Compra 100% Protegida
-            </span>
+              <ShieldCheck className="w-3.5 h-3.5" />{" "}{BRAND_CONFIG.ui.cart.trustProtectedTitle}</span>
             <span className="flex items-center gap-1">
-              <RefreshCw className="w-3.5 h-3.5 text-brand-success" /> 30 días para cambios
-            </span>
+              <RefreshCw className="w-3.5 h-3.5 text-brand-success" />{" "}{BRAND_CONFIG.ui.cart.trustExchangeTitle}</span>
             <span className="flex items-center gap-1">
-              <Truck className="w-3.5 h-3.5 text-brand-accent-blue" /> Despacho en 24hs
-            </span>
+              <Truck className="w-3.5 h-3.5 text-brand-accent-blue" />{" "}{BRAND_CONFIG.ui.cart.trustDispatchTitle}</span>
           </div>
         </div>
       </section>
@@ -140,13 +136,11 @@ export const CartPage: React.FC<CartPageProps> = ({
         {/* Title & Free Shipping Milestone Bento */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
           <div>
-            <span className="text-[11px] font-extrabold text-brand-primary uppercase tracking-widest block mb-1">
-              Paso Final
-            </span>
+            <Txt as="span" className="text-[11px] font-extrabold text-brand-primary uppercase tracking-widest block mb-1" value={BRAND_CONFIG.ui.cart.stepBadge} />
             <h1 className="text-2xl sm:text-3xl font-extrabold text-brand-text tracking-tight">
-              Tu Pedido {BRAND_CONFIG.shortName}{' '}
+              {formatText(BRAND_CONFIG.ui.cart.orderTitle, { name: BRAND_CONFIG.shortName })}{' '}
               <span className="text-base sm:text-lg text-purple-900/60 font-medium">
-                ({totalCount} {totalCount === 1 ? 'prenda' : 'prendas'})
+                {formatText(BRAND_CONFIG.ui.cart.itemsCount, { count: String(totalCount), unit: totalCount === 1 ? BRAND_CONFIG.ui.cart.itemSingular : BRAND_CONFIG.ui.cart.itemPlural })}
               </span>
             </h1>
           </div>
@@ -159,7 +153,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                   <Truck className="w-4 h-4" />
                 </span>
                 <span className="font-extrabold text-xs text-brand-text">
-                  {isFreeShipping ? '¡Envío Gratis a Domicilio!' : '¡Estás muy cerca del Envío Gratis!'}
+                  {isFreeShipping ? BRAND_CONFIG.ui.cart.freeShippingTitle : BRAND_CONFIG.ui.cart.nearFreeShippingTitle}
                 </span>
               </div>
 
@@ -170,7 +164,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                     : 'bg-brand-secondary-soft text-amber-900 border border-amber-200'
                 }`}
               >
-                {isFreeShipping ? '⭐ ¡Conseguido!' : `${freeShippingProgress}%`}
+                {isFreeShipping ? BRAND_CONFIG.ui.cart.freeShippingReached : `${freeShippingProgress}%`}
               </span>
             </div>
 
@@ -185,23 +179,23 @@ export const CartPage: React.FC<CartPageProps> = ({
             <p className="text-[11px] text-purple-900/80 font-medium">
               {isFreeShipping ? (
                 <>
-                  ¡Genial! Ya superaste los{' '}
+                  {BRAND_CONFIG.ui.cart.reachedStart}{' '}
                   <strong className="text-brand-text font-extrabold">
                     ${freeShippingThreshold.toLocaleString('es-AR')}
                   </strong>
-                  : tenés{' '}
+                  {BRAND_CONFIG.ui.cart.reachedMiddle}{' '}
                   <span className="text-brand-primary font-bold bg-brand-surface-pink px-1.5 py-0.5 rounded">
-                    ENVÍO GRATIS
+                    {BRAND_CONFIG.ui.cart.reachedBadge}
                   </span>{' '}
-                  asegurado a todo el país 🌟
+                  {BRAND_CONFIG.ui.cart.reachedEnd}
                 </>
               ) : (
                 <>
-                  Agregá{' '}
+                  {BRAND_CONFIG.ui.cart.nearStart}{' '}
                   <strong className="text-brand-primary font-extrabold">
                     ${amountRemainingForFreeShipping.toLocaleString('es-AR')}
                   </strong>{' '}
-                  más para alcanzar el <strong>Envío Gratis</strong> nacional 🚚
+                  {BRAND_CONFIG.ui.cart.nearMiddle} <strong>{BRAND_CONFIG.ui.cart.nearStrong}</strong> {BRAND_CONFIG.ui.cart.nearEnd}
                 </>
               )}
             </p>
@@ -260,13 +254,11 @@ export const CartPage: React.FC<CartPageProps> = ({
                               style={{ backgroundColor: item.color.hex }}
                               className="w-3 h-3 rounded-full ring-1 ring-black/10 inline-block"
                             />
-                            <span>
-                              Talle: <strong className="text-brand-text">{item.size}</strong>
+                            <span>{BRAND_CONFIG.ui.cart.sizeLabel}{" "}<strong className="text-brand-text">{item.size}</strong>
                             </span>
                           </span>
                           <span>•</span>
-                          <span>
-                            Color: <strong className="text-brand-text">{item.color.name}</strong>
+                          <span>{BRAND_CONFIG.ui.cart.colorLabel}{" "}<strong className="text-brand-text">{item.color.name}</strong>
                           </span>
                         </div>
 
@@ -290,7 +282,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                           type="button"
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white text-purple-900 font-bold active:scale-95 transition-all cursor-pointer"
-                          title="Restar cantidad"
+                          title={BRAND_CONFIG.ui.cart.decreaseLabel}
                         >
                           <Minus className="w-3.5 h-3.5" />
                         </button>
@@ -301,7 +293,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                           type="button"
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-white text-purple-900 font-bold active:scale-95 transition-all cursor-pointer"
-                          title="Aumentar cantidad"
+                          title={BRAND_CONFIG.ui.cart.increaseLabel}
                         >
                           <Plus className="w-3.5 h-3.5" />
                         </button>
@@ -322,7 +314,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                         type="button"
                         onClick={() => removeFromCart(item.id)}
                         className="w-8 h-8 rounded-full flex items-center justify-center text-purple-300 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
-                        title="Eliminar producto"
+                        title={BRAND_CONFIG.ui.cart.removeLabel}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -344,9 +336,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                       <h3 className="font-extrabold text-sm sm:text-base text-brand-text">
                         {BRAND_CONFIG.copy.giftPackagingTitle}
                       </h3>
-                      <span className="text-[10px] font-extrabold bg-brand-primary text-white px-2.5 py-0.5 rounded-full uppercase shadow-xs">
-                        Sin Cargo Extra
-                      </span>
+                      <Txt as="span" className="text-[10px] font-extrabold bg-brand-primary text-white px-2.5 py-0.5 rounded-full uppercase shadow-xs" value={BRAND_CONFIG.ui.cart.noExtraCharge} />
                     </div>
                     <p className="text-xs text-purple-900/70 font-medium mt-1 leading-relaxed">
                       {BRAND_CONFIG.copy.giftPackagingDescription}
@@ -370,11 +360,8 @@ export const CartPage: React.FC<CartPageProps> = ({
                 <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3.5 flex flex-col gap-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-extrabold text-brand-text flex items-center gap-1.5">
-                      <span>💌</span> Escribí tu mensaje para la tarjetita de dedicatoria:
-                    </span>
-                    <span className="text-[10px] font-bold text-purple-400 bg-white px-2 py-0.5 rounded-full">
-                      Incluida gratis
-                    </span>
+                      <span>💌</span>{" "}{BRAND_CONFIG.ui.cart.dedicationPrompt}</span>
+                    <Txt as="span" className="text-[10px] font-bold text-purple-400 bg-white px-2 py-0.5 rounded-full" value={BRAND_CONFIG.ui.cart.dedicationFree} />
                   </div>
                   <textarea
                     value={giftDedication}
@@ -394,8 +381,8 @@ export const CartPage: React.FC<CartPageProps> = ({
                   ☁️
                 </span>
                 <div className="flex flex-col">
-                  <span className="font-extrabold text-xs text-brand-text">100% Algodón Seguro</span>
-                  <span className="text-[10px] text-purple-900/60 font-medium">Hipoalergénico</span>
+                  <Txt as="span" className="font-extrabold text-xs text-brand-text" value={BRAND_CONFIG.ui.cart.trustCottonTitle} />
+                  <Txt as="span" className="text-[10px] text-purple-900/60 font-medium" value={BRAND_CONFIG.ui.cart.trustCottonText} />
                 </div>
               </div>
 
@@ -404,8 +391,8 @@ export const CartPage: React.FC<CartPageProps> = ({
                   🔄
                 </span>
                 <div className="flex flex-col">
-                  <span className="font-extrabold text-xs text-brand-text">Cambio de Talle Fácil</span>
-                  <span className="text-[10px] text-purple-900/60 font-medium">Mensajería o showroom</span>
+                  <Txt as="span" className="font-extrabold text-xs text-brand-text" value={BRAND_CONFIG.ui.cart.trustSizeExchangeTitle} />
+                  <Txt as="span" className="text-[10px] text-purple-900/60 font-medium" value={BRAND_CONFIG.ui.cart.trustSizeExchangeText} />
                 </div>
               </div>
 
@@ -417,7 +404,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                   <span className="font-extrabold text-xs text-brand-text">
                     {BRAND_CONFIG.copy.customerServiceLabel}
                   </span>
-                  <span className="text-[10px] text-purple-900/60 font-medium">Te guiamos en cm</span>
+                  <Txt as="span" className="text-[10px] text-purple-900/60 font-medium" value={BRAND_CONFIG.ui.cart.trustSizeGuideText} />
                 </div>
               </div>
             </div>
@@ -427,16 +414,16 @@ export const CartPage: React.FC<CartPageProps> = ({
           <aside className="lg:col-span-5 flex flex-col gap-4 lg:sticky lg:top-24">
             <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-md border-2 border-purple-100 flex flex-col gap-4">
               <div className="flex items-center justify-between pb-2 border-b border-purple-100">
-                <h2 className="font-extrabold text-base text-brand-text">Resumen de la Orden</h2>
+                <Txt as="h2" className="font-extrabold text-base text-brand-text" value={BRAND_CONFIG.ui.cart.summaryTitle} />
                 <span className="text-[11px] font-extrabold bg-purple-50 text-brand-text-muted px-2.5 py-0.5 rounded-full">
-                  {BRAND_CONFIG.shortName} #AR-849
+                  {formatText(BRAND_CONFIG.ui.cart.orderCode, { name: BRAND_CONFIG.shortName })}
                 </span>
               </div>
 
               {/* Price Calculations */}
               <div className="flex flex-col gap-2 text-xs font-semibold">
                 <div className="flex items-center justify-between text-purple-900/80">
-                  <span>Subtotal productos ({totalCount} prendas)</span>
+                  <span>{formatText(BRAND_CONFIG.ui.cart.subtotal, { count: String(totalCount) })}</span>
                   <span className="font-extrabold text-brand-text">
                     ${subtotal.toLocaleString('es-AR')}
                   </span>
@@ -446,7 +433,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                   <div className="flex items-center justify-between text-brand-primary">
                     <span className="flex items-center gap-1">
                       <Tag className="w-3.5 h-3.5" />
-                      <span>Descuento aplicado ({appliedCoupon || 'Promo'})</span>
+                      <span>{formatText(BRAND_CONFIG.ui.cart.discountLabel, { coupon: appliedCoupon || BRAND_CONFIG.ui.cart.promoFallback })}</span>
                     </span>
                     <span className="font-extrabold">-${discount.toLocaleString('es-AR')}</span>
                   </div>
@@ -455,10 +442,10 @@ export const CartPage: React.FC<CartPageProps> = ({
                 <div className="flex items-center justify-between text-emerald-800">
                   <span className="flex items-center gap-1">
                     <Truck className="w-3.5 h-3.5" />
-                    <span>Costo de Envío a Domicilio</span>
+                    <Txt as="span" value={BRAND_CONFIG.ui.cart.shippingCost} />
                   </span>
                   <span className="font-extrabold uppercase">
-                    {isFreeShipping ? 'GRATIS' : 'Por calcular'}
+                    {isFreeShipping ? BRAND_CONFIG.ui.cart.shippingFree : BRAND_CONFIG.ui.cart.shippingPending}
                   </span>
                 </div>
 
@@ -468,21 +455,16 @@ export const CartPage: React.FC<CartPageProps> = ({
                     type="text"
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value)}
-                    placeholder="Código de cupón"
+                    placeholder={BRAND_CONFIG.ui.cart.couponPlaceholder}
                     className="flex-1 px-3 py-1.5 rounded-xl border border-purple-100 text-xs text-brand-text uppercase font-bold focus:border-brand-primary outline-none"
                   />
-                  <button
+                  <Txt as="button"
                     type="submit"
-                    className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-brand-secondary text-purple-900 font-bold text-xs transition-colors cursor-pointer"
-                  >
-                    Aplicar
-                  </button>
+                    className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-brand-secondary text-purple-900 font-bold text-xs transition-colors cursor-pointer" value={BRAND_CONFIG.ui.cart.couponApply} />
                 </form>
 
                 {couponError && (
-                  <p className="text-[10px] text-rose-500 font-bold">
-                    Cupón no válido.
-                  </p>
+                  <Txt as="p" className="text-[10px] text-rose-500 font-bold" value={BRAND_CONFIG.ui.cart.couponInvalid} />
                 )}
 
                 {/* Divider */}
@@ -491,7 +473,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                 {/* Grand Total Section */}
                 <div className="flex flex-col gap-1">
                   <div className="flex items-baseline justify-between">
-                    <span className="font-extrabold text-sm text-brand-text">TOTAL FINAL</span>
+                    <Txt as="span" className="font-extrabold text-sm text-brand-text" value={BRAND_CONFIG.ui.cart.total} />
                     <span className="text-3xl font-extrabold text-brand-primary tracking-tight">
                       ${total.toLocaleString('es-AR')}
                     </span>
@@ -502,11 +484,11 @@ export const CartPage: React.FC<CartPageProps> = ({
                     <span className="text-xs font-bold flex items-center gap-1">
                       <CreditCard className="w-4 h-4 text-brand-accent-blue" />
                       <span>
-                        Hasta <strong>{BRAND_CONFIG.commerce.installmentsWithoutInterest} cuotas fijas</strong> sin interés
+                        {BRAND_CONFIG.ui.cart.installmentsStart} <strong>{formatText(BRAND_CONFIG.ui.cart.installmentsStrong, { count: String(BRAND_CONFIG.commerce.installmentsWithoutInterest) })}</strong> {BRAND_CONFIG.ui.cart.installmentsEnd}
                       </span>
                     </span>
                     <span className="text-xs font-extrabold text-brand-text">
-                      de ${installmentAmount.toLocaleString('es-AR')}
+                      {formatText(BRAND_CONFIG.ui.cart.installmentOf, { amount: `$${installmentAmount.toLocaleString('es-AR')}` })}
                     </span>
                   </div>
 
@@ -514,7 +496,7 @@ export const CartPage: React.FC<CartPageProps> = ({
                   <div className="bg-brand-secondary-soft/60 border border-amber-200/80 rounded-xl p-2.5 mt-1 flex items-center justify-between">
                     <div className="flex items-center gap-1.5 text-amber-950 text-xs font-bold">
                       <span>💰</span>
-                      <span>Transferencia / Efectivo (-{BRAND_CONFIG.commerce.transferDiscountPercent}%):</span>
+                      <span>{formatText(BRAND_CONFIG.ui.cart.transferLine, { percent: String(BRAND_CONFIG.commerce.transferDiscountPercent) })}</span>
                     </div>
                     <span className="text-xs font-extrabold text-amber-950">
                       ${transferTotal.toLocaleString('es-AR')}
@@ -525,9 +507,7 @@ export const CartPage: React.FC<CartPageProps> = ({
 
               {/* DUAL CHECKOUT BUTTONS (Requirement 7) */}
               <div className="flex flex-col gap-2.5 pt-2">
-                <span className="text-[10px] font-extrabold text-purple-400 uppercase tracking-wider text-center">
-                  Seleccioná cómo preferís finalizar tu pedido
-                </span>
+                <Txt as="span" className="text-[10px] font-extrabold text-purple-400 uppercase tracking-wider text-center" value={BRAND_CONFIG.ui.cart.paymentPrompt} />
 
                 {/* BUTTON 1: MERCADO PAGO */}
                 <button
@@ -540,12 +520,8 @@ export const CartPage: React.FC<CartPageProps> = ({
                       <CreditCard className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex flex-col text-left">
-                      <span className="font-extrabold text-sm leading-tight">
-                        Pagar con Mercado Pago
-                      </span>
-                      <span className="text-white/80 text-[10px] font-medium leading-tight">
-                        Tarjetas de crédito, débito o dinero en cuenta
-                      </span>
+                      <Txt as="span" className="font-extrabold text-sm leading-tight" value={BRAND_CONFIG.ui.cart.mpTitle} />
+                      <Txt as="span" className="text-white/80 text-[10px] font-medium leading-tight" value={BRAND_CONFIG.ui.cart.mpText} />
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 transition-transform" />
@@ -562,12 +538,8 @@ export const CartPage: React.FC<CartPageProps> = ({
                       <MessageCircle className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex flex-col text-left">
-                      <span className="font-extrabold text-sm leading-tight">
-                        Coordinar por WhatsApp
-                      </span>
-                      <span className="text-white/90 text-[10px] font-medium leading-tight">
-                        Asesoramiento, talles y 10% OFF transferencia
-                      </span>
+                      <Txt as="span" className="font-extrabold text-sm leading-tight" value={BRAND_CONFIG.ui.cart.whatsappTitle} />
+                      <Txt as="span" className="text-white/90 text-[10px] font-medium leading-tight" value={BRAND_CONFIG.ui.cart.whatsappText} />
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 transition-transform" />
@@ -578,7 +550,7 @@ export const CartPage: React.FC<CartPageProps> = ({
               <div className="flex flex-col gap-1.5 pt-1 text-[11px] text-purple-900/70 font-semibold border-t border-purple-50">
                 <div className="flex items-center gap-1.5">
                   <Lock className="w-3.5 h-3.5 text-brand-primary" />
-                  <span>Checkout encriptado con seguridad SSL 256 bits</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.cart.sslNote} />
                 </div>
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-brand-success" />
@@ -594,21 +566,14 @@ export const CartPage: React.FC<CartPageProps> = ({
               <div className="flex items-center gap-3">
                 <span className="text-xl">📏</span>
                 <div className="flex flex-col">
-                  <span className="font-extrabold text-xs text-brand-text">
-                    ¿Dudas con los talles de tu peque?
-                  </span>
-                  <span className="text-[11px] text-purple-900/70">
-                    Escribinos y te pasamos medidas en centímetros.
-                  </span>
+                  <Txt as="span" className="font-extrabold text-xs text-brand-text" value={BRAND_CONFIG.ui.cart.sizeHelpTitle} />
+                  <Txt as="span" className="text-[11px] text-purple-900/70" value={BRAND_CONFIG.ui.cart.sizeHelpText} />
                 </div>
               </div>
-              <button
+              <Txt as="button"
                 type="button"
                 onClick={onOpenSizeGuideModal}
-                className="text-xs font-extrabold text-brand-accent-blue hover:underline cursor-pointer"
-              >
-                Ver Tabla
-              </button>
+                className="text-xs font-extrabold text-brand-accent-blue hover:underline cursor-pointer" value={BRAND_CONFIG.ui.cart.sizeHelpButton} />
             </div>
           </aside>
         </div>
@@ -620,13 +585,9 @@ export const CartPage: React.FC<CartPageProps> = ({
               <span className="text-xs font-extrabold text-brand-primary uppercase tracking-wider flex items-center gap-1">
                 ⭐ {BRAND_CONFIG.copy.crossSellTitle} {BRAND_CONFIG.shortName}
               </span>
-              <h3 className="text-xl font-extrabold text-brand-text">
-                Agregá con un clic antes de cerrar tu pedido
-              </h3>
+              <Txt as="h3" className="text-xl font-extrabold text-brand-text" value={BRAND_CONFIG.ui.cart.upsellText} />
             </div>
-            <span className="text-xs font-bold text-emerald-800 bg-brand-surface-green px-3 py-1 rounded-full border border-emerald-200">
-              ✓ Con tu envío gratis ya asegurado
-            </span>
+            <Txt as="span" className="text-xs font-bold text-emerald-800 bg-brand-surface-green px-3 py-1 rounded-full border border-emerald-200" value={BRAND_CONFIG.ui.cart.upsellFreeShipping} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -665,15 +626,15 @@ export const CartPage: React.FC<CartPageProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    const defaultSize = prod.tallesDisponibles[0] || 'Único';
+                    const defaultSize = prod.tallesDisponibles[0] || BRAND_CONFIG.ui.defaults.size;
                     const defaultColor = prod.coloresDisponibles[0] || {
-                      name: 'Estándar',
+                      name: BRAND_CONFIG.ui.defaults.color,
                       hex: BRAND_CONFIG.theme.primary,
                     };
                     addToCart(prod, defaultSize, defaultColor, 1);
                   }}
                   className="w-9 h-9 rounded-full bg-brand-surface-pink hover:bg-brand-primary text-brand-primary hover:text-white flex items-center justify-center transition-all shrink-0 active:scale-95 shadow-xs cursor-pointer"
-                  title="Sumar al pedido"
+                  title={BRAND_CONFIG.ui.cart.upsellAdd}
                 >
                   <Plus className="w-4 h-4" />
                 </button>

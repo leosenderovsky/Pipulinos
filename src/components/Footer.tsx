@@ -1,5 +1,6 @@
 import React from 'react';
-import { BRAND_CONFIG } from '../brand.config';
+import { Txt } from './Txt';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { Ruler, HelpCircle, Truck, MessageCircle, Instagram } from 'lucide-react';
 
 interface FooterProps {
@@ -46,63 +47,56 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
           {/* Col 2: Ayuda & Compras */}
           <div className="flex flex-col gap-2">
             <span className="font-extrabold text-sm text-brand-text mb-1 flex items-center gap-1.5">
-              <span>🧸</span> Ayuda &amp; Compras
-            </span>
+              <span>🧸</span>{" "}{BRAND_CONFIG.ui.footer.helpTitle}</span>
             <button
               type="button"
               onClick={onOpenSizeGuideModal}
               className="text-xs font-bold text-purple-800 hover:text-brand-primary transition-colors flex items-center gap-1.5 text-left cursor-pointer"
             >
               <Ruler className="w-3.5 h-3.5 text-brand-accent-blue" />
-              <span>Guía de Talles y Medidas</span>
+              <Txt as="span" value={BRAND_CONFIG.ui.footer.helpSizeGuide} />
             </button>
             <a
-              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(`Hola ${BRAND_CONFIG.shortName}, ${BRAND_CONFIG.copy.whatsappShippingMessage}`)}`}
+              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(formatText(BRAND_CONFIG.ui.whatsapp.greeting, { name: BRAND_CONFIG.shortName, message: BRAND_CONFIG.copy.whatsappShippingMessage }))}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold text-purple-800 hover:text-brand-primary transition-colors flex items-center gap-1.5"
             >
               <Truck className="w-3.5 h-3.5 text-brand-success" />
-              <span>Envíos y Cambios Fáciles</span>
+              <Txt as="span" value={BRAND_CONFIG.ui.footer.helpShipping} />
             </a>
             <a
-              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(`Hola ${BRAND_CONFIG.shortName}, ${BRAND_CONFIG.copy.whatsappFaqMessage}`)}`}
+              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(formatText(BRAND_CONFIG.ui.whatsapp.greeting, { name: BRAND_CONFIG.shortName, message: BRAND_CONFIG.copy.whatsappFaqMessage }))}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold text-purple-800 hover:text-brand-primary transition-colors flex items-center gap-1.5"
             >
               <HelpCircle className="w-3.5 h-3.5 text-amber-600" />
-              <span>Preguntas Frecuentes</span>
+              <Txt as="span" value={BRAND_CONFIG.ui.footer.helpFaq} />
             </a>
           </div>
 
           {/* Col 3: Medios de Pago & Envíos */}
           <div className="flex flex-col gap-2">
             <span className="font-extrabold text-sm text-brand-text mb-1 flex items-center gap-1.5">
-              <span>💳</span> Medios de Pago &amp; Envíos
-            </span>
-            <p className="text-xs font-bold text-purple-900">
-              Mercado Pago • 3 cuotas fijas sin interés
-            </p>
+              <span>💳</span>{" "}{BRAND_CONFIG.ui.footer.paymentTitle}</span>
+            <Txt as="p" className="text-xs font-bold text-purple-900" value={formatText(BRAND_CONFIG.ui.footer.installmentsLine, { count: String(BRAND_CONFIG.commerce.installmentsWithoutInterest) })} />
             <p className="text-xs font-bold text-emerald-700 bg-emerald-100/60 p-2 rounded-xl border border-emerald-200">
-              Transferencia / Efectivo:{' '}
+              {BRAND_CONFIG.ui.footer.transferLabel}{' '}
               <strong className="text-emerald-950 font-extrabold">
-                {BRAND_CONFIG.commerce.transferDiscountPercent}% OFF EXTRA
+                {formatText(BRAND_CONFIG.ui.footer.transferValue, { percent: String(BRAND_CONFIG.commerce.transferDiscountPercent) })}
               </strong>
             </p>
-            <p className="text-xs font-semibold text-purple-800 mt-1">
-              Envíos a todo el país a domicilio o sucursal.
-            </p>
+            <Txt as="p" className="text-xs font-semibold text-purple-800 mt-1" value={BRAND_CONFIG.ui.footer.shippingNote} />
           </div>
 
           {/* Col 4: Contacto Showroom */}
           <div className="flex flex-col gap-2">
             <span className="font-extrabold text-sm text-brand-text mb-1 flex items-center gap-1.5">
-              <span>📍</span> Contacto Showroom
-            </span>
+              <span>📍</span>{" "}{BRAND_CONFIG.ui.footer.contactTitle}</span>
             <p className="text-xs font-bold text-purple-900 flex items-center gap-1.5">
               <MessageCircle className="w-4 h-4 text-brand-whatsapp" />
-              <span>WhatsApp: {BRAND_CONFIG.contact.whatsappNumberFormatted}</span>
+              <span>{formatText(BRAND_CONFIG.ui.footer.whatsappLine, { phone: BRAND_CONFIG.contact.whatsappNumberFormatted })}</span>
             </p>
             <a
               href={BRAND_CONFIG.contact.instagramUrl}
@@ -111,7 +105,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
               className="text-xs font-bold text-purple-900 hover:text-pink-600 flex items-center gap-1.5 transition-colors"
             >
               <Instagram className="w-4 h-4 text-pink-600" />
-              <span>Instagram: {BRAND_CONFIG.contact.instagramHandle}</span>
+              <span>{formatText(BRAND_CONFIG.ui.footer.instagramLine, { handle: BRAND_CONFIG.contact.instagramHandle })}</span>
             </a>
             <p className="text-xs font-semibold text-purple-800">
               {BRAND_CONFIG.contact.showroomHours}
@@ -122,9 +116,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
         {/* Bottom bar with MANDATORY DISCLAIMER (Requirement 9) */}
         <div className="pt-5 border-t border-purple-200/80 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex flex-col sm:flex-row items-center gap-2 text-center md:text-left">
-            <p className="text-xs font-bold text-purple-900/70">
-              © {BRAND_CONFIG.foundedYear} {BRAND_CONFIG.shortName} Showroom Infantil. Todos los derechos reservados.
-            </p>
+            <Txt as="p" className="text-xs font-bold text-purple-900/70" value={formatText(BRAND_CONFIG.ui.footer.copyright, { year: String(BRAND_CONFIG.foundedYear), name: BRAND_CONFIG.shortName })} />
             <span className="hidden sm:inline text-purple-300">•</span>
             {/* MANDATORY FOOTER DISCLAIMER */}
             <p className="text-[11px] font-semibold text-purple-900/60 tracking-tight">
@@ -133,9 +125,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-extrabold text-brand-primary bg-white px-3 py-1 rounded-full border border-purple-100 shadow-xs flex items-center gap-1">
-              Hecho con mucho amor para las infancias 🎈⭐
-            </span>
+            <Txt as="span" className="text-xs font-extrabold text-brand-primary bg-white px-3 py-1 rounded-full border border-purple-100 shadow-xs flex items-center gap-1" value={BRAND_CONFIG.ui.footer.love} />
           </div>
         </div>
       </div>

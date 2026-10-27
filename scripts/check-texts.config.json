@@ -1,0 +1,14 @@
+{
+  "excludeFiles": [
+    "src/data/products.ts",
+    "src/data/sizeGuide.ts",
+    "src/data/filterOptions.ts",
+    "src/data/searchSynonyms.ts",
+    "src/components/PrototypeBanner.tsx",
+    "src/demoBanner.config.ts",
+    "src/generated/brand.types.ts",
+    "src/lib/checkoutPricing.ts",
+    "src/lib/search.ts"
+  ],
+  "allowStrings": ["Accesorios & Packs", "Único", "Estándar", "Enter", "Talle Único"]
+}

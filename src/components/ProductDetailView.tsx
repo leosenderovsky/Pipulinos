@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Txt } from './Txt';
 import { Product, ProductColor } from '../data/products';
-import { BRAND_CONFIG } from '../brand.config';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { useCart } from '../context/CartContext';
 import { ProductPicture } from './ProductPicture';
 import { BABY_SIZE_GUIDE, KIDS_SIZE_GUIDE } from '../data/sizeGuide';
@@ -36,12 +37,12 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<ProductColor>(
     product.coloresDisponibles[0] || {
-      name: 'Estándar',
+      name: BRAND_CONFIG.ui.defaults.color,
       hex: BRAND_CONFIG.theme.primary,
     }
   );
   const [selectedSize, setSelectedSize] = useState<string>(
-    product.tallesDisponibles[0] || 'Único'
+    product.tallesDisponibles[0] || BRAND_CONFIG.ui.defaults.size
   );
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -72,20 +73,20 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const totalPurchasePrice = product.precio * quantity;
 
   // WhatsApp order link
-  const whatsappProductMessage = `¡Hola ${BRAND_CONFIG.name}! Me interesa el "${product.nombre}" en talle ${selectedSize} y color ${selectedColor.name}. ¿Tienen disponibilidad en showroom?`;
+  const whatsappProductMessage = formatText(BRAND_CONFIG.ui.whatsapp.productInterest, { name: BRAND_CONFIG.name, product: product.nombre, size: selectedSize, color: selectedColor.name });
   const whatsappUrl = `https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(whatsappProductMessage)}`;
 
   return (
     <div className="w-full max-w-[1280px] mx-auto px-4 md:px-6 py-6">
       {/* Breadcrumb Header Navigation */}
-      <nav aria-label="Ruta de exploración" className="flex items-center gap-1.5 text-purple-900/80 text-xs font-bold mb-5 overflow-x-auto pb-1">
+      <nav aria-label={BRAND_CONFIG.ui.productDetail.breadcrumbLabel} className="flex items-center gap-1.5 text-purple-900/80 text-xs font-bold mb-5 overflow-x-auto pb-1">
         <button
           type="button"
           onClick={onBackToCatalog}
           className="hover:text-brand-primary transition-colors flex items-center gap-1 shrink-0 cursor-pointer"
         >
           <Home className="w-3.5 h-3.5" />
-          <span>Inicio</span>
+          <Txt as="span" value={BRAND_CONFIG.ui.productDetail.breadcrumbHome} />
         </button>
         <ChevronRight className="w-3.5 h-3.5 text-purple-300 shrink-0" />
         <button
@@ -112,9 +113,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               <span className="bg-brand-primary text-white font-extrabold text-[11px] px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
                 <Sparkles className="w-3 h-3" /> {product.tela}
               </span>
-              <span className="bg-brand-secondary-soft text-amber-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-xs">
-                Telas Hipoalergénicas
-              </span>
+              <Txt as="span" className="bg-brand-secondary-soft text-amber-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-xs" value={BRAND_CONFIG.ui.productDetail.badgeHypoallergenic} />
             </div>
 
             {/* Favorite button */}
@@ -122,7 +121,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               type="button"
               onClick={() => setIsFavorite(!isFavorite)}
               className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-purple-400 hover:text-brand-primary shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer"
-              title="Guardar en favoritos"
+              title={BRAND_CONFIG.ui.productDetail.favoriteLabel}
             >
               <Heart className={`w-5 h-5 ${isFavorite ? 'fill-brand-primary text-brand-primary' : ''}`} />
             </button>
@@ -147,7 +146,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               />
               <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-xs text-brand-text px-3 py-1 rounded-full flex items-center gap-1.5 text-xs font-extrabold border border-purple-100 pointer-events-none shadow-xs">
                 <ZoomIn className="w-3.5 h-3.5 text-brand-primary" />
-                <span>{isZoomed ? 'Tocar para alejar' : 'Tocar para ampliar'}</span>
+                <span>{isZoomed ? BRAND_CONFIG.ui.productDetail.zoomOut : BRAND_CONFIG.ui.productDetail.zoomIn}</span>
               </div>
             </div>
           </div>
@@ -172,7 +171,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   <ProductPicture
                     key={img}
                     src={img}
-                    alt={`Vista ${idx + 1}`}
+                    alt={formatText(BRAND_CONFIG.ui.productDetail.viewAlt, { number: String(idx + 1) })}
                     loading="lazy"
                     decoding="async"
                     width={800}
@@ -191,24 +190,24 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               <span className="w-8 h-8 rounded-xl bg-brand-surface-pink text-brand-primary flex items-center justify-center font-bold text-sm">
                 🌿
               </span>
-              <span className="font-extrabold text-[11px] text-brand-text">100% Pima Orgánico</span>
-              <span className="text-[10px] text-purple-900/70 font-medium">Tacto de nube</span>
+              <Txt as="span" className="font-extrabold text-[11px] text-brand-text" value={BRAND_CONFIG.ui.productDetail.featureCottonTitle} />
+              <Txt as="span" className="text-[10px] text-purple-900/70 font-medium" value={BRAND_CONFIG.ui.productDetail.featureCottonText} />
             </div>
 
             <div className="flex flex-col items-center text-center p-1 gap-1">
               <span className="w-8 h-8 rounded-xl bg-brand-secondary-soft text-amber-900 flex items-center justify-center font-bold text-sm">
                 🪡
               </span>
-              <span className="font-extrabold text-[11px] text-brand-text">Costuras Planas</span>
-              <span className="text-[10px] text-purple-900/70 font-medium">Cero roce ni picazón</span>
+              <Txt as="span" className="font-extrabold text-[11px] text-brand-text" value={BRAND_CONFIG.ui.productDetail.featureSeamsTitle} />
+              <Txt as="span" className="text-[10px] text-purple-900/70 font-medium" value={BRAND_CONFIG.ui.productDetail.featureSeamsText} />
             </div>
 
             <div className="flex flex-col items-center text-center p-1 gap-1">
               <span className="w-8 h-8 rounded-xl bg-brand-surface-blue text-sky-800 flex items-center justify-center font-bold text-sm">
                 🔒
               </span>
-              <span className="font-extrabold text-[11px] text-brand-text">Broches Seguros</span>
-              <span className="text-[10px] text-purple-900/70 font-medium">Libres de níquel</span>
+              <Txt as="span" className="font-extrabold text-[11px] text-brand-text" value={BRAND_CONFIG.ui.productDetail.featureSnapsTitle} />
+              <Txt as="span" className="text-[10px] text-purple-900/70 font-medium" value={BRAND_CONFIG.ui.productDetail.featureSnapsText} />
             </div>
           </div>
         </div>
@@ -219,11 +218,11 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           <div>
             <div className="flex items-center justify-between gap-2 flex-wrap mb-1">
               <span className="font-extrabold text-xs uppercase tracking-wider text-brand-primary">
-                Línea Showroom {BRAND_CONFIG.shortName} • {product.tela}
+                {formatText(BRAND_CONFIG.ui.productDetail.lineTitle, { name: BRAND_CONFIG.shortName, fabric: product.tela })}
               </span>
               <div className="flex items-center gap-1 text-amber-500 font-extrabold text-xs">
                 <span>⭐ ⭐ ⭐ ⭐ ⭐</span>
-                <span className="text-purple-900/70 font-semibold">(48 opiniones de mamás)</span>
+                <Txt as="span" className="text-purple-900/70 font-semibold" value={BRAND_CONFIG.ui.productDetail.reviews} />
               </div>
             </div>
 
@@ -248,7 +247,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               )}
               {product.precioAnterior && (
                 <span className="bg-rose-500 text-white font-extrabold text-xs px-2.5 py-0.5 rounded-full shadow-xs">
-                  Ahorrás ${(product.precioAnterior - product.precio).toLocaleString('es-AR')} 💛
+                  {formatText(BRAND_CONFIG.ui.productDetail.savings, { amount: `$${(product.precioAnterior - product.precio).toLocaleString('es-AR')}` })}
                 </span>
               )}
             </div>
@@ -259,9 +258,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 <strong className="text-emerald-800 font-extrabold">
                   ${transferPrice.toLocaleString('es-AR')}
                 </strong>{' '}
-                pagando con transferencia o efectivo (
+                {BRAND_CONFIG.ui.productDetail.transferText} (
                 <span className="text-brand-primary font-extrabold bg-brand-surface-pink px-1.5 py-0.5 rounded-md">
-                  {BRAND_CONFIG.commerce.transferDiscountPercent}% OFF EXTRA
+                  {formatText(BRAND_CONFIG.ui.productDetail.transferBadge, { percent: String(BRAND_CONFIG.commerce.transferDiscountPercent) })}
                 </span>
                 )
               </span>
@@ -270,8 +269,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
             <div className="flex items-center gap-2 text-xs font-bold text-sky-900 bg-brand-surface-blue px-3 py-1.5 rounded-xl border border-sky-200">
               <CreditCard className="w-4 h-4 text-brand-accent-blue" />
               <span>
-                Hasta {BRAND_CONFIG.commerce.installmentsWithoutInterest} cuotas sin interés de $
-                {installmentAmount.toLocaleString('es-AR')} con todas las tarjetas
+                {formatText(BRAND_CONFIG.ui.productDetail.installments, { count: String(BRAND_CONFIG.commerce.installmentsWithoutInterest), amount: `$${installmentAmount.toLocaleString('es-AR')}` })}
               </span>
             </div>
           </div>
@@ -279,11 +277,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           {/* Color Selector */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <span className="font-extrabold text-xs sm:text-sm text-brand-text">
-                Color: <strong className="text-brand-primary">{selectedColor.name}</strong>
+              <span className="font-extrabold text-xs sm:text-sm text-brand-text">{BRAND_CONFIG.ui.productDetail.colorLabel}{" "}<strong className="text-brand-primary">{selectedColor.name}</strong>
               </span>
               <span className="text-xs font-bold text-purple-400">
-                {product.coloresDisponibles.length} tonos disponibles
+                {formatText(BRAND_CONFIG.ui.productDetail.colorsCount, { count: String(product.coloresDisponibles.length) })}
               </span>
             </div>
 
@@ -315,16 +312,14 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           {/* Size Selector with integrated stock pill */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <span className="font-extrabold text-xs sm:text-sm text-brand-text">
-                Talle por meses / contextura:
-              </span>
+              <Txt as="span" className="font-extrabold text-xs sm:text-sm text-brand-text" value={BRAND_CONFIG.ui.productDetail.sizeLabel} />
               <button
                 type="button"
                 onClick={onOpenSizeGuideModal}
                 className="flex items-center gap-1 text-brand-accent-blue hover:underline font-extrabold text-xs cursor-pointer"
               >
                 <Ruler className="w-3.5 h-3.5" />
-                <span>Tabla de Talles &amp; Medidas</span>
+                <Txt as="span" value={BRAND_CONFIG.ui.productDetail.sizeTable} />
               </button>
             </div>
 
@@ -355,26 +350,26 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                       </span>
                       {isLowStock ? (
                         <span className="text-[10px] font-extrabold bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full">
-                          ¡Últimas {stock}!
+                          {formatText(BRAND_CONFIG.ui.productDetail.lastUnits, { stock: String(stock) })}
                         </span>
                       ) : (
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" title="En stock" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" title={BRAND_CONFIG.ui.productDetail.inStock} />
                       )}
                     </div>
                     <span className="text-[11px] font-semibold text-purple-900/60 mt-1">
                       {sz.includes('RN')
-                        ? 'Hasta 3.5 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight1
                         : sz.includes('0-3')
-                        ? 'Hasta 5.5 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight2
                         : sz.includes('3-6')
-                        ? 'Hasta 7.5 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight3
                         : sz.includes('6-9')
-                        ? 'Hasta 9.0 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight4
                         : sz.includes('9-12')
-                        ? 'Hasta 10.5 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight5
                         : sz.includes('12-18')
-                        ? 'Hasta 12.0 kg'
-                        : 'Disponible'}
+                        ? BRAND_CONFIG.ui.productDetail.weight6
+                        : BRAND_CONFIG.ui.productDetail.available}
                     </span>
                   </button>
                 );
@@ -385,9 +380,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
             <div className="flex items-center gap-1.5 bg-amber-50 p-2.5 rounded-2xl border border-amber-200/70 text-[11px] text-amber-950 font-semibold mt-1">
               <span className="text-sm">💡</span>
               <span>
-                <strong>Consejo {BRAND_CONFIG.shortName}:</strong> Si dudás entre dos talles, te recomendamos
-                elegir el más grande para que tu peque lo aproveche más tiempo.
-              </span>
+                <strong>{formatText(BRAND_CONFIG.ui.productDetail.tipTitle, { name: BRAND_CONFIG.shortName })}</strong>{" "}{BRAND_CONFIG.ui.productDetail.tipText}</span>
             </div>
           </div>
 
@@ -400,7 +393,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="w-10 h-10 rounded-xl bg-white flex items-center justify-center font-bold text-lg text-purple-900 hover:bg-purple-100 transition-colors cursor-pointer"
-                  title="Restar unidad"
+                  title={BRAND_CONFIG.ui.productDetail.decreaseLabel}
                 >
                   -
                 </button>
@@ -411,7 +404,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                   type="button"
                   onClick={() => setQuantity(quantity + 1)}
                   className="w-10 h-10 rounded-xl bg-white flex items-center justify-center font-bold text-lg text-purple-900 hover:bg-purple-100 transition-colors cursor-pointer"
-                  title="Sumar unidad"
+                  title={BRAND_CONFIG.ui.productDetail.increaseLabel}
                 >
                   +
                 </button>
@@ -424,7 +417,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                 className="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-brand-primary to-brand-primary-hover text-white font-extrabold text-sm shadow-md hover:shadow-lg hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingBag className="w-5 h-5" />
-                <span>Agregar al pedido (${totalPurchasePrice.toLocaleString('es-AR')})</span>
+                <span>{formatText(BRAND_CONFIG.ui.productDetail.addToOrder, { price: `$${totalPurchasePrice.toLocaleString('es-AR')}` })}</span>
               </button>
             </div>
 
@@ -436,7 +429,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               className="w-full py-3 px-4 rounded-2xl bg-brand-whatsapp hover:bg-brand-whatsapp-hover text-white font-extrabold text-xs sm:text-sm shadow-xs flex items-center justify-center gap-2 active:scale-95 transition-all text-center"
             >
               <MessageCircle className="w-4 h-4" />
-              <span>Consultar disponibilidad inmediata por WhatsApp</span>
+              <Txt as="span" value={BRAND_CONFIG.ui.productDetail.askAvailability} />
             </a>
           </div>
 
@@ -451,7 +444,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               >
                 <span className="flex items-center gap-2">
                   <span className="text-base">🧺</span>
-                  <span>Composición y cuidados de la prenda</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.productDetail.careTitle} />
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 text-purple-400 transition-transform duration-200 ${
@@ -462,11 +455,11 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
               {openAccordion === 'acc-1' && (
                 <div className="p-3.5 pt-0 text-xs font-medium text-purple-900/80 space-y-1.5 leading-relaxed">
-                  <p>• {product.tela} puro certificado peinado de máxima suavidad al tacto.</p>
-                  <p>• Lavado recomendado con agua fría (máx 30°C) con programa delicado o a mano.</p>
-                  <p>• Usar jabón blanco neutro especial para recién nacidos y pieles atópicas.</p>
-                  <p>• No usar secarropas con calor directo; secar a la sombra.</p>
-                  <p>• Planchar del revés a temperatura suave.</p>
+                  <p>{formatText(BRAND_CONFIG.ui.productDetail.careComposition, { fabric: product.tela })}</p>
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careWash} />
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careSoap} />
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careDry} />
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careIron} />
                 </div>
               )}
             </div>
@@ -480,7 +473,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               >
                 <span className="flex items-center gap-2">
                   <Truck className="w-4 h-4 text-brand-accent-blue" />
-                  <span>Envíos a todo el país y retiro gratis en showroom</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.productDetail.shippingTitle} />
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 text-purple-400 transition-transform duration-200 ${
@@ -492,14 +485,11 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               {openAccordion === 'acc-2' && (
                 <div className="p-3.5 pt-0 text-xs font-medium text-purple-900/80 space-y-1.5 leading-relaxed">
                   <p>
-                    • <strong>Envío Gratis:</strong> En compras superiores a $
-                    {BRAND_CONFIG.commerce.freeShippingThreshold.toLocaleString('es-AR')} a todo el
-                    país por Correo Argentino.
+                    • <strong>{BRAND_CONFIG.ui.productDetail.shippingFreeLabel}</strong> {formatText(BRAND_CONFIG.ui.productDetail.shippingFreeText, { amount: `$${BRAND_CONFIG.commerce.freeShippingThreshold.toLocaleString('es-AR')}` })}
                   </p>
-                  <p>• Envíos express en CABA y GBA por mensajería privada en 24 a 48 hs.</p>
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.shippingExpress} />
                   <p>
-                    • <strong>Retiro sin cargo:</strong> {BRAND_CONFIG.contact.showroomAddress} (
-                    {BRAND_CONFIG.contact.showroomHours}). Listo en 2 horas.
+                    • <strong>{BRAND_CONFIG.ui.productDetail.pickupLabel}</strong> {formatText(BRAND_CONFIG.ui.productDetail.pickupText, { address: BRAND_CONFIG.contact.showroomAddress, hours: BRAND_CONFIG.contact.showroomHours })}
                   </p>
                 </div>
               )}
@@ -514,7 +504,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               >
                 <span className="flex items-center gap-2">
                   <RefreshCw className="w-4 h-4 text-brand-success" />
-                  <span>Cambios sin costo dentro de los 30 días</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.productDetail.exchangeTitle} />
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 text-purple-400 transition-transform duration-200 ${
@@ -525,12 +515,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
               {openAccordion === 'acc-3' && (
                 <div className="p-3.5 pt-0 text-xs font-medium text-purple-900/80 space-y-1.5 leading-relaxed">
-                  <p>
-                    ¡Queremos que tu bebé esté 100% cómodo! Si el talle no era el indicado o preferís
-                    otro tono:
-                  </p>
-                  <p>• Tenés hasta <strong>30 días corridos</strong> desde que recibís tu compra.</p>
-                  <p>• El primer cambio por talle es ágil y sin complicaciones.</p>
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.exchangeIntro} />
+                  <p>{BRAND_CONFIG.ui.productDetail.exchangeStart} <strong>{formatText(BRAND_CONFIG.ui.productDetail.exchangeStrong, { days: String(BRAND_CONFIG.commerce.exchangePeriodDays) })}</strong> {BRAND_CONFIG.ui.productDetail.exchangeEnd}</p>
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.exchangeFirst} />
                 </div>
               )}
             </div>
@@ -546,18 +533,14 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               <Ruler className="w-5 h-5 text-amber-800" />
             </div>
             <div>
-              <h2 className="font-extrabold text-lg md:text-xl text-brand-text">
-                Guía de Talles &amp; Medidas en Centímetros
-              </h2>
-              <p className="text-xs font-medium text-purple-900/70">
-                Medidas reales tomadas en plano sobre la prenda sin estirar.
-              </p>
+              <Txt as="h2" className="font-extrabold text-lg md:text-xl text-brand-text" value={BRAND_CONFIG.ui.productDetail.guideTitle} />
+              <Txt as="p" className="text-xs font-medium text-purple-900/70" value={BRAND_CONFIG.ui.productDetail.guideSubtitle} />
             </div>
           </div>
 
           <div className="flex items-center gap-1.5 bg-brand-secondary-soft text-amber-900 px-3 py-1 rounded-full text-xs font-bold">
-            <span>💡 Tip:</span>
-            <span>El algodón Pima cede cómodamente hasta un 12%</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.productDetail.guideTip} />
+            <Txt as="span" value={BRAND_CONFIG.ui.productDetail.guideTipText} />
           </div>
         </div>
 
@@ -566,13 +549,13 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           <table className="w-full text-left text-xs">
             <thead className="bg-purple-50/80 text-purple-900 font-extrabold uppercase tracking-wider text-[11px]">
               <tr>
-                <th className="py-3 px-4">Talle</th>
-                <th className="py-3 px-4">Edad Sugerida</th>
-                <th className="py-3 px-4">Altura Bebé</th>
-                <th className="py-3 px-4">Peso Estimado</th>
-                <th className="py-3 px-4">Largo Total</th>
-                <th className="py-3 px-4">Ancho de Sisa</th>
-                <th className="py-3 px-4">Momento</th>
+                <Txt as="th" className="py-3 px-4" value={BRAND_CONFIG.ui.productDetail.colSize} />
+                <Txt as="th" className="py-3 px-4" value={BRAND_CONFIG.ui.productDetail.colAge} />
+                <Txt as="th" className="py-3 px-4" value={BRAND_CONFIG.ui.productDetail.colHeight} />
+                <Txt as="th" className="py-3 px-4" value={BRAND_CONFIG.ui.productDetail.colWeight} />
+                <Txt as="th" className="py-3 px-4" value={BRAND_CONFIG.ui.productDetail.colLength} />
+                <Txt as="th" className="py-3 px-4" value={BRAND_CONFIG.ui.productDetail.colArmhole} />
+                <Txt as="th" className="py-3 px-4" value={BRAND_CONFIG.ui.productDetail.colMoment} />
               </tr>
             </thead>
             <tbody className="divide-y divide-purple-50 text-purple-900 font-medium">
@@ -603,26 +586,21 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               👶
             </div>
             <div>
-              <p className="font-extrabold text-xs text-brand-text">
-                ¿Cómo medir una prenda de tu peque?
-              </p>
-              <p className="text-[11px] text-purple-900/70 font-medium mt-0.5">
-                Colocá una prenda que le quede cómoda sobre una cama plana y medí con centímetro de
-                hombro a entrepierna.
-              </p>
+              <Txt as="p" className="font-extrabold text-xs text-brand-text" value={BRAND_CONFIG.ui.productDetail.measureTitle} />
+              <Txt as="p" className="text-[11px] text-purple-900/70 font-medium mt-0.5" value={BRAND_CONFIG.ui.productDetail.measureText} />
             </div>
           </div>
 
           <div className="flex items-center md:justify-end gap-2">
-            <span className="text-xs font-bold text-purple-900/70">¿Dudas con el talle?</span>
+            <Txt as="span" className="text-xs font-bold text-purple-900/70" value={BRAND_CONFIG.ui.productDetail.helpTitle} />
             <a
-              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(`Hola ${BRAND_CONFIG.shortName}, ${BRAND_CONFIG.copy.whatsappSizeMessage}`)}`}
+              href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(formatText(BRAND_CONFIG.ui.whatsapp.greeting, { name: BRAND_CONFIG.shortName, message: BRAND_CONFIG.copy.whatsappSizeMessage }))}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-full bg-white border border-purple-200 text-brand-primary font-extrabold text-xs hover:bg-brand-surface-pink transition-colors flex items-center gap-1 shadow-xs"
             >
               <MessageCircle className="w-3.5 h-3.5 text-brand-whatsapp" />
-              <span>Asesoramiento en vivo</span>
+              <Txt as="span" value={BRAND_CONFIG.ui.productDetail.helpButton} />
             </a>
           </div>
         </div>
@@ -635,7 +613,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
             <Check className="w-4 h-4" />
           </span>
           <div className="flex flex-col">
-            <span className="font-extrabold text-xs">¡Agregado al carrito con éxito!</span>
+            <Txt as="span" className="font-extrabold text-xs" value={BRAND_CONFIG.ui.productDetail.addedToast} />
             <span className="text-[11px] text-purple-200">
               {quantity}x {product.nombre} ({selectedSize} - {selectedColor.name})
             </span>

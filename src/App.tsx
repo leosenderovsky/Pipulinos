@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Txt } from './components/Txt';
+import { BRAND_CONFIG } from './brand.config';
 import { CartProvider, useCart } from './context/CartContext';
 import { Product, PRODUCTS, MAX_CATALOG_PRICE } from './data/products';
 import { Header } from './components/Header';
@@ -196,18 +198,15 @@ export default function App() {
           >
             <span>{checkoutNotice.message}</span>
             {checkoutNotice.status === 'failure' && (
-              <button
+              <Txt as="button"
                 type="button"
                 onClick={() => {
                   setCheckoutNotice(null);
                   setCurrentView('checkout');
                 }}
-                className="font-bold underline underline-offset-2"
-              >
-                Reintentar
-              </button>
+                className="font-bold underline underline-offset-2" value={BRAND_CONFIG.ui.app.retry} />
             )}
-            <button type="button" onClick={() => setCheckoutNotice(null)} aria-label="Cerrar aviso" className="font-bold">
+            <button type="button" onClick={() => setCheckoutNotice(null)} aria-label={BRAND_CONFIG.ui.app.closeNotice} className="font-bold">
               ×
             </button>
           </div>
@@ -333,14 +332,14 @@ function CheckoutReturnHandler({
       if (paymentId && status === 'approved') {
         // El webhook de Mercado Pago es la confirmación definitiva del pago.
         clearCart();
-        onNotice({ status: 'pending', message: 'Pago recibido, estamos confirmándolo.' });
+        onNotice({ status: 'pending', message: BRAND_CONFIG.ui.payment.received });
       } else {
-        onNotice({ status: 'pending', message: 'No pudimos verificar el estado del pago. Conservamos tu carrito mientras lo confirmamos.' });
+        onNotice({ status: 'pending', message: BRAND_CONFIG.ui.payment.verifyError });
       }
     } else if (status === 'pending' || status === 'in_process' || checkout === 'pending') {
-      onNotice({ status: 'pending', message: 'Tu pago está pendiente de confirmación. Te avisaremos cuando se acredite.' });
+      onNotice({ status: 'pending', message: BRAND_CONFIG.ui.payment.pending });
     } else if (status === 'rejected' || checkout === 'failure') {
-      onNotice({ status: 'failure', message: 'El pago no se completó. Podés volver al checkout e intentarlo nuevamente.' });
+      onNotice({ status: 'failure', message: BRAND_CONFIG.ui.payment.failed });
     }
 
     if (checkout || status || paymentId || params.has('external_reference')) {

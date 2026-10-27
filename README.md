@@ -34,7 +34,10 @@ En producción, Netlify redirige las rutas `/api/*` a Netlify Functions, según 
 - `src/lib/`: filtros, búsqueda, talles, referencias y cálculo de precios del checkout.
 - `src/data/products.ts`: productos, categorías, edades/etapas, telas y vocabulario de etiquetas.
 - `src/data/sizeGuide.ts`: tablas y consejos de medidas.
-- `src/brand.config.ts`: configuración central de marca.
+- `src/data/brand.json`: **todos los datos y textos editables** de la marca y de la interfaz.
+- `src/data/brand.schema.json`: esquema con etiquetas en español, tipos y reglas; `docs/CAMPOS.md` es la tabla de campos generada.
+- `src/brand.config.ts`: envoltorio que importa `brand.json` y exporta `BRAND_CONFIG` (no se edita).
+- `src/components/Txt.tsx`: muestra un texto editable y no dibuja nada si está vacío.
 - `netlify/functions/create-preference.ts`: creación de preferencias de Mercado Pago.
 - `netlify/functions/mp-webhook.ts`: recepción y consulta de notificaciones de pago.
 - `server.ts`: Express local para desarrollo y compatibilidad de rutas de API.
@@ -44,7 +47,7 @@ En producción, Netlify redirige las rutas `/api/*` a Netlify Functions, según 
 
 ## Adaptar para un cliente nuevo
 
-Editá `src/brand.config.ts` en este orden:
+Editá `src/data/brand.json` (la tabla completa de campos está en `docs/CAMPOS.md`) en este orden:
 
 - `seo`: sufijo del título, descripción y recurso para compartir en redes.
 - `typography`: familias tipográficas y stylesheet.
@@ -57,6 +60,29 @@ Editá `src/brand.config.ts` en este orden:
 - `announcement`: activación y texto de la franja de anuncio.
 - `hero`: título, bajada, promociones, imagen y mensajes destacados.
 - `copy`: textos del catálogo, checkout, regalo, WhatsApp y pie de página.
+- `ui`: el resto de los textos de la interfaz (carrito, checkout, filtros, ficha de producto, guía de talles, avisos de pago y plantillas de mensajes de WhatsApp).
+
+### Todos los textos son editables (y quitables)
+
+Ningún texto visible está escrito en el código: todo sale de `src/data/brand.json`, incluidos botones, títulos, avisos, etiquetas de accesibilidad y los mensajes de WhatsApp.
+
+- **Cambiar un texto:** editá su valor (por ejemplo `ui.footer.contactTitle` de "Contacto Showroom" a "Contacto").
+- **Quitar un elemento:** dejá su texto **vacío** (`""`); el elemento no se dibuja.
+- **Textos con variables:** `{name}`, `{count}`, `{amount}`, etc. se reemplazan solos; el esquema indica cuáles admite cada texto y `check:config` falla si usás una desconocida.
+- Nombres, descripciones, cuidados y características de productos están en `src/data/products.ts`, las medidas en `src/data/sizeGuide.ts` y los filtros en `src/data/filterOptions.ts` (también datos editables).
+
+Si agregás un componente, sus textos van a `brand.json` y a `brand.schema.json`; `npm run check:texts` lo verifica.
+
+### Datos, validación y pruebas
+
+| Comando | Para qué sirve |
+| --- | --- |
+| `npm run generate:types` | Genera `src/generated/brand.types.ts` desde el esquema (corre solo en `dev` y `build`; el archivo se commitea). |
+| `npm run check:config` | Valida `brand.json` contra el esquema, imágenes, URLs, colores, WhatsApp y variables de texto. |
+| `npm run check:config:strict` | Además exige reemplazar los datos de ejemplo y rechaza los textos de `prototype-markers.json`. **Falla en el prototipo, a propósito.** |
+| `npm run check:texts` | Falla si algún texto visible está escrito en el código en vez de salir de `brand.json`. |
+| `npm run check:render` | Renderiza la aplicación sin navegador y falla ante cualquier excepción. |
+| `npm run docs:fields` | Regenera `docs/CAMPOS.md`. |
 
 Después adaptá `src/data/products.ts`. Cada producto define, entre otros campos, `id`,
 `nombre`, `categoria`, `subcategoria`, `precio`, `precioAnterior`, `tallesDisponibles`,
@@ -120,7 +146,7 @@ no se realiza ningún cobro. No lo uses como configuración de pagos reales.
 El servidor calcula el importe con los precios de `src/data/products.ts`, no con precios
 enviados por el navegador. `src/lib/checkoutPricing.ts` valida productos y cantidades,
 aplica el cupón, calcula el envío express y el descuento por transferencia cuando
-corresponde. Los cupones y reglas comerciales se editan en `BRAND_CONFIG.commerce`.
+corresponde. Los cupones y reglas comerciales se editan en `commerce` (en `brand.json`).
 
 `netlify/functions/health.ts` expone `/api/health` para revisar, sin revelar valores,
 si Netlify ve las variables necesarias para Functions. Configurá las variables privadas
@@ -150,7 +176,7 @@ Revisá el flujo y sus URLs de retorno antes de reemplazar las credenciales por 
 | `MERCADO_PAGO_ACCESS_TOKEN` | Credencial privada de servidor, configurada en Netlify; nunca en el repo ni con `VITE_`. |
 | `APP_URL` | Base de los retornos y notificaciones de pago; fallback `URL`. |
 | `MP_DEMO_MODE` | `false` en el ejemplo; con `true` permite la preferencia simulada sin token en producción. |
-| `BRAND_ICON_BACKGROUND` | Fondo opcional de favicon y Apple Touch Icon; precede a `BRAND_CONFIG.logo.iconBackground`. |
+| `BRAND_ICON_BACKGROUND` | Fondo opcional de favicon y Apple Touch Icon; precede a `logo.iconBackground` de `brand.json`. |
 | `MP_STATEMENT_DESCRIPTOR` | Descriptor opcional del resumen de Mercado Pago; si falta, usa el nombre de marca en mayúsculas. |
 | `PORT` | Puerto del Express local; por defecto `3000`. |
 | `NODE_ENV` / `CONTEXT` | Se usan para detectar contexto de producción y exigir el token. |
@@ -186,10 +212,10 @@ npm run verify:deploy -- https://<sitio>.netlify.app
 vienen de `src/demoBanner.config.ts`; `getDemoLegend` también arma la aclaración del pie.
 Si no hay nombre configurado, se muestra el aviso genérico.
 
-En `BRAND_CONFIG.demo`, `prefillCart` y `prefillCheckout` están desactivados por defecto.
+En `demo` (en `brand.json`), `prefillCart` y `prefillCheckout` están desactivados por defecto.
 Al activar el primero, se precargan tres productos y se aplican los datos demo de regalo
 y cupón. El segundo precarga el formulario con los campos de ejemplo definidos en
-`BRAND_CONFIG.demo.checkout` (nombre, email, teléfono, domicilio, localidad y notas).
+`demo.checkout` (nombre, email, teléfono, domicilio, localidad y notas).
 
 Al entregar a un cliente real, desactivá o quitá esas precargas y reemplazá los datos
 de muestra. Borrá el banner demo y su configuración, el import y render en `src/App.tsx`,
@@ -203,7 +229,7 @@ de servidor necesarias para el contexto de deploy; no subas secretos al reposito
 
 Antes de entregar:
 
-- [ ] Revisá `BRAND_CONFIG`, el catálogo, los talles, los filtros y el contenido de muestra.
+- [ ] Pasá `npm run check:config:strict`, y revisá `brand.json`, el catálogo, los talles, los filtros y el contenido de muestra.
 - [ ] Prepará las fotos y el logo; regenerá íconos y vista previa social si corresponde.
 - [ ] Configurá `VITE_SITE_URL`, `APP_URL` y credenciales de pago en el entorno de Netlify.
 - [ ] Corré `npm run lint`, `npm run check:filters` y `npm run build`.

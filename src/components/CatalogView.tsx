@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
+import { Txt } from './Txt';
 import { PRODUCTS, Product, MAX_CATALOG_PRICE } from '../data/products';
-import { BRAND_CONFIG } from '../brand.config';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { HeroBanner } from './HeroBanner';
 import { FilterSidebar } from './FilterSidebar';
 import { ProductCard } from './ProductCard';
@@ -100,7 +101,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   if (searchQuery.trim()) {
     activeFilterPills.push({
       id: 'search',
-      label: `Buscar: ${searchQuery}`,
+      label: formatText(BRAND_CONFIG.ui.catalog.pillSearch, { query: searchQuery }),
       onRemove: () => onSearchChange(''),
     });
   }
@@ -116,7 +117,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   if (selectedAgeGroup !== 'all') {
     activeFilterPills.push({
       id: 'age',
-      label: selectedAgeGroup === 'recien-nacidos' ? '0-12m' : selectedAgeGroup === 'bebes' ? '1-3 años' : '4-10 años',
+      label: selectedAgeGroup === 'recien-nacidos' ? BRAND_CONFIG.ui.filters.ageNewborn : selectedAgeGroup === 'bebes' ? BRAND_CONFIG.ui.filters.ageBabies : BRAND_CONFIG.ui.filters.ageKids,
       onRemove: () => onSelectAgeGroup('all'),
     });
   }
@@ -133,7 +134,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   if (selectedSize) {
     activeFilterPills.push({
       id: `size-${selectedSize}`,
-      label: `Talle: ${selectedSize}`,
+      label: formatText(BRAND_CONFIG.ui.catalog.pillSize, { size: selectedSize }),
       onRemove: () => onSelectSize(null),
     });
   }
@@ -141,7 +142,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   if (selectedColor) {
     activeFilterPills.push({
       id: `color-${selectedColor}`,
-      label: `Color: ${selectedColor}`,
+      label: formatText(BRAND_CONFIG.ui.catalog.pillColor, { color: selectedColor }),
       onRemove: () => onSelectColor(null),
     });
   }
@@ -157,7 +158,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   if (maxPrice < MAX_CATALOG_PRICE) {
     activeFilterPills.push({
       id: 'price',
-      label: `Hasta $${maxPrice.toLocaleString('es-AR')}`,
+      label: formatText(BRAND_CONFIG.ui.catalog.pillPrice, { price: `$${maxPrice.toLocaleString('es-AR')}` }),
       onRemove: () => onMaxPriceChange(MAX_CATALOG_PRICE),
     });
   }
@@ -182,7 +183,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
           <div className="flex items-center gap-1.5 font-bold text-purple-900/80">
             <span className="flex items-center gap-1">
               <Home className="w-3.5 h-3.5 text-brand-primary" />
-              <span>Inicio</span>
+              <Txt as="span" value={BRAND_CONFIG.ui.catalog.breadcrumbHome} />
             </span>
             <span className="text-purple-300">/</span>
             <span className="text-brand-primary bg-brand-surface-pink px-2.5 py-0.5 rounded-full border border-brand-primary/20 font-extrabold">
@@ -192,15 +193,9 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
 
           <div className="flex items-center gap-3 font-semibold text-purple-900/70 text-xs">
             <span className="inline-flex items-center gap-1.5 bg-brand-surface-green text-emerald-800 px-2.5 py-0.5 rounded-full border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-brand-success animate-ping" />
-              Stock renovado hoy
-            </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5 bg-brand-surface-blue text-sky-800 px-2.5 py-0.5 rounded-full border border-sky-200">
-              ⚡ Envíos express 24/48hs
-            </span>
-            <span className="hidden md:inline-flex items-center gap-1 text-amber-800 bg-brand-secondary-soft px-2.5 py-0.5 rounded-full border border-amber-200 font-bold">
-              ★ 100% Amor garantizado
-            </span>
+              <span className="w-2 h-2 rounded-full bg-brand-success animate-ping" />{BRAND_CONFIG.ui.catalog.badgeStock}</span>
+            <Txt as="span" className="hidden sm:inline-flex items-center gap-1.5 bg-brand-surface-blue text-sky-800 px-2.5 py-0.5 rounded-full border border-sky-200" value={BRAND_CONFIG.ui.catalog.badgeExpress} />
+            <Txt as="span" className="hidden md:inline-flex items-center gap-1 text-amber-800 bg-brand-secondary-soft px-2.5 py-0.5 rounded-full border border-amber-200 font-bold" value={BRAND_CONFIG.ui.catalog.badgeLove} />
           </div>
         </div>
       </div>
@@ -214,11 +209,11 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
           >
             <SlidersHorizontal className="w-4 h-4" />
             <span>
-              Filtrar prendas divertidas {activeFiltersCount > 0 ? `(${activeFiltersCount} activos)` : ''}
+              {BRAND_CONFIG.ui.catalog.filterButton} {activeFiltersCount > 0 ? formatText(BRAND_CONFIG.ui.catalog.activeCount, { count: String(activeFiltersCount) }) : ''}
             </span>
           </button>
           <div className="flex items-center gap-1 px-3 py-1 bg-purple-50 rounded-xl border border-purple-100">
-            <span className="font-extrabold text-xs text-brand-text-muted">{sortedProducts.length} prendas</span>
+            <span className="font-extrabold text-xs text-brand-text-muted">{formatText(BRAND_CONFIG.ui.catalog.productCount, { count: String(sortedProducts.length) })}</span>
           </div>
         </div>
 
@@ -254,9 +249,9 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                   </h1>
                 </div>
                 <p className="text-xs font-semibold text-purple-900/80 flex items-center gap-1.5 flex-wrap">
-                  Prendas suaves, amorosas y listas para jugar •{' '}
+                  {BRAND_CONFIG.ui.catalog.headline}{' '}
                   <span className="bg-brand-surface-pink text-brand-primary px-2 py-0.5 rounded-full font-extrabold">
-                    {sortedProducts.length} modelos disponibles
+                    {formatText(BRAND_CONFIG.ui.catalog.modelsAvailable, { count: String(sortedProducts.length) })}
                   </span>
                 </p>
               </div>
@@ -264,19 +259,17 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
               <div className="flex items-center gap-2 self-end sm:self-center relative z-10">
                 <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-2xl border border-purple-100 shadow-xs">
                   <ArrowUpDown className="w-3.5 h-3.5 text-purple-400" />
-                  <label htmlFor="sortOrderSelect" className="text-xs font-bold text-purple-400">
-                    Ordenar:
-                  </label>
+                  <Txt as="label" htmlFor="sortOrderSelect" className="text-xs font-bold text-purple-400" value={BRAND_CONFIG.ui.catalog.sortLabel} />
                   <select
                     id="sortOrderSelect"
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
                     className="bg-transparent text-xs font-extrabold text-brand-text outline-none cursor-pointer pr-1"
                   >
-                    <option value="populares">Más vendidos ⭐</option>
-                    <option value="menor_precio">Menor precio</option>
-                    <option value="mayor_precio">Mayor precio</option>
-                    <option value="descuento">Mayor descuento %</option>
+                    <option value="populares">{BRAND_CONFIG.ui.catalog.sortPopular}</option>
+                    <option value="menor_precio">{BRAND_CONFIG.ui.catalog.sortPriceAsc}</option>
+                    <option value="mayor_precio">{BRAND_CONFIG.ui.catalog.sortPriceDesc}</option>
+                    <option value="descuento">{BRAND_CONFIG.ui.catalog.sortDiscount}</option>
                   </select>
                 </div>
               </div>
@@ -295,36 +288,28 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                     <span className="text-[10px]">×</span>
                   </button>
                 ))}
-                <button
+                <Txt as="button"
                   type="button"
                   onClick={onResetFilters}
-                  className="ml-auto rounded-full bg-brand-surface-pink px-3 py-1 text-[11px] font-extrabold text-brand-primary hover:bg-brand-surface-pink-strong"
-                >
-                  Limpiar todo
-                </button>
+                  className="ml-auto rounded-full bg-brand-surface-pink px-3 py-1 text-[11px] font-extrabold text-brand-primary hover:bg-brand-surface-pink-strong" value={BRAND_CONFIG.ui.catalog.clearAll} />
               </div>
             )}
 
             {relaxed && sortedProducts.length > 0 && (
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-                <span className="font-bold">No encontramos coincidencias exactas; te mostramos prendas parecidas 💛</span>
-                <button
+                <Txt as="span" className="font-bold" value={BRAND_CONFIG.ui.catalog.similarResults} />
+                <Txt as="button"
                   type="button"
                   onClick={() => onSearchChange('')}
-                  className="rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-amber-800 border border-amber-200 hover:bg-amber-100"
-                >
-                  Limpiar búsqueda
-                </button>
+                  className="rounded-full bg-white px-3 py-1.5 text-[11px] font-extrabold text-amber-800 border border-amber-200 hover:bg-amber-100" value={BRAND_CONFIG.ui.catalog.clearSearch} />
               </div>
             )}
 
             {sortedProducts.length === 0 ? (
               <div className="w-full bg-white rounded-3xl p-10 border-2 border-purple-100 text-center flex flex-col items-center gap-3">
                 <div className="w-16 h-16 rounded-full bg-brand-secondary-soft text-amber-800 flex items-center justify-center text-2xl">🔍</div>
-                <h3 className="text-base font-extrabold text-brand-text">No encontramos prendas con esos filtros</h3>
-                <p className="text-xs text-purple-900/70 font-medium max-w-sm">
-                  Probá restableciendo los filtros o buscando con otros términos para ver toda la colección.
-                </p>
+                <Txt as="h3" className="text-base font-extrabold text-brand-text" value={BRAND_CONFIG.ui.catalog.emptyTitle} />
+                <Txt as="p" className="text-xs text-purple-900/70 font-medium max-w-sm" value={BRAND_CONFIG.ui.catalog.emptyDescription} />
                 <div className="flex flex-wrap justify-center gap-2">
                   {activeFilterPills.map((filter) => (
                     <button
@@ -338,20 +323,14 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                   ))}
                 </div>
                 <div className="flex flex-wrap justify-center gap-2">
-                  <button
+                  <Txt as="button"
                     type="button"
                     onClick={onResetFilters}
-                    className="mt-2 px-5 py-2.5 rounded-full bg-brand-primary text-white font-extrabold text-xs shadow-xs hover:bg-brand-primary-hover transition-all cursor-pointer"
-                  >
-                    Limpiar todo
-                  </button>
-                  <button
+                    className="mt-2 px-5 py-2.5 rounded-full bg-brand-primary text-white font-extrabold text-xs shadow-xs hover:bg-brand-primary-hover transition-all cursor-pointer" value={BRAND_CONFIG.ui.catalog.clearAll} />
+                  <Txt as="button"
                     type="button"
                     onClick={() => onResetFilters()}
-                    className="mt-2 px-5 py-2.5 rounded-full bg-purple-100 text-purple-900 font-extrabold text-xs shadow-xs hover:bg-purple-200 transition-all cursor-pointer"
-                  >
-                    Ver todo el catálogo
-                  </button>
+                    className="mt-2 px-5 py-2.5 rounded-full bg-purple-100 text-purple-900 font-extrabold text-xs shadow-xs hover:bg-purple-200 transition-all cursor-pointer" value={BRAND_CONFIG.ui.catalog.viewAll} />
                 </div>
               </div>
             ) : (
@@ -364,8 +343,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
 
             <div className="mt-4 bg-white/90 backdrop-blur-md p-4 rounded-3xl shadow-xs border border-purple-100 flex flex-col sm:flex-row items-center justify-between gap-3">
               <p className="text-xs font-bold text-purple-800">
-                Página <strong className="text-brand-text bg-brand-secondary-soft px-2 py-0.5 rounded-md">1</strong> de 1 •
-                Mostrando {sortedProducts.length} de {PRODUCTS.length} prendas mimadas
+                {formatText(BRAND_CONFIG.ui.catalog.pagination, { page: '1', shown: String(sortedProducts.length), total: String(PRODUCTS.length) })}
               </p>
               <div className="flex items-center gap-1 font-bold text-xs">
                 <button type="button" disabled className="w-8 h-8 rounded-xl bg-purple-50 text-purple-300 flex items-center justify-center cursor-not-allowed border border-purple-100">‹</button>
@@ -382,21 +360,19 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                 <div>
                   <div className="flex items-center gap-1.5">
                     <span className="text-base">📏</span>
-                    <h4 className="font-extrabold text-base sm:text-lg text-emerald-950">¿Dudas con el talle de tu peque?</h4>
+                    <Txt as="h4" className="font-extrabold text-base sm:text-lg text-emerald-950" value={BRAND_CONFIG.ui.catalog.sizeCtaTitle} />
                   </div>
                   <p className="text-xs text-emerald-900/80 font-medium mt-0.5">{BRAND_CONFIG.copy.sizeAssistancePrompt}</p>
                 </div>
               </div>
 
               <a
-                href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(`Hola ${BRAND_CONFIG.shortName}, ${BRAND_CONFIG.copy.whatsappSizeMessage}`)}`}
+                href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(formatText(BRAND_CONFIG.ui.whatsapp.greeting, { name: BRAND_CONFIG.shortName, message: BRAND_CONFIG.copy.whatsappSizeMessage }))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full md:w-auto shrink-0 px-6 py-3 rounded-full bg-brand-whatsapp hover:bg-emerald-500 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:scale-105 active:scale-95 transition-all text-center"
               >
-                <MessageCircle className="w-4 h-4" />
-                Consultá por talle
-              </a>
+                <MessageCircle className="w-4 h-4" />{BRAND_CONFIG.ui.catalog.sizeCtaButton}</a>
             </div>
           </section>
         </div>
