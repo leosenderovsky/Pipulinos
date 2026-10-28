@@ -1,4 +1,6 @@
 import React from 'react';
+import { Txt } from './Txt';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { CATALOG_CATEGORIES, FABRICS_LIST } from '../data/products';
 import { COLOR_SWATCHES } from '../data/filterOptions';
 import { Sparkles, X, Ruler } from 'lucide-react';
@@ -54,21 +56,18 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="font-extrabold text-base text-brand-text">Filtros Activos</h2>
+            <Txt as="h2" className="font-extrabold text-base text-brand-text" value={BRAND_CONFIG.ui.filters.activeTitle} />
             <span className="text-[11px] font-semibold text-purple-400 block -mt-0.5">
-              {activeFiltersCount > 0 ? `${activeFiltersCount} seleccionados` : 'Personalizá tu búsqueda'}
+              {activeFiltersCount > 0 ? formatText(BRAND_CONFIG.ui.filters.selectedCount, { count: String(activeFiltersCount) }) : BRAND_CONFIG.ui.filters.activeEmpty}
             </span>
           </div>
         </div>
 
         {activeFiltersCount > 0 && (
-          <button
+          <Txt as="button"
             type="button"
             onClick={onResetFilters}
-            className="font-bold text-xs text-brand-primary hover:text-brand-text bg-brand-surface-pink hover:bg-brand-secondary-soft px-2.5 py-1 rounded-full transition-all cursor-pointer"
-          >
-            Limpiar
-          </button>
+            className="font-bold text-xs text-brand-primary hover:text-brand-text bg-brand-surface-pink hover:bg-brand-secondary-soft px-2.5 py-1 rounded-full transition-all cursor-pointer" value={BRAND_CONFIG.ui.filters.clear} />
         )}
       </div>
 
@@ -82,7 +81,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 type="button"
                 onClick={() => onSelectCategory('todos')}
                 className="hover:text-black"
-                title="Quitar filtro"
+                title={BRAND_CONFIG.ui.filters.removeLabel}
               >
                 <X className="w-3 h-3" />
               </button>
@@ -92,15 +91,15 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           {selectedAgeGroup !== 'all' && (
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-brand-surface-blue border border-sky-300 text-sky-800 font-bold text-xs">
               {selectedAgeGroup === 'recien-nacidos'
-                ? '0-12m'
+                ? BRAND_CONFIG.ui.filters.ageNewborn
                 : selectedAgeGroup === 'bebes'
-                ? '1-3 años'
-                : '4-10 años'}
+                ? BRAND_CONFIG.ui.filters.ageBabies
+                : BRAND_CONFIG.ui.filters.ageKids}
               <button
                 type="button"
                 onClick={() => onSelectAgeGroup('all')}
                 className="hover:text-black"
-                title="Quitar filtro"
+                title={BRAND_CONFIG.ui.filters.removeLabel}
               >
                 <X className="w-3 h-3" />
               </button>
@@ -109,12 +108,12 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
           {selectedSize && (
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-brand-secondary-soft border border-amber-300 text-amber-900 font-bold text-xs">
-              Talle: {selectedSize}
+              {formatText(BRAND_CONFIG.ui.catalog.pillSize, { size: selectedSize })}
               <button
                 type="button"
                 onClick={() => onSelectSize(null)}
                 className="hover:text-black"
-                title="Quitar filtro"
+                title={BRAND_CONFIG.ui.filters.removeLabel}
               >
                 <X className="w-3 h-3" />
               </button>
@@ -128,7 +127,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 type="button"
                 onClick={() => onSelectColor(null)}
                 className="hover:text-black"
-                title="Quitar filtro"
+                title={BRAND_CONFIG.ui.filters.removeLabel}
               >
                 <X className="w-3 h-3" />
               </button>
@@ -141,12 +140,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="py-3 border-t border-purple-50">
         <div className="flex items-center justify-between mb-2">
           <span className="font-extrabold text-xs uppercase tracking-wider text-purple-900 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-brand-primary" />
-            Categorías
-          </span>
-          <span className="text-[10px] font-bold text-brand-text-muted bg-purple-50 px-2 py-0.5 rounded-full">
-            Showroom
-          </span>
+            <span className="w-2 h-2 rounded-full bg-brand-primary" />{BRAND_CONFIG.ui.filters.categories}</span>
+          <Txt as="span" className="text-[10px] font-bold text-brand-text-muted bg-purple-50 px-2 py-0.5 rounded-full" value={BRAND_CONFIG.ui.filters.categoriesBadge} />
         </div>
 
         <div className="flex flex-col gap-1 text-xs font-semibold">
@@ -186,24 +181,20 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="py-3 border-t border-purple-50">
         <div className="flex items-center justify-between mb-2">
           <span className="font-extrabold text-xs uppercase tracking-wider text-purple-900 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-brand-accent-blue" />
-            Talles por Etapa
-          </span>
+            <span className="w-2 h-2 rounded-full bg-brand-accent-blue" />{BRAND_CONFIG.ui.filters.sizesTitle}</span>
           <button
             type="button"
             onClick={onOpenSizeGuide}
             className="text-[11px] font-bold text-brand-accent-blue hover:underline flex items-center gap-0.5 cursor-pointer"
           >
             <Ruler className="w-3 h-3" />
-            <span>Guía</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.filters.sizeGuideLink} />
           </button>
         </div>
 
         {/* Subgroup Baby */}
         <div className="mb-2.5 bg-purple-50/50 p-2.5 rounded-2xl border border-purple-100/60">
-          <span className="text-[11px] font-extrabold text-purple-900 block mb-1.5 flex items-center gap-1">
-            🍼 Etapa Bebé (Meses)
-          </span>
+          <Txt as="span" className="text-[11px] font-extrabold text-purple-900 block mb-1.5 flex items-center gap-1" value={BRAND_CONFIG.ui.filters.babyStage} />
           <div className="grid grid-cols-4 gap-1 text-xs text-center font-bold">
             {BABY_SIZES.map((sz) => {
               const active = selectedSize === sz;
@@ -227,9 +218,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
         {/* Subgroup Kids */}
         <div className="bg-amber-50/50 p-2.5 rounded-2xl border border-amber-100/60">
-          <span className="text-[11px] font-extrabold text-amber-900 block mb-1.5 flex items-center gap-1">
-            🎈 Etapa Niños (Años)
-          </span>
+          <Txt as="span" className="text-[11px] font-extrabold text-amber-900 block mb-1.5 flex items-center gap-1" value={BRAND_CONFIG.ui.filters.kidsStage} />
           <div className="grid grid-cols-5 gap-1 text-xs text-center font-bold">
             {KIDS_SIZES.map((sz) => {
               const active = selectedSize === sz;
@@ -255,9 +244,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {/* Section: Color Palettes Swatches */}
       <div className="py-3 border-t border-purple-50">
         <span className="font-extrabold text-xs uppercase tracking-wider text-purple-900 block mb-2 flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-brand-success" />
-          Paleta de Colores
-        </span>
+          <span className="w-2 h-2 rounded-full bg-brand-success" />{BRAND_CONFIG.ui.filters.colors}</span>
         <div className="flex flex-wrap items-center gap-2">
           {COLOR_SWATCHES.map((color) => {
             const isSelected = selectedColor === color.id;
@@ -281,12 +268,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       <div className="py-3 border-t border-purple-50">
         <div className="flex items-center justify-between mb-1.5">
           <span className="font-extrabold text-xs uppercase tracking-wider text-purple-900 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-brand-secondary" />
-            Rango de Precio
-          </span>
-          <span className="text-[11px] font-extrabold text-brand-primary bg-brand-surface-pink px-2 py-0.5 rounded-full">
-            ARS ($)
-          </span>
+            <span className="w-2 h-2 rounded-full bg-brand-secondary" />{BRAND_CONFIG.ui.filters.price}</span>
+          <Txt as="span" className="text-[11px] font-extrabold text-brand-primary bg-brand-surface-pink px-2 py-0.5 rounded-full" value={BRAND_CONFIG.ui.filters.priceCurrency} />
         </div>
 
         <div className="py-2">
@@ -303,11 +286,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
         <div className="grid grid-cols-2 gap-2 mt-1">
           <div className="bg-purple-50 px-2.5 py-1.5 rounded-xl flex flex-col border border-purple-100">
-            <span className="text-[10px] font-bold text-purple-400">Mínimo</span>
+            <Txt as="span" className="text-[10px] font-bold text-purple-400" value={BRAND_CONFIG.ui.filters.priceMin} />
             <span className="font-extrabold text-xs text-brand-text">$4.000</span>
           </div>
           <div className="bg-brand-surface-pink/70 px-2.5 py-1.5 rounded-xl flex flex-col text-right border border-brand-primary/20">
-            <span className="text-[10px] font-bold text-brand-primary">Hasta</span>
+            <Txt as="span" className="text-[10px] font-bold text-brand-primary" value={BRAND_CONFIG.ui.filters.priceUpTo} />
             <span className="font-extrabold text-xs text-brand-primary">
               ${maxPrice.toLocaleString('es-AR')}
             </span>
@@ -318,9 +301,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {/* Section: Fabric & Comfort Badges */}
       <div className="pt-3 border-t border-purple-50">
         <span className="font-extrabold text-xs uppercase tracking-wider text-purple-900 block mb-2 flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-brand-text-muted" />
-          Telas &amp; Confort
-        </span>
+          <span className="w-2 h-2 rounded-full bg-brand-text-muted" />{BRAND_CONFIG.ui.filters.fabrics}</span>
         <div className="flex flex-col gap-1.5 text-xs font-semibold text-purple-900">
           {FABRICS_LIST.map((fabric) => {
             const checked = selectedFabrics.includes(fabric);

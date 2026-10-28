@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Txt } from './Txt';
 import { useCart } from '../context/CartContext';
-import { BRAND_CONFIG } from '../brand.config';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { ProductPicture } from './ProductPicture';
 import {
   ArrowLeft,
@@ -56,7 +57,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
   const [city, setCity] = useState(demoCheckout?.city ?? '');
   const [deliveryNotes, setDeliveryNotes] = useState(
     isGiftPackaging && giftDedication.trim()
-      ? `Incluir dedicatoria: "${giftDedication}"`
+      ? formatText(BRAND_CONFIG.ui.checkout.dedicationNote, { text: giftDedication })
       : demoCheckout?.deliveryNotes ?? ''
   );
   const [fieldErrors, setFieldErrors] = useState<CheckoutFieldErrors>({});
@@ -96,17 +97,17 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
 
   const validateCheckout = () => {
     const errors: CheckoutFieldErrors = {};
-    if (!fullName.trim()) errors.name = 'Ingresá el nombre y apellido de quien recibe.';
+    if (!fullName.trim()) errors.name = BRAND_CONFIG.ui.checkout.errors.name;
     if (!email.trim()) {
-      errors.email = 'Ingresá un email.';
+      errors.email = BRAND_CONFIG.ui.checkout.errors.emailRequired;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      errors.email = 'Ingresá un email válido.';
+      errors.email = BRAND_CONFIG.ui.checkout.errors.emailInvalid;
     }
-    if (!phone.trim()) errors.phone = 'Ingresá un teléfono de contacto.';
+    if (!phone.trim()) errors.phone = BRAND_CONFIG.ui.checkout.errors.phone;
     if (shippingMethod !== 'pickup') {
-      if (!streetAddress.trim()) errors.streetAddress = 'Ingresá la calle y el número.';
-      if (!zipCode.trim()) errors.zipCode = 'Ingresá el código postal.';
-      if (!city.trim()) errors.city = 'Ingresá la localidad.';
+      if (!streetAddress.trim()) errors.streetAddress = BRAND_CONFIG.ui.checkout.errors.street;
+      if (!zipCode.trim()) errors.zipCode = BRAND_CONFIG.ui.checkout.errors.zip;
+      if (!city.trim()) errors.city = BRAND_CONFIG.ui.checkout.errors.city;
     }
 
     setFieldErrors(errors);
@@ -158,15 +159,15 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
         const details = errorData.details?.message || errorData.details || errorData.error;
         throw new Error(
           response.status === 503
-            ? 'Mercado Pago no está configurado. Probá más tarde o contactanos por WhatsApp.'
-            : `No pudimos iniciar el pago (${response.status})${details ? `: ${JSON.stringify(details)}` : '.'}`
+            ? BRAND_CONFIG.ui.checkout.errors.mpNotConfigured
+            : formatText(BRAND_CONFIG.ui.checkout.errors.paymentFailed, { status: String(response.status), details: details ? `: ${JSON.stringify(details)}` : '.' })
         );
       }
 
       const data = await response.json();
       const initPoint = data.init_point || data.sandbox_init_point;
       if (!initPoint || !data.preferenceId) {
-        throw new Error('Mercado Pago no devolvió una preferencia de pago válida.');
+        throw new Error(BRAND_CONFIG.ui.checkout.errors.mpInvalidPreference);
       }
 
       setMpPreferenceResult({
@@ -178,7 +179,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
       // Si estamos en un navegador regular fuera de un iframe rígido, redirigimos
       // Para asegurar una experiencia fluida sin romper el contenedor, mostramos el modal interactivo
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Error inesperado al iniciar el pago.';
+      const message = err instanceof Error ? err.message : BRAND_CONFIG.ui.checkout.errors.mpUnexpected;
       setErrorMessage(message);
     } finally {
       setIsProcessing(false);
@@ -192,7 +193,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     if (!validateCheckout()) return;
 
     const itemsText = items
-      .map((i) => `• ${i.quantity}x ${i.product.nombre} (Talle: ${i.size} | Color: ${i.color.name}) - $${(i.unitPrice * i.quantity).toLocaleString('es-AR')}`)
+      .map((i) => formatText(BRAND_CONFIG.ui.checkout.whatsapp.itemLine, { quantity: String(i.quantity), name: i.product.nombre, size: i.size, color: i.color.name, price: `$${(i.unitPrice * i.quantity).toLocaleString('es-AR')}` }))
       .join('\n');
 
     const deliveryAddress = [streetAddress, apartment, city, zipCode]
@@ -201,26 +202,25 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
       .join(', ');
     const shippingText =
       shippingMethod === 'pickup'
-        ? `Retiro sin cargo en Showroom (${BRAND_CONFIG.contact.showroomAddress})`
+        ? formatText(BRAND_CONFIG.ui.checkout.whatsapp.pickup, { address: BRAND_CONFIG.contact.showroomAddress })
         : shippingMethod === 'express'
-        ? `Envío Express 24hs a ${deliveryAddress} ($${shippingCost.toLocaleString('es-AR')})`
-        : `Envío Estándar GRATIS a ${deliveryAddress}`;
+        ? formatText(BRAND_CONFIG.ui.checkout.whatsapp.express, { address: deliveryAddress, price: `$${shippingCost.toLocaleString('es-AR')}` })
+        : formatText(BRAND_CONFIG.ui.checkout.whatsapp.standard, { address: deliveryAddress });
 
-    const message = `🛍️ *${BRAND_CONFIG.copy.checkoutOrderHeading} ${BRAND_CONFIG.shortName.toUpperCase()} SHOWROOM*
-----------------------------------------
-*Cliente:* ${fullName.trim()}
-*WhatsApp:* ${phone.trim()}
-*Email:* ${email.trim()}
-
-*Prendas elegidas:*
-${itemsText}
-
-*Entrega:* ${shippingText}
-${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
-*Total lista:* $${finalTotal.toLocaleString('es-AR')}
-*TOTAL CON 10% OFF TRANSFERENCIA:* $${transferTotal.toLocaleString('es-AR')} (Ahorrás $${transferSavings.toLocaleString('es-AR')})
-
-¡Hola! Les paso mi pedido para confirmar datos bancarios de transferencia y coordinar la entrega. ¡Muchas gracias! 💕`;
+    const message = formatText(BRAND_CONFIG.ui.checkout.whatsapp.message, {
+      heading: BRAND_CONFIG.copy.checkoutOrderHeading,
+      name: BRAND_CONFIG.shortName.toUpperCase(),
+      customer: fullName.trim(),
+      phone: phone.trim(),
+      email: email.trim(),
+      items: itemsText,
+      delivery: shippingText,
+      notes: deliveryNotes.trim() ? formatText(BRAND_CONFIG.ui.checkout.whatsapp.notes, { notes: deliveryNotes.trim() }) : '',
+      total: `$${finalTotal.toLocaleString('es-AR')}`,
+      percent: String(BRAND_CONFIG.commerce.transferDiscountPercent),
+      transferTotal: `$${transferTotal.toLocaleString('es-AR')}`,
+      savings: `$${transferSavings.toLocaleString('es-AR')}`,
+    });
 
     const encoded = encodeURIComponent(message);
     const waUrl = `https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encoded}`;
@@ -229,7 +229,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
     window.open(waUrl, '_blank', 'noopener,noreferrer');
 
     // Registrar pedido exitoso
-    onOrderSuccess(`WA-${Date.now().toString().slice(-6)}`, 'WhatsApp & Transferencia');
+    onOrderSuccess(`WA-${Date.now().toString().slice(-6)}`, BRAND_CONFIG.ui.checkout.paymentWhatsapp);
     clearCart();
   };
 
@@ -239,7 +239,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
         {/* Minimalist Checkout Header */}
         <header className="w-full flex flex-col bg-white rounded-3xl shadow-sm border-2 border-purple-100 overflow-hidden">
           <div className="w-full bg-gradient-to-r from-brand-secondary via-brand-primary-hover to-brand-primary text-white py-2 px-4 text-center text-xs font-bold flex items-center justify-center gap-2">
-            <span>✨ Compra 100% Segura • 3 y 6 cuotas sin interés • Despachos garantizados a todo el país ✨</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.checkout.banner} />
           </div>
 
           <div className="w-full px-4 py-4 grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 sm:flex sm:justify-between sm:gap-4 sm:px-6">
@@ -249,7 +249,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
               className="col-start-1 row-start-1 inline-flex items-center gap-1.5 text-purple-900/80 hover:text-brand-primary font-bold text-xs transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Volver al carrito</span>
+              <Txt as="span" value={BRAND_CONFIG.ui.checkout.backToCart} />
             </button>
 
             <img
@@ -265,9 +265,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
             <div className="col-start-2 row-start-1 flex items-center gap-2 bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-100">
               <ShieldCheck className="w-4 h-4 text-brand-primary" />
               <div className="flex flex-col text-left">
-                <span className="font-extrabold text-[10px] text-brand-text uppercase leading-tight">
-                  Compra Segura
-                </span>
+                <Txt as="span" className="font-extrabold text-[10px] text-brand-text uppercase leading-tight" value={BRAND_CONFIG.ui.checkout.secureBadge} />
                 <span className="text-[9px] text-purple-400 leading-tight">SSL 256-bit</span>
               </div>
             </div>
@@ -280,19 +278,19 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
             <span className="w-5 h-5 rounded-full bg-white text-brand-primary text-[11px] flex items-center justify-center font-extrabold">
               1
             </span>
-            <span>1. Envío</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.checkout.step1} />
           </div>
           <div className="flex items-center justify-center gap-2 py-2 px-3 bg-brand-surface-blue text-brand-accent-blue-dark rounded-full shadow-xs text-xs font-bold">
             <span className="w-5 h-5 rounded-full bg-brand-accent-blue-dark text-white text-[11px] flex items-center justify-center font-extrabold">
               2
             </span>
-            <span>2. Pago</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.checkout.step2} />
           </div>
           <div className="flex items-center justify-center gap-2 py-2 px-3 bg-purple-100/60 text-purple-400 rounded-full text-xs font-bold">
             <span className="w-5 h-5 rounded-full bg-purple-200 text-purple-700 text-[11px] flex items-center justify-center font-extrabold">
               3
             </span>
-            <span>3. Confirmación</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.checkout.step3} />
           </div>
         </div>
 
@@ -307,17 +305,15 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                   <span className="w-7 h-7 rounded-xl bg-brand-surface-pink text-brand-primary font-extrabold text-xs flex items-center justify-center">
                     1
                   </span>
-                  <h2 className="font-extrabold text-base text-brand-text">Contacto y Envío</h2>
+                  <Txt as="h2" className="font-extrabold text-base text-brand-text" value={BRAND_CONFIG.ui.checkout.contactTitle} />
                 </div>
-                <span className="bg-brand-secondary-soft text-amber-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase">
-                  Paso 1 de 2
-                </span>
+                <Txt as="span" className="bg-brand-secondary-soft text-amber-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase" value={BRAND_CONFIG.ui.checkout.stepOfTwo} />
               </div>
 
               {/* Contact Fields */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div className="space-y-1">
-                  <label className="font-extrabold text-xs text-purple-900">Email para confirmación</label>
+                  <Txt as="label" className="font-extrabold text-xs text-purple-900" value={BRAND_CONFIG.ui.checkout.emailLabel} />
                   <input
                     id="checkout-email"
                     type="email"
@@ -335,7 +331,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-extrabold text-xs text-purple-900">Teléfono celular / WhatsApp</label>
+                  <Txt as="label" className="font-extrabold text-xs text-purple-900" value={BRAND_CONFIG.ui.checkout.phoneLabel} />
                   <input
                     id="checkout-phone"
                     type="tel"
@@ -351,16 +347,12 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                   />
                   {fieldErrors.phone && <p id="checkout-phone-error" role="alert" className="text-xs text-rose-700">{fieldErrors.phone}</p>}
                   <p className="text-[10px] text-brand-whatsapp font-bold flex items-center gap-1 mt-0.5">
-                    <MessageCircle className="w-3 h-3" />
-                    Te enviaremos el código de seguimiento por WhatsApp
-                  </p>
+                    <MessageCircle className="w-3 h-3" />{BRAND_CONFIG.ui.checkout.phoneHelp}</p>
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="font-extrabold text-xs text-purple-900">
-                  Nombre y Apellido de quien recibe
-                </label>
+                <Txt as="label" className="font-extrabold text-xs text-purple-900" value={BRAND_CONFIG.ui.checkout.nameLabel} />
                 <input
                   id="checkout-name"
                   type="text"
@@ -379,9 +371,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
 
               {/* Delivery Methods Selector */}
               <div className="space-y-2 pt-2">
-                <label className="font-extrabold text-xs text-purple-900">
-                  Seleccioná cómo recibir tu pedido:
-                </label>
+                <Txt as="label" className="font-extrabold text-xs text-purple-900" value={BRAND_CONFIG.ui.checkout.deliveryPrompt} />
 
                 <div className="space-y-2">
                   {/* Standard Free */}
@@ -403,14 +393,10 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                       />
                       <div>
                         <div className="font-extrabold text-xs text-brand-text flex items-center gap-2">
-                          <span>Envío a domicilio Estándar</span>
-                          <span className="bg-brand-secondary-soft text-amber-900 text-[10px] px-2 py-0.2 rounded-full font-bold">
-                            📦 3 a 5 días
-                          </span>
+                          <Txt as="span" value={BRAND_CONFIG.ui.checkout.standardTitle} />
+                          <Txt as="span" className="bg-brand-secondary-soft text-amber-900 text-[10px] px-2 py-0.2 rounded-full font-bold" value={BRAND_CONFIG.ui.checkout.standardBadge} />
                         </div>
-                        <p className="text-[11px] text-purple-900/60 font-medium">
-                          Por Correo Argentino a todo el país
-                        </p>
+                        <Txt as="p" className="text-[11px] text-purple-900/60 font-medium" value={BRAND_CONFIG.ui.checkout.standardText} />
                       </div>
                     </div>
                     <span className="font-extrabold text-xs text-brand-primary uppercase">GRATIS</span>
@@ -435,14 +421,10 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                       />
                       <div>
                         <div className="font-extrabold text-xs text-brand-text flex items-center gap-2">
-                          <span>Envío Express 24hs CABA/GBA</span>
-                          <span className="bg-brand-surface-blue text-brand-accent-blue-dark text-[10px] px-2 py-0.2 rounded-full font-bold">
-                            ⚡ Llega mañana
-                          </span>
+                          <Txt as="span" value={BRAND_CONFIG.ui.checkout.expressTitle} />
+                          <Txt as="span" className="bg-brand-surface-blue text-brand-accent-blue-dark text-[10px] px-2 py-0.2 rounded-full font-bold" value={BRAND_CONFIG.ui.checkout.expressBadge} />
                         </div>
-                        <p className="text-[11px] text-purple-900/60 font-medium">
-                          Moto mensajería privada puerta a puerta
-                        </p>
+                        <Txt as="p" className="text-[11px] text-purple-900/60 font-medium" value={BRAND_CONFIG.ui.checkout.expressText} />
                       </div>
                     </div>
                     <span className="font-extrabold text-xs text-brand-text">
@@ -469,17 +451,17 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                       />
                       <div>
                         <div className="font-extrabold text-xs text-brand-text flex items-center gap-2">
-                          <span>Retiro en Showroom {BRAND_CONFIG.shortName}</span>
+                          <span>{formatText(BRAND_CONFIG.ui.checkout.pickupTitle, { name: BRAND_CONFIG.shortName })}</span>
                           <span className="bg-brand-surface-purple text-brand-text-muted text-[10px] px-2 py-0.2 rounded-full font-bold">
                             📍 {BRAND_CONFIG.contact.showroomAddress}
                           </span>
                         </div>
                         <p className="text-[11px] text-purple-900/60 font-medium">
-                          {BRAND_CONFIG.contact.showroomHours} (Listo en 2hs)
+                          {formatText(BRAND_CONFIG.ui.checkout.pickupHours, { hours: BRAND_CONFIG.contact.showroomHours })}
                         </p>
                       </div>
                     </div>
-                    <span className="font-extrabold text-xs text-amber-800 uppercase">SIN CARGO</span>
+                    <Txt as="span" className="font-extrabold text-xs text-amber-800 uppercase" value={BRAND_CONFIG.ui.checkout.free} />
                   </label>
                 </div>
               </div>
@@ -488,7 +470,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
               {shippingMethod !== 'pickup' && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                   <div className="sm:col-span-2 space-y-1">
-                    <label className="text-[11px] font-extrabold text-purple-900">Calle y Altura</label>
+                    <Txt as="label" className="text-[11px] font-extrabold text-purple-900" value={BRAND_CONFIG.ui.checkout.streetLabel} />
                     <input
                       id="checkout-street"
                       type="text"
@@ -506,7 +488,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] font-extrabold text-purple-900">Piso / Depto</label>
+                    <Txt as="label" className="text-[11px] font-extrabold text-purple-900" value={BRAND_CONFIG.ui.checkout.apartmentLabel} />
                     <input
                       type="text"
                       value={apartment}
@@ -517,7 +499,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[11px] font-extrabold text-purple-900">Código Postal</label>
+                    <Txt as="label" className="text-[11px] font-extrabold text-purple-900" value={BRAND_CONFIG.ui.checkout.zipLabel} />
                     <input
                       id="checkout-zip"
                       type="text"
@@ -535,7 +517,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                   </div>
 
                   <div className="sm:col-span-2 space-y-1">
-                    <label className="text-[11px] font-extrabold text-purple-900">Ciudad / Localidad</label>
+                    <Txt as="label" className="text-[11px] font-extrabold text-purple-900" value={BRAND_CONFIG.ui.checkout.cityLabel} />
                     <input
                       id="checkout-city"
                       type="text"
@@ -556,9 +538,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
 
               {/* Delivery / Gift Indications */}
               <div className="space-y-1 pt-1">
-                <label className="text-[11px] font-extrabold text-purple-900">
-                  Indicaciones para entrega o dedicatoria para regalo
-                </label>
+                <Txt as="label" className="text-[11px] font-extrabold text-purple-900" value={BRAND_CONFIG.ui.checkout.notesLabel} />
                 <input
                   type="text"
                   value={deliveryNotes}
@@ -576,11 +556,9 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                   <span className="w-7 h-7 rounded-xl bg-brand-surface-pink text-brand-primary font-extrabold text-xs flex items-center justify-center">
                     2
                   </span>
-                  <h2 className="font-extrabold text-base text-brand-text">Selección del Medio de Pago</h2>
+                  <Txt as="h2" className="font-extrabold text-base text-brand-text" value={BRAND_CONFIG.ui.checkout.paymentTitle} />
                 </div>
-                <span className="font-extrabold text-[10px] text-brand-accent-blue-dark bg-brand-surface-blue px-2.5 py-0.5 rounded-full uppercase">
-                  Pago Seguro
-                </span>
+                <Txt as="span" className="font-extrabold text-[10px] text-brand-accent-blue-dark bg-brand-surface-blue px-2.5 py-0.5 rounded-full uppercase" value={BRAND_CONFIG.ui.checkout.paymentBadge} />
               </div>
 
               {/* OPTION A: Mercado Pago Checkout Pro */}
@@ -600,51 +578,28 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                       onChange={() => setPaymentGateway('mercadopago')}
                       className="accent-brand-payment w-4 h-4 cursor-pointer"
                     />
-                    <span className="font-extrabold text-sm text-brand-text">
-                      Mercado Pago Checkout Pro
-                    </span>
+                    <Txt as="span" className="font-extrabold text-sm text-brand-text" value={BRAND_CONFIG.ui.checkout.mpTitle} />
                   </label>
-                  <span className="bg-brand-primary text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">
-                    Opción Recomendada
-                  </span>
+                  <Txt as="span" className="bg-brand-primary text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase" value={BRAND_CONFIG.ui.checkout.mpRecommended} />
                 </div>
 
-                <p className="text-xs text-purple-900/80 font-medium leading-relaxed pl-6">
-                  Aboná de forma 100% segura mediante tus tarjetas bancarias, dinero en cuenta o
-                  puntos de pago en efectivo.
-                </p>
+                <Txt as="p" className="text-xs text-purple-900/80 font-medium leading-relaxed pl-6" value={BRAND_CONFIG.ui.checkout.mpText} />
 
                 {/* Accepted payment badges */}
                 <div className="flex flex-wrap items-center gap-1.5 pt-3 pl-6">
-                  <span className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs">
-                    💳 Visa
-                  </span>
-                  <span className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs">
-                    💳 Mastercard
-                  </span>
-                  <span className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs">
-                    💳 Amex
-                  </span>
-                  <span className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs">
-                    🟠 Naranja
-                  </span>
-                  <span className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs">
-                    🏧 Débito
-                  </span>
-                  <span className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs">
-                    🏪 Rapipago / Pago Fácil
-                  </span>
-                  <span className="bg-sky-100 text-brand-payment font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-sky-200 shadow-xs">
-                    💙 Saldo Mercado Pago
-                  </span>
+                  <Txt as="span" className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs" value={BRAND_CONFIG.ui.checkout.methodVisa} />
+                  <Txt as="span" className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs" value={BRAND_CONFIG.ui.checkout.methodMastercard} />
+                  <Txt as="span" className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs" value={BRAND_CONFIG.ui.checkout.methodAmex} />
+                  <Txt as="span" className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs" value={BRAND_CONFIG.ui.checkout.methodNaranja} />
+                  <Txt as="span" className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs" value={BRAND_CONFIG.ui.checkout.methodDebit} />
+                  <Txt as="span" className="bg-white text-purple-900 font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-purple-100 shadow-xs" value={BRAND_CONFIG.ui.checkout.methodCash} />
+                  <Txt as="span" className="bg-sky-100 text-brand-payment font-extrabold text-[10px] px-2.5 py-1 rounded-lg border border-sky-200 shadow-xs" value={BRAND_CONFIG.ui.checkout.methodBalance} />
                 </div>
 
                 {/* Installments Selector */}
                 {paymentGateway === 'mercadopago' && (
                   <div className="space-y-2 pt-4 pl-6">
-                    <label className="font-extrabold text-xs text-brand-text">
-                      Seleccioná plan de cuotas:
-                    </label>
+                    <Txt as="label" className="font-extrabold text-xs text-brand-text" value={BRAND_CONFIG.ui.checkout.installmentsPrompt} />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       <label
                         onClick={() => setSelectedInstallmentPlan('1_payment')}
@@ -662,7 +617,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                             onChange={() => setSelectedInstallmentPlan('1_payment')}
                             className="accent-brand-payment w-3.5 h-3.5"
                           />
-                          <span className="text-xs font-bold text-brand-text">1 Pago Débito/Crédito</span>
+                          <Txt as="span" className="text-xs font-bold text-brand-text" value={BRAND_CONFIG.ui.checkout.installmentOne} />
                         </div>
                         <span className="font-extrabold text-xs text-brand-text">
                           ${finalTotal.toLocaleString('es-AR')}
@@ -686,17 +641,13 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                             className="accent-brand-payment w-3.5 h-3.5"
                           />
                           <div>
-                            <span className="text-xs font-bold text-brand-text block">
-                              3 Cuotas sin interés
-                            </span>
+                            <Txt as="span" className="text-xs font-bold text-brand-text block" value={BRAND_CONFIG.ui.checkout.installmentThree} />
                             <span className="text-[11px] text-brand-accent-blue-dark font-semibold">
-                              3 de ${installmentPerMonth.toLocaleString('es-AR')}
+                              {formatText(BRAND_CONFIG.ui.checkout.installmentAmount, { count: String(BRAND_CONFIG.commerce.installmentsWithoutInterest), amount: `$${installmentPerMonth.toLocaleString('es-AR')}` })}
                             </span>
                           </div>
                         </div>
-                        <span className="bg-brand-secondary-soft text-amber-900 text-[10px] font-extrabold px-2 py-0.5 rounded">
-                          0% CFT
-                        </span>
+                        <Txt as="span" className="bg-brand-secondary-soft text-amber-900 text-[10px] font-extrabold px-2 py-0.5 rounded" value={BRAND_CONFIG.ui.checkout.installmentCft} />
                       </label>
                     </div>
 
@@ -716,19 +667,19 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                         {isProcessing ? (
                           <>
                             <Loader2 className="w-5 h-5 animate-spin" />
-                            <span>Generando preferencia en Mercado Pago...</span>
+                            <Txt as="span" value={BRAND_CONFIG.ui.checkout.generating} />
                           </>
                         ) : (
                           <>
                             <Lock className="w-4 h-4" />
-                            <span>Pagar ${finalTotal.toLocaleString('es-AR')} con Mercado Pago</span>
+                            <span>{formatText(BRAND_CONFIG.ui.checkout.payButton, { amount: `$${finalTotal.toLocaleString('es-AR')}` })}</span>
                           </>
                         )}
                       </button>
 
                       <p className="text-center text-[11px] text-purple-900/60 font-medium flex items-center justify-center gap-1 mt-1.5">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Redirección directa y protegida por Mercado Pago Argentina</span>
+                        <Txt as="span" value={BRAND_CONFIG.ui.checkout.redirectNote} />
                       </p>
                     </div>
                   </div>
@@ -738,9 +689,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
               {/* DIVIDER OR */}
               <div className="flex items-center gap-3">
                 <div className="flex-grow h-px bg-purple-100" />
-                <span className="text-[11px] font-extrabold text-purple-400 uppercase tracking-wider">
-                  O preferís coordinar directo
-                </span>
+                <Txt as="span" className="text-[11px] font-extrabold text-purple-400 uppercase tracking-wider" value={BRAND_CONFIG.ui.checkout.orCoordinate} />
                 <div className="flex-grow h-px bg-purple-100" />
               </div>
 
@@ -761,22 +710,17 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                       onChange={() => setPaymentGateway('whatsapp')}
                       className="accent-brand-whatsapp w-4 h-4 cursor-pointer"
                     />
-                    <span className="font-extrabold text-sm text-brand-text">
-                      Coordinar y Pagar por WhatsApp
-                    </span>
+                    <Txt as="span" className="font-extrabold text-sm text-brand-text" value={BRAND_CONFIG.ui.checkout.whatsappTitle} />
                   </label>
-                  <span className="bg-brand-secondary-soft text-amber-900 font-extrabold text-xs px-2.5 py-0.5 rounded-lg border border-amber-200">
-                    10% OFF
-                  </span>
+                  <Txt as="span" className="bg-brand-secondary-soft text-amber-900 font-extrabold text-xs px-2.5 py-0.5 rounded-lg border border-amber-200" value={BRAND_CONFIG.ui.checkout.whatsappBadge} />
                 </div>
 
                 <p className="text-xs text-purple-900/80 font-medium leading-relaxed pl-6">
-                  ¿Preferís abonar por{' '}
+                  {BRAND_CONFIG.ui.checkout.transferStart}{' '}
                   <strong className="text-emerald-800">
-                    transferencia bancaria con 10% OFF (${transferTotal.toLocaleString('es-AR')})
+                    {formatText(BRAND_CONFIG.ui.checkout.transferStrong, { percent: String(BRAND_CONFIG.commerce.transferDiscountPercent), amount: `$${transferTotal.toLocaleString('es-AR')}` })}
                   </strong>{' '}
-                  o querés confirmar medidas exactas de tu bebé antes de pagar? Te enviamos el resumen
-                  directo a WhatsApp para cerrar con una asesora en tiempo real.
+                  {BRAND_CONFIG.ui.checkout.transferEnd}
                 </p>
 
                 {paymentGateway === 'whatsapp' && (
@@ -784,12 +728,12 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-semibold">
                       <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-purple-100">
                         <span className="text-sm">📏</span>
-                        <span className="text-purple-900">Chequeo de centímetros de tu peque</span>
+                        <Txt as="span" className="text-purple-900" value={BRAND_CONFIG.ui.checkout.sizeCheck} />
                       </div>
                       <div className="flex items-center gap-2 bg-white p-2.5 rounded-xl border border-purple-100">
                         <span className="text-sm">💰</span>
                         <span className="text-emerald-800 font-bold">
-                          Ahorrás ${transferSavings.toLocaleString('es-AR')} por transferencia
+                          {formatText(BRAND_CONFIG.ui.checkout.savingsLine, { amount: `$${transferSavings.toLocaleString('es-AR')}` })}
                         </span>
                       </div>
                     </div>
@@ -800,7 +744,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                       className="w-full py-3.5 px-6 bg-brand-whatsapp hover:bg-brand-whatsapp-hover text-white rounded-2xl font-extrabold text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95 transition-all cursor-pointer"
                     >
                       <MessageCircle className="w-5 h-5" />
-                      <span>Finalizar pedido y coordinar por WhatsApp</span>
+                      <Txt as="span" value={BRAND_CONFIG.ui.checkout.whatsappConfirm} />
                     </button>
                   </div>
                 )}
@@ -812,9 +756,9 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
           <aside className="lg:col-span-5 flex flex-col gap-4 lg:sticky lg:top-24">
             <div className="bg-white p-6 rounded-3xl shadow-sm border-2 border-purple-100 space-y-4">
               <div className="flex items-center justify-between pb-2 border-b border-purple-100">
-                <h3 className="font-extrabold text-base text-brand-text">Resumen de Compra</h3>
+                <Txt as="h3" className="font-extrabold text-base text-brand-text" value={BRAND_CONFIG.ui.checkout.summaryTitle} />
                 <span className="bg-purple-50 text-purple-700 text-xs font-bold px-2 py-0.5 rounded-full">
-                  {items.length} artículos
+                  {formatText(BRAND_CONFIG.ui.checkout.itemsCount, { count: String(items.length) })}
                 </span>
               </div>
 
@@ -838,10 +782,10 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                     <div className="flex-1 min-w-0 text-xs">
                       <h4 className="font-bold text-brand-text truncate">{i.product.nombre}</h4>
                       <p className="text-[11px] text-purple-900/60 font-medium">
-                        Talle: {i.size} • Color: {i.color.name}
+                        {formatText(BRAND_CONFIG.ui.checkout.itemSizeColor, { size: i.size, color: i.color.name })}
                       </p>
                       <div className="flex items-baseline justify-between mt-0.5">
-                        <span className="text-[11px] text-purple-400">Cant: {i.quantity}</span>
+                        <span className="text-[11px] text-purple-400">{formatText(BRAND_CONFIG.ui.checkout.itemQuantity, { quantity: String(i.quantity) })}</span>
                         <span className="font-extrabold text-brand-primary">
                           ${(i.unitPrice * i.quantity).toLocaleString('es-AR')}
                         </span>
@@ -854,32 +798,32 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
               {/* Totals Breakdown */}
               <div className="space-y-2 pt-2 border-t border-purple-100 text-xs font-semibold">
                 <div className="flex justify-between text-purple-900/80">
-                  <span>Subtotal</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.checkout.subtotal} />
                   <span className="font-bold text-brand-text">${subtotal.toLocaleString('es-AR')}</span>
                 </div>
 
                 {discount > 0 && (
                   <div className="flex justify-between text-brand-primary">
-                    <span>Descuento Promo</span>
+                    <Txt as="span" value={BRAND_CONFIG.ui.checkout.discount} />
                     <span className="font-extrabold">-${discount.toLocaleString('es-AR')}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between text-purple-900/80">
-                  <span>Envío seleccionado</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.checkout.shippingSelected} />
                   <span className="font-bold text-emerald-700">
                     {shippingCost === 0 ? 'GRATIS' : `$${shippingCost.toLocaleString('es-AR')}`}
                   </span>
                 </div>
 
                 <div className="pt-2 border-t border-purple-100 flex justify-between items-baseline">
-                  <span className="font-extrabold text-sm text-brand-text">Total final:</span>
+                  <Txt as="span" className="font-extrabold text-sm text-brand-text" value={BRAND_CONFIG.ui.checkout.total} />
                   <div className="text-right">
                     <span className="text-2xl font-extrabold text-brand-primary tracking-tight block">
                       ${finalTotal.toLocaleString('es-AR')}
                     </span>
                     <span className="text-[11px] font-bold text-emerald-800">
-                      o ${transferTotal.toLocaleString('es-AR')} abonando por transferencia
+                      {formatText(BRAND_CONFIG.ui.checkout.totalTransfer, { amount: `$${transferTotal.toLocaleString('es-AR')}` })}
                     </span>
                   </div>
                 </div>
@@ -889,13 +833,8 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
               <div className="p-3.5 bg-brand-surface-blue/60 rounded-2xl flex items-start gap-2.5 border border-sky-200">
                 <span className="text-base">⭐</span>
                 <div>
-                  <h5 className="font-extrabold text-xs text-sky-950">
-                    Garantía de Crecimiento • 30 días de cambio
-                  </h5>
-                  <p className="text-[11px] text-sky-900/80 font-medium mt-0.5 leading-snug">
-                    Si le queda chico o preferís otro color, el primer cambio es 100% ágil y gratuito
-                    en showroom o correo.
-                  </p>
+                  <Txt as="h5" className="font-extrabold text-xs text-sky-950" value={BRAND_CONFIG.ui.checkout.guaranteeTitle} />
+                  <Txt as="p" className="text-[11px] text-sky-900/80 font-medium mt-0.5 leading-snug" value={BRAND_CONFIG.ui.checkout.guaranteeText} />
                 </div>
               </div>
 
@@ -903,15 +842,15 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
               <div className="grid grid-cols-3 gap-2 pt-2 text-center text-[10px] font-extrabold text-brand-text">
                 <div className="flex flex-col items-center gap-1 bg-purple-50/60 p-2 rounded-xl">
                   <RefreshCw className="w-4 h-4 text-brand-success" />
-                  <span>Cambio Fácil</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.checkout.trustExchange} />
                 </div>
                 <div className="flex flex-col items-center gap-1 bg-purple-50/60 p-2 rounded-xl">
                   <Gift className="w-4 h-4 text-brand-primary" />
-                  <span>Embalaje Regalo</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.checkout.trustGift} />
                 </div>
                 <div className="flex flex-col items-center gap-1 bg-purple-50/60 p-2 rounded-xl">
                   <Headphones className="w-4 h-4 text-brand-accent-blue-dark" />
-                  <span>Atención 1 a 1</span>
+                  <Txt as="span" value={BRAND_CONFIG.ui.checkout.trustSupport} />
                 </div>
               </div>
             </div>
@@ -928,28 +867,21 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
             </div>
 
             <div>
-              <span className="bg-sky-100 text-brand-payment text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-                Mercado Pago Checkout Pro
-              </span>
+              <Txt as="span" className="bg-sky-100 text-brand-payment text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider" value={BRAND_CONFIG.ui.checkout.mpTitle} />
               {mpPreferenceResult.mode === 'development_demo' && (
-                <p role="status" className="mt-2 rounded-xl bg-amber-100 px-3 py-2 text-xs font-extrabold text-amber-950">
-                  Modo demostración: no se realiza ningún cobro
-                </p>
+                <Txt as="p" role="status" className="mt-2 rounded-xl bg-amber-100 px-3 py-2 text-xs font-extrabold text-amber-950" value={BRAND_CONFIG.ui.checkout.demoNotice} />
               )}
-              <h3 className="font-extrabold text-xl text-brand-text mt-2">
-                ¡Preferencia Generada!
-              </h3>
+              <Txt as="h3" className="font-extrabold text-xl text-brand-text mt-2" value={BRAND_CONFIG.ui.checkout.demoTitle} />
               <p className="text-xs text-purple-900/80 font-medium mt-1">
-                La función serverless procesó el carrito y generó la preferencia de pago en Mercado
-                Pago con moneda ARS por <strong>${finalTotal.toLocaleString('es-AR')}</strong>.
+                {BRAND_CONFIG.ui.checkout.demoTextStart} <strong>${finalTotal.toLocaleString('es-AR')}</strong>{BRAND_CONFIG.ui.checkout.demoTextEnd}
               </p>
             </div>
 
             <div className="bg-purple-50 p-3 rounded-2xl text-left text-xs font-mono text-purple-950 space-y-1 border border-purple-100">
-              <p className="font-bold text-[11px] text-purple-700">Detalles técnicos del pedido:</p>
-              <p className="truncate">• Pref ID: {mpPreferenceResult.preferenceId}</p>
-              <p>• Moneda: ARS (Pesos Argentinos)</p>
-              <p>• Modo: {mpPreferenceResult.mode === 'development_demo' ? 'Demostración local' : 'Mercado Pago'}</p>
+              <Txt as="p" className="font-bold text-[11px] text-purple-700" value={BRAND_CONFIG.ui.checkout.demoDetails} />
+              <p className="truncate">{formatText(BRAND_CONFIG.ui.checkout.demoPrefId, { id: mpPreferenceResult.preferenceId })}</p>
+              <Txt as="p" value={BRAND_CONFIG.ui.checkout.demoCurrency} />
+              <p>{formatText(BRAND_CONFIG.ui.checkout.demoMode, { mode: mpPreferenceResult.mode === 'development_demo' ? BRAND_CONFIG.ui.checkout.demoModeLocal : BRAND_CONFIG.ui.checkout.demoModeReal })}</p>
             </div>
 
             <div className="flex flex-col gap-2 pt-2">
@@ -959,30 +891,24 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                 rel="noopener noreferrer"
                 className="w-full py-3.5 rounded-2xl bg-brand-payment hover:bg-brand-payment-hover text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all cursor-pointer"
               >
-                <span>Abrir Checkout Pro de Mercado Pago</span>
+                <Txt as="span" value={BRAND_CONFIG.ui.checkout.demoOpen} />
                 <ExternalLink className="w-4 h-4" />
               </a>
 
               {import.meta.env.DEV && mpPreferenceResult.mode === 'development_demo' && (
-                <button
+                <Txt as="button"
                   type="button"
                   onClick={() => {
-                    onOrderSuccess(mpPreferenceResult.preferenceId, 'Mercado Pago (demo local)');
+                    onOrderSuccess(mpPreferenceResult.preferenceId, BRAND_CONFIG.ui.checkout.demoMethodLabel);
                     clearCart();
                   }}
-                  className="w-full py-2.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-extrabold text-xs transition-colors cursor-pointer border border-emerald-200"
-                >
-                  Simular pago aprobado
-                </button>
+                  className="w-full py-2.5 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-extrabold text-xs transition-colors cursor-pointer border border-emerald-200" value={BRAND_CONFIG.ui.checkout.demoSimulate} />
               )}
 
-              <button
+              <Txt as="button"
                 type="button"
                 onClick={() => setMpPreferenceResult(null)}
-                className="text-xs font-bold text-purple-400 hover:text-purple-700 pt-1"
-              >
-                Volver a editar pedido
-              </button>
+                className="text-xs font-bold text-purple-400 hover:text-purple-700 pt-1" value={BRAND_CONFIG.ui.checkout.demoBack} />
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { BRAND_CONFIG } from '../brand.config';
+import { Txt } from './Txt';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { CheckCircle2, MessageCircle, ArrowRight, Heart } from 'lucide-react';
 
 interface OrderSuccessModalProps {
@@ -21,39 +22,36 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
         </div>
 
         <div>
-          <span className="text-xs font-extrabold text-brand-primary uppercase tracking-wider">
-            ¡Felicitaciones! Pedido Confirmado
-          </span>
+          <Txt as="span" className="text-xs font-extrabold text-brand-primary uppercase tracking-wider" value={BRAND_CONFIG.ui.orderSuccess.title} />
           <h2 className="text-2xl font-extrabold text-brand-text mt-1">
             {BRAND_CONFIG.copy.thankYouMessage} {BRAND_CONFIG.shortName}! 🎈
           </h2>
           <p className="text-xs text-purple-900/80 font-medium mt-2 leading-relaxed">
-            Tu compra quedó registrada con el número{' '}
+            {BRAND_CONFIG.ui.orderSuccess.registered}{' '}
             <strong className="text-purple-950 font-bold bg-purple-50 px-2 py-0.5 rounded-md">
               #{orderId}
             </strong>{' '}
-            y medio de pago <strong>{paymentMethod}</strong>.
+            {BRAND_CONFIG.ui.orderSuccess.paymentMethod} <strong>{paymentMethod}</strong>.
           </p>
         </div>
 
         <div className="bg-purple-50/70 p-4 rounded-2xl text-left text-xs font-medium text-purple-900/90 space-y-2 border border-purple-100">
           <p className="flex items-center gap-1.5 font-bold text-brand-text">
-            <span>📦</span> ¿Qué sucede a continuación?
-          </p>
+            <span>📦</span>{" "}{BRAND_CONFIG.ui.orderSuccess.nextTitle}</p>
           <p>• {BRAND_CONFIG.copy.orderPreparationMessage}</p>
-          <p>• Te enviaremos el número de guía para seguir el despacho en tiempo real por WhatsApp.</p>
-          <p>• ¡Tenés 30 días para cualquier cambio de talle con tranquilidad!</p>
+          <Txt as="p" value={BRAND_CONFIG.ui.orderSuccess.nextTracking} />
+          <Txt as="p" value={BRAND_CONFIG.ui.orderSuccess.nextExchange} />
         </div>
 
         <div className="flex flex-col gap-2.5 pt-1">
           <a
-            href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(`Hola ${BRAND_CONFIG.shortName}, ${BRAND_CONFIG.copy.whatsappOrderConfirmation} #${orderId}`)}`}
+            href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(formatText(BRAND_CONFIG.ui.whatsapp.greetingOrder, { name: BRAND_CONFIG.shortName, message: BRAND_CONFIG.copy.whatsappOrderConfirmation, order: String(orderId) }))}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full py-3.5 rounded-2xl bg-brand-whatsapp hover:bg-brand-whatsapp-hover text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all"
           >
             <MessageCircle className="w-4 h-4" />
-            <span>Hablar con una asesora por WhatsApp</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.orderSuccess.whatsapp} />
           </a>
 
           <button
@@ -61,7 +59,7 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
             onClick={onClose}
             className="w-full py-3 rounded-2xl bg-purple-50 hover:bg-brand-secondary-soft text-purple-900 font-extrabold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <span>Volver a la tienda</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.orderSuccess.back} />
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

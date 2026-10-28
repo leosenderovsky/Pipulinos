@@ -1,5 +1,6 @@
 import React from 'react';
-import { BRAND_CONFIG } from '../brand.config';
+import { Txt } from './Txt';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { useCart } from '../context/CartContext';
 import { Search, ShoppingBag, User, ArrowRight, X } from 'lucide-react';
 import { QUICK_FILTERS } from '../data/filterOptions';
@@ -64,9 +65,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <span className="text-sm">🎈</span> {BRAND_CONFIG.contact.showroomId}
           </button>
-          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-text-muted bg-brand-surface-purple px-2.5 py-1 rounded-full border border-purple-200">
-            ⭐ Nueva Temporada
-          </span>
+          <Txt as="span" className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-text-muted bg-brand-surface-purple px-2.5 py-1 rounded-full border border-purple-200" value={BRAND_CONFIG.ui.header.season} />
         </div>
 
         <div className="flex-1 lg:flex-initial flex justify-center">
@@ -83,14 +82,14 @@ export const Header: React.FC<HeaderProps> = ({
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              className="h-auto w-[min(56vw,220px)] max-w-full object-contain drop-shadow-sm transition-all duration-300"
+              className="h-20 sm:h-[5.5rem] w-auto max-w-[min(48vw,11rem)] object-contain drop-shadow-sm transition-all duration-300"
             />
           </button>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <a
-            href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent('¡Hola ' + BRAND_CONFIG.name + '! Quisiera hacer una consulta personalizada sobre el catálogo y talles.')}`}
+            href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(formatText(BRAND_CONFIG.ui.header.whatsappMessage, { name: BRAND_CONFIG.name }))}`}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:flex items-center gap-2 bg-brand-whatsapp/15 hover:bg-brand-whatsapp/25 border border-brand-whatsapp/35 text-emerald-800 px-3.5 py-2 rounded-full transition-all font-bold text-xs shadow-xs hover:scale-105"
@@ -99,8 +98,8 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-whatsapp opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-whatsapp"></span>
             </span>
-            <span className="hidden md:inline">WhatsApp Pedidos</span>
-            <span className="md:hidden">WhatsApp</span>
+            <Txt as="span" className="hidden md:inline" value={BRAND_CONFIG.ui.header.whatsappLong} />
+            <Txt as="span" className="md:hidden" value={BRAND_CONFIG.ui.header.whatsappShort} />
           </a>
 
           <button
@@ -109,14 +108,14 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden md:flex items-center gap-1.5 px-3 py-2 rounded-full text-purple-900 hover:text-brand-primary hover:bg-purple-50 transition-colors font-bold text-xs"
           >
             <User className="w-4 h-4 text-brand-text-muted" />
-            <span>Guía de Talles</span>
+            <Txt as="span" value={BRAND_CONFIG.ui.header.sizeGuide} />
           </button>
 
           <button
             type="button"
             onClick={() => onNavigate('cart')}
             className="relative flex items-center justify-center w-11 h-11 rounded-full bg-gradient-to-tr from-brand-secondary-soft to-amber-100 text-brand-text hover:scale-110 border border-amber-200 transition-all shadow-xs cursor-pointer"
-            aria-label="Ver carrito de compras"
+            aria-label={BRAND_CONFIG.ui.header.cartLabel}
           >
             <ShoppingBag className="w-6 h-6 text-amber-700" />
             {totalCount > 0 && (
@@ -146,7 +145,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onSubmitSearch();
                   }
                 }}
-                placeholder="Buscar enteritos, bodys, remeras, vestidos..."
+                placeholder={BRAND_CONFIG.ui.header.searchPlaceholder}
                 className="w-full bg-transparent border-none outline-none font-medium text-xs sm:text-sm text-brand-text placeholder:text-purple-300 focus:ring-0 p-0"
               />
               {searchQuery && (
@@ -157,7 +156,7 @@ export const Header: React.FC<HeaderProps> = ({
                     if (currentView !== 'catalog') onNavigate('catalog');
                   }}
                   className="flex items-center justify-center rounded-full bg-purple-100 text-purple-700 hover:bg-purple-200 p-1 shrink-0 ml-1"
-                  aria-label="Limpiar búsqueda"
+                  aria-label={BRAND_CONFIG.ui.header.clearSearch}
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -166,7 +165,7 @@ export const Header: React.FC<HeaderProps> = ({
                 type="button"
                 onClick={onSubmitSearch}
                 className="bg-brand-accent-blue hover:bg-sky-500 text-white rounded-full p-1 transition-colors flex items-center justify-center shrink-0 ml-1"
-                title="Buscar"
+                title={BRAND_CONFIG.ui.header.searchTitle}
               >
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>

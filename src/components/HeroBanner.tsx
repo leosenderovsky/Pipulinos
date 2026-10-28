@@ -1,5 +1,6 @@
 import React from 'react';
-import { BRAND_CONFIG } from '../brand.config';
+import { Txt } from './Txt';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { CreditCard, Truck, RefreshCw, ArrowRight } from 'lucide-react';
 
 interface HeroBannerProps {
@@ -19,7 +20,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
                 <span>✨</span> {BRAND_CONFIG.hero.badge}
               </span>
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-brand-surface-green border border-emerald-300 text-emerald-800 font-extrabold text-xs">
-                <span>🚚</span> ENVÍO GRATIS &gt; ${BRAND_CONFIG.commerce.freeShippingThreshold.toLocaleString('es-AR')}
+                <span>🚚</span> {formatText(BRAND_CONFIG.ui.hero.freeShippingBadge, { amount: `$${BRAND_CONFIG.commerce.freeShippingThreshold.toLocaleString('es-AR')}` })}
               </span>
             </div>
 
@@ -44,12 +45,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
                 onClick={onScrollToCatalog}
                 className="px-6 py-2.5 rounded-full bg-gradient-to-r from-brand-primary to-brand-primary-hover hover:opacity-95 text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
               >
-                <span>Ver Colección Showroom</span>
+                <Txt as="span" value={BRAND_CONFIG.ui.hero.cta} />
                 <ArrowRight className="w-4 h-4" />
               </button>
-              <span className="text-xs font-semibold text-purple-900/70">
-                o explorá el catálogo con los filtros abajo 👇
-              </span>
+              <Txt as="span" className="text-xs font-semibold text-purple-900/70" value={BRAND_CONFIG.ui.hero.ctaNote} />
             </div>
           </div>
 
@@ -80,8 +79,8 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
             <CreditCard className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-extrabold text-xs text-brand-text">3 y 6 Cuotas Sin Interés</p>
-            <p className="text-[11px] font-medium text-purple-400">Con todas las tarjetas vía Mercado Pago</p>
+            <Txt as="p" className="font-extrabold text-xs text-brand-text" value={BRAND_CONFIG.ui.hero.benefitInstallmentsTitle} />
+            <Txt as="p" className="text-[11px] font-medium text-purple-400" value={BRAND_CONFIG.ui.hero.benefitInstallmentsText} />
           </div>
         </div>
 
@@ -91,9 +90,9 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
           </div>
           <div>
             <p className="font-extrabold text-xs text-brand-text">
-              Envío Gratis &gt; ${BRAND_CONFIG.commerce.freeShippingThreshold.toLocaleString('es-AR')}
+              {formatText(BRAND_CONFIG.ui.hero.benefitShippingTitle, { amount: `$${BRAND_CONFIG.commerce.freeShippingThreshold.toLocaleString('es-AR')}` })}
             </p>
-            <p className="text-[11px] font-medium text-purple-400">Llegamos a todo el país seguro y rápido</p>
+            <Txt as="p" className="text-[11px] font-medium text-purple-400" value={BRAND_CONFIG.ui.hero.benefitShippingText} />
           </div>
         </div>
 
@@ -103,9 +102,9 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
           </div>
           <div>
             <p className="font-extrabold text-xs text-brand-text">
-              {BRAND_CONFIG.commerce.exchangePeriodDays} Días para Cambios
+              {formatText(BRAND_CONFIG.ui.hero.benefitExchangeTitle, { days: String(BRAND_CONFIG.commerce.exchangePeriodDays) })}
             </p>
-            <p className="text-[11px] font-medium text-purple-400">Cambio ágil y sin complicaciones</p>
+            <Txt as="p" className="text-[11px] font-medium text-purple-400" value={BRAND_CONFIG.ui.hero.benefitExchangeText} />
           </div>
         </div>
       </div>
