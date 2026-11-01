@@ -1,5 +1,6 @@
 import React from 'react';
 import { BRAND_CONFIG } from '../brand.config';
+import { formatText } from '../formatText';
 import { Ruler, HelpCircle, Truck, MessageCircle, Instagram } from 'lucide-react';
 
 interface FooterProps {
@@ -123,7 +124,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
         <div className="pt-5 border-t border-purple-200/80 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex flex-col sm:flex-row items-center gap-2 text-center md:text-left">
             <p className="text-xs font-bold text-purple-900/70">
-              © {BRAND_CONFIG.foundedYear} {BRAND_CONFIG.shortName} Showroom Infantil. Todos los derechos reservados.
+              {formatText(BRAND_CONFIG.ui.footer.copyright, {
+                year: new Date().getFullYear(),
+                shortName: BRAND_CONFIG.shortName,
+              })}
             </p>
             <span className="hidden sm:inline text-purple-300">•</span>
             {/* MANDATORY FOOTER DISCLAIMER */}

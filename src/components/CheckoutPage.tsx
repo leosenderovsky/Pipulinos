@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { BRAND_CONFIG } from '../brand.config';
+import { formatText } from '../formatText';
 import { ProductPicture } from './ProductPicture';
 import {
   ArrowLeft,
@@ -192,7 +193,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     if (!validateCheckout()) return;
 
     const itemsText = items
-      .map((i) => `• ${i.quantity}x ${i.product.nombre} (Talle: ${i.size} | Color: ${i.color.name}) - $${(i.unitPrice * i.quantity).toLocaleString('es-AR')}`)
+      .map((i) => `• ${i.quantity}x ${i.product.name} (Talle: ${i.size} | Color: ${i.color.name}) - $${(i.unitPrice * i.quantity).toLocaleString('es-AR')}`)
       .join('\n');
 
     const deliveryAddress = [streetAddress, apartment, city, zipCode]
@@ -239,7 +240,11 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
         {/* Minimalist Checkout Header */}
         <header className="w-full flex flex-col bg-white rounded-3xl shadow-sm border-2 border-purple-100 overflow-hidden">
           <div className="w-full bg-gradient-to-r from-brand-secondary via-brand-primary-hover to-brand-primary text-white py-2 px-4 text-center text-xs font-bold flex items-center justify-center gap-2">
-            <span>✨ Compra 100% Segura • 3 y 6 cuotas sin interés • Despachos garantizados a todo el país ✨</span>
+            <span>
+              {formatText(BRAND_CONFIG.ui.checkout.banner, {
+                installments: BRAND_CONFIG.commerce.installmentsWithoutInterest,
+              })}
+            </span>
           </div>
 
           <div className="w-full px-4 py-4 grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 sm:flex sm:justify-between sm:gap-4 sm:px-6">
@@ -687,7 +692,9 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                           />
                           <div>
                             <span className="text-xs font-bold text-brand-text block">
-                              3 Cuotas sin interés
+                              {formatText(BRAND_CONFIG.ui.checkout.installmentThree, {
+                                installments: BRAND_CONFIG.commerce.installmentsWithoutInterest,
+                              })}
                             </span>
                             <span className="text-[11px] text-brand-accent-blue-dark font-semibold">
                               3 de ${installmentPerMonth.toLocaleString('es-AR')}
@@ -766,7 +773,9 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                     </span>
                   </label>
                   <span className="bg-brand-secondary-soft text-amber-900 font-extrabold text-xs px-2.5 py-0.5 rounded-lg border border-amber-200">
-                    10% OFF
+                    {formatText(BRAND_CONFIG.ui.checkout.whatsappBadge, {
+                      percent: BRAND_CONFIG.commerce.transferDiscountPercent,
+                    })}
                   </span>
                 </div>
 
@@ -826,8 +835,8 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                     className="flex items-center gap-3 bg-purple-50/50 p-2.5 rounded-2xl border border-purple-100/60"
                   >
                     <ProductPicture
-                      src={i.product.imagenes[0]}
-                      alt={i.product.nombre}
+                      src={i.product.images[0]}
+                      alt={i.product.name}
                       loading="lazy"
                       decoding="async"
                       width={800}
@@ -836,7 +845,7 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                       pictureClassName="block w-14 h-14 shrink-0"
                     />
                     <div className="flex-1 min-w-0 text-xs">
-                      <h4 className="font-bold text-brand-text truncate">{i.product.nombre}</h4>
+                      <h4 className="font-bold text-brand-text truncate">{i.product.name}</h4>
                       <p className="text-[11px] text-purple-900/60 font-medium">
                         Talle: {i.size} • Color: {i.color.name}
                       </p>
@@ -890,7 +899,9 @@ ${deliveryNotes.trim() ? `*Indicaciones:* ${deliveryNotes.trim()}\n` : ''}
                 <span className="text-base">⭐</span>
                 <div>
                   <h5 className="font-extrabold text-xs text-sky-950">
-                    Garantía de Crecimiento • 30 días de cambio
+                    {formatText(BRAND_CONFIG.ui.checkout.guaranteeTitle, {
+                      days: BRAND_CONFIG.commerce.exchangePeriodDays,
+                    })}
                   </h5>
                   <p className="text-[11px] text-sky-900/80 font-medium mt-0.5 leading-snug">
                     Si le queda chico o preferís otro color, el primer cambio es 100% ágil y gratuito

@@ -1,0 +1,841 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "CatalogConfig",
+  "description": "Configuración editable para el catálogo.",
+  "x-group": "Secciones",
+  "properties": {
+    "$schema": {
+      "title": "Archivo del esquema",
+      "description": "Ruta al esquema que define esta configuración.",
+      "x-group": "Secciones",
+      "x-widget": "text",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "title": "Versión del esquema",
+      "description": "Versión del formato de configuración.",
+      "x-group": "Secciones",
+      "x-widget": "number",
+      "type": "number"
+    },
+    "categories": {
+      "type": "array",
+      "title": "Categorías",
+      "description": "Agregá, quitá o reordená los elementos de «categorías».",
+      "x-group": "Secciones",
+      "x-widget": "list",
+      "items": {
+        "type": "object",
+        "title": "Categoría",
+        "description": "Configurá los datos de «categoría».",
+        "x-group": "Secciones",
+        "properties": {
+          "id": {
+            "title": "Identificador",
+            "description": "Ingresá el texto de «identificador».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Bodys & Enteritos"
+            ],
+            "x-exampleData": true
+          },
+          "label": {
+            "title": "Nombre para mostrar",
+            "description": "Ingresá el texto de «nombre para mostrar».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Bodys & Enteritos"
+            ],
+            "x-exampleData": true
+          },
+          "emoji": {
+            "title": "Ícono de la categoría",
+            "description": "Elegí una opción para «ícono de la categoría».",
+            "x-group": "Secciones",
+            "x-widget": "icon",
+            "type": "string",
+            "examples": [
+              "🧸"
+            ],
+            "x-exampleData": true
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "emoji"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "products": {
+      "type": "array",
+      "title": "Productos",
+      "description": "Agregá, quitá o reordená los elementos de «productos».",
+      "x-group": "Secciones",
+      "x-widget": "list",
+      "items": {
+        "type": "object",
+        "title": "Producto",
+        "description": "Configurá los datos de «producto».",
+        "x-group": "Secciones",
+        "properties": {
+          "id": {
+            "title": "Identificador",
+            "description": "Ingresá el texto de «identificador».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "body-manga-larga-algodon-pima"
+            ],
+            "x-exampleData": true
+          },
+          "name": {
+            "title": "Nombre del producto",
+            "description": "Ingresá el texto de «nombre del producto».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Body Manga Larga Algodón Pima Estampado Estrellitas"
+            ],
+            "x-exampleData": true
+          },
+          "category": {
+            "title": "Categoría",
+            "description": "Ingresá el texto de «categoría».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Bodys & Enteritos"
+            ],
+            "x-exampleData": true
+          },
+          "subcategory": {
+            "title": "Subcategoría",
+            "description": "Ingresá el texto de «subcategoría».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Bodys"
+            ],
+            "x-exampleData": true
+          },
+          "price": {
+            "title": "Precio",
+            "description": "Ingresá el valor de «precio».",
+            "x-group": "Secciones",
+            "x-widget": "number",
+            "type": "number"
+          },
+          "compareAtPrice": {
+            "title": "Precio anterior",
+            "description": "Ingresá el valor de «precio anterior».",
+            "x-group": "Secciones",
+            "x-widget": "number",
+            "type": "number",
+            "x-optional": true
+          },
+          "sizes": {
+            "type": "array",
+            "title": "Talles disponibles",
+            "description": "Agregá, quitá o reordená los elementos de «talles disponibles».",
+            "x-group": "Secciones",
+            "x-widget": "list",
+            "items": {
+              "title": "Talle disponible",
+              "description": "Ingresá el texto de «talle disponible».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "RN"
+              ],
+              "x-exampleData": true
+            }
+          },
+          "colors": {
+            "type": "array",
+            "title": "Colores disponibles",
+            "description": "Agregá, quitá o reordená los elementos de «colores disponibles».",
+            "x-group": "Secciones",
+            "x-widget": "list",
+            "items": {
+              "type": "object",
+              "title": "Color disponible",
+              "description": "Configurá los datos de «color disponible».",
+              "x-group": "Secciones",
+              "properties": {
+                "name": {
+                  "title": "Nombre del producto",
+                  "description": "Ingresá el texto de «nombre del producto».",
+                  "x-group": "Secciones",
+                  "x-widget": "text",
+                  "type": "string",
+                  "examples": [
+                    "Amarillo Sol"
+                  ],
+                  "x-exampleData": true
+                },
+                "hex": {
+                  "title": "Código del color",
+                  "description": "Elegí el color para «código del color».",
+                  "x-group": "Secciones",
+                  "x-widget": "color",
+                  "type": "string",
+                  "examples": [
+                    "#FFD026"
+                  ],
+                  "x-exampleData": true
+                },
+                "colorFamily": {
+                  "title": "Familia del color",
+                  "description": "Elegí una opción para «familia del color».",
+                  "x-group": "Secciones",
+                  "x-widget": "select",
+                  "type": "string",
+                  "examples": [
+                    "amarillo"
+                  ],
+                  "x-exampleData": true,
+                  "enum": [
+                    "amarillo",
+                    "coral",
+                    "celeste",
+                    "verde",
+                    "lila",
+                    "naranja",
+                    "neutro"
+                  ],
+                  "x-optional": true
+                }
+              },
+              "required": [
+                "name",
+                "hex"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "images": {
+            "type": "array",
+            "title": "Imágenes del producto",
+            "description": "Agregá, quitá o reordená los elementos de «imágenes del producto».",
+            "x-group": "Imágenes",
+            "x-widget": "list",
+            "items": {
+              "title": "Foto del producto",
+              "description": "Elegí una foto del producto. La variante WebP con el mismo nombre se genera mediante images:optimize.",
+              "x-group": "Imágenes",
+              "x-widget": "image",
+              "type": "string",
+              "examples": [
+                "/assets/products/body-manga-larga-algodon-pima.jpg"
+              ],
+              "x-exampleData": true,
+              "x-asset": {
+                "path": "/assets/products/{id}.jpg",
+                "minWidth": 900,
+                "ratio": [
+                  0.8,
+                  1
+                ]
+              }
+            }
+          },
+          "description": {
+            "title": "Descripción",
+            "description": "Ingresá el texto de «descripción».",
+            "x-group": "Secciones",
+            "x-widget": "textarea",
+            "type": "string",
+            "examples": [
+              "Confeccionado artesanalmente en 100% Algodón Pima puro peinado, este body brinda la caricia más suave para la piel sensible de tu bebé. Su cuello americano extensible permite deslizarlo hacia abajo sin apretar las orejitas en caso de cambios de emergencia, mientras sus broches metálicos reforzados libres de níquel garantizan máxima seguridad y durabilidad lavado tras lavado."
+            ],
+            "x-exampleData": true
+          },
+          "shortDescription": {
+            "title": "Descripción breve del producto",
+            "description": "Ingresá el texto de «descripción breve del producto».",
+            "x-group": "Secciones",
+            "x-widget": "textarea",
+            "type": "string",
+            "examples": [
+              "100% Pima peinado con broches hipoalergénicos y cuello americano extensible."
+            ],
+            "x-exampleData": true
+          },
+          "material": {
+            "title": "Material",
+            "description": "Ingresá el texto de «material».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "100% Algodón Pima"
+            ],
+            "x-exampleData": true
+          },
+          "badge": {
+            "title": "Etiqueta destacada",
+            "description": "Ingresá el texto de «etiqueta destacada».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "¡Más pedido!"
+            ],
+            "x-exampleData": true,
+            "x-optional": true
+          },
+          "badgeType": {
+            "title": "Tipo de etiqueta",
+            "description": "Elegí una opción para «tipo de etiqueta».",
+            "x-group": "Secciones",
+            "x-widget": "select",
+            "type": "string",
+            "examples": [
+              "pima"
+            ],
+            "x-exampleData": true,
+            "enum": [
+              "destacado",
+              "oferta",
+              "nuevo",
+              "termico",
+              "pima"
+            ],
+            "x-optional": true
+          },
+          "features": {
+            "type": "array",
+            "title": "Características",
+            "description": "Agregá, quitá o reordená los elementos de «características».",
+            "x-group": "Secciones",
+            "x-widget": "list",
+            "items": {
+              "title": "Característica del producto",
+              "description": "Ingresá el texto de «característica del producto».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Algodón Pima peruano de fibra extra larga"
+              ],
+              "x-exampleData": true
+            }
+          },
+          "careInstructions": {
+            "type": "array",
+            "title": "Cuidados",
+            "description": "Agregá, quitá o reordená los elementos de «cuidados».",
+            "x-group": "Secciones",
+            "x-widget": "list",
+            "items": {
+              "title": "Instrucción de cuidado",
+              "description": "Ingresá el texto de «instrucción de cuidado».",
+              "x-group": "Secciones",
+              "x-widget": "textarea",
+              "type": "string",
+              "examples": [
+                "Lavar con agua fría a mano o ciclo delicado"
+              ],
+              "x-exampleData": true
+            }
+          },
+          "stockBySize": {
+            "type": "object",
+            "title": "Stock por talle",
+            "description": "Indicá la cantidad disponible para cada talle.",
+            "x-group": "Secciones",
+            "x-widget": "list",
+            "additionalProperties": {
+              "type": "number",
+              "title": "Cantidad disponible",
+              "description": "Ingresá la cantidad de unidades disponibles.",
+              "x-group": "Secciones",
+              "x-widget": "number"
+            }
+          },
+          "featured": {
+            "title": "Destacar el producto",
+            "description": "Activá esta opción cuando corresponda.",
+            "x-group": "Secciones",
+            "x-widget": "boolean",
+            "type": "boolean",
+            "x-optional": true
+          },
+          "tags": {
+            "type": "array",
+            "title": "Etiquetas de búsqueda",
+            "description": "Agregá, quitá o reordená los elementos de «etiquetas de búsqueda».",
+            "x-group": "Secciones",
+            "x-widget": "list",
+            "items": {
+              "title": "Etiqueta de búsqueda",
+              "description": "Elegí una opción para «etiqueta de búsqueda».",
+              "x-group": "Secciones",
+              "x-widget": "select",
+              "type": "string",
+              "enum": [
+                "body",
+                "algodon-pima",
+                "basico",
+                "abrigo",
+                "termico",
+                "suave",
+                "invierno",
+                "pijama",
+                "remera",
+                "pack",
+                "conjunto",
+                "jogging",
+                "friza",
+                "antideslizante",
+                "noche",
+                "jardinero",
+                "denim",
+                "calza",
+                "escarpines",
+                "accesorio",
+                "gorro",
+                "babero",
+                "recien-nacido",
+                "buzo",
+                "campera",
+                "polar",
+                "medias",
+                "rustico",
+                "comodo",
+                "vestido",
+                "verano",
+                "muselina",
+                "pantalon"
+              ],
+              "examples": [
+                "body"
+              ],
+              "x-exampleData": true
+            }
+          },
+          "isBundle": {
+            "title": "Es un conjunto",
+            "description": "Activá esta opción cuando corresponda.",
+            "x-group": "Secciones",
+            "x-widget": "boolean",
+            "type": "boolean",
+            "x-optional": true
+          },
+          "ageStagesOverride": {
+            "type": "array",
+            "title": "Etapas de edad del producto",
+            "description": "Agregá, quitá o reordená los elementos de «etapas de edad del producto».",
+            "x-group": "Secciones",
+            "x-widget": "list",
+            "items": {
+              "title": "Etapa de edad",
+              "description": "Elegí una opción para «etapa de edad».",
+              "x-group": "Secciones",
+              "x-widget": "select",
+              "type": "string",
+              "enum": [
+                "recien-nacidos",
+                "bebes",
+                "ninos"
+              ],
+              "examples": [
+                "recien-nacidos"
+              ],
+              "x-exampleData": true
+            },
+            "x-optional": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "category",
+          "subcategory",
+          "price",
+          "sizes",
+          "colors",
+          "images",
+          "description",
+          "shortDescription",
+          "material",
+          "features",
+          "careInstructions",
+          "stockBySize",
+          "tags"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "filters": {
+      "type": "object",
+      "title": "Filtros del catálogo",
+      "description": "Configurá los datos de «filtros del catálogo».",
+      "x-group": "Secciones",
+      "properties": {
+        "fabrics": {
+          "type": "array",
+          "title": "Materiales para filtrar",
+          "description": "Agregá, quitá o reordená los elementos de «materiales para filtrar».",
+          "x-group": "Secciones",
+          "x-widget": "list",
+          "items": {
+            "title": "Material para filtrar",
+            "description": "Ingresá el texto de «material para filtrar».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "100% Algodón Pima"
+            ],
+            "x-exampleData": true
+          }
+        },
+        "babySizes": {
+          "type": "array",
+          "title": "Talles de bebé",
+          "description": "Agregá, quitá o reordená los elementos de «talles de bebé».",
+          "x-group": "Secciones",
+          "x-widget": "list",
+          "items": {
+            "title": "Talle de bebé",
+            "description": "Ingresá el texto de «talle de bebé».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "RN"
+            ],
+            "x-exampleData": true
+          }
+        },
+        "kidsSizes": {
+          "type": "array",
+          "title": "Talles de niños",
+          "description": "Agregá, quitá o reordená los elementos de «talles de niños».",
+          "x-group": "Secciones",
+          "x-widget": "list",
+          "items": {
+            "title": "Talle infantil",
+            "description": "Ingresá el texto de «talle infantil».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "T2"
+            ],
+            "x-exampleData": true
+          }
+        },
+        "colorSwatches": {
+          "type": "array",
+          "title": "Colores para filtrar",
+          "description": "Agregá, quitá o reordená los elementos de «colores para filtrar».",
+          "x-group": "Secciones",
+          "x-widget": "list",
+          "items": {
+            "type": "object",
+            "title": "Color para filtrar",
+            "description": "Configurá los datos de «color para filtrar».",
+            "x-group": "Secciones",
+            "properties": {
+              "id": {
+                "title": "Identificador",
+                "description": "Ingresá el texto de «identificador».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "examples": [
+                  "amarillo"
+                ],
+                "x-exampleData": true
+              },
+              "name": {
+                "title": "Nombre del producto",
+                "description": "Ingresá el texto de «nombre del producto».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "examples": [
+                  "Amarillo Sol"
+                ],
+                "x-exampleData": true
+              },
+              "hex": {
+                "title": "Código del color",
+                "description": "Elegí el color para «código del color».",
+                "x-group": "Secciones",
+                "x-widget": "color",
+                "type": "string",
+                "examples": [
+                  "#FFD026"
+                ],
+                "x-exampleData": true
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "hex"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "quickFilters": {
+          "type": "array",
+          "title": "Filtros rápidos",
+          "description": "Agregá, quitá o reordená los elementos de «filtros rápidos».",
+          "x-group": "Secciones",
+          "x-widget": "list",
+          "items": {
+            "type": "object",
+            "title": "Filtro rápido",
+            "description": "Configurá los datos de «filtro rápido».",
+            "x-group": "Secciones",
+            "properties": {
+              "id": {
+                "title": "Identificador",
+                "description": "Ingresá el texto de «identificador».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "examples": [
+                  "recien-nacidos"
+                ],
+                "x-exampleData": true
+              },
+              "axis": {
+                "title": "Eje del filtro",
+                "description": "Elegí una opción para «eje del filtro».",
+                "x-group": "Secciones",
+                "x-widget": "select",
+                "type": "string",
+                "examples": [
+                  "stage"
+                ],
+                "x-exampleData": true,
+                "enum": [
+                  "stage",
+                  "tag"
+                ]
+              },
+              "value": {
+                "title": "Valor",
+                "description": "Ingresá el texto de «valor».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "examples": [
+                  "recien-nacidos"
+                ],
+                "x-exampleData": true
+              },
+              "label": {
+                "title": "Nombre para mostrar",
+                "description": "Ingresá el texto de «nombre para mostrar».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "examples": [
+                  "Recién Nacidos 0–12m"
+                ],
+                "x-exampleData": true
+              },
+              "emoji": {
+                "title": "Ícono de la categoría",
+                "description": "Elegí una opción para «ícono de la categoría».",
+                "x-group": "Secciones",
+                "x-widget": "icon",
+                "type": "string",
+                "examples": [
+                  "🍼"
+                ],
+                "x-exampleData": true
+              },
+              "activeClass": {
+                "title": "Estilo del filtro activo",
+                "description": "Ingresá el texto de «estilo del filtro activo».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "examples": [
+                  "bg-[#FF6B57] text-white border-[#FF6B57]"
+                ],
+                "x-exampleData": true
+              },
+              "idleClass": {
+                "title": "Estilo del filtro inactivo",
+                "description": "Ingresá el texto de «estilo del filtro inactivo».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "examples": [
+                  "bg-[#FFE9E5] border-[#FF6B57]/30 text-[#FF6B57] hover:bg-[#FF6B57] hover:text-white"
+                ],
+                "x-exampleData": true
+              },
+              "activeLabel": {
+                "title": "Rótulo del filtro seleccionado",
+                "description": "Ingresá el texto de «rótulo del filtro seleccionado».",
+                "x-group": "Textos de interfaz",
+                "x-widget": "text",
+                "x-optional": true,
+                "type": "string",
+                "examples": [
+                  "0-12m"
+                ],
+                "x-exampleData": true
+              }
+            },
+            "required": [
+              "id",
+              "axis",
+              "value",
+              "label",
+              "emoji",
+              "activeClass",
+              "idleClass"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "stageSizes": {
+          "type": "object",
+          "title": "Talles según etapa",
+          "description": "Configurá los datos de «talles según etapa».",
+          "x-group": "Secciones",
+          "properties": {
+            "recien-nacidos": {
+              "type": "array",
+              "title": "Etapa de recién nacidos",
+              "description": "Agregá, quitá o reordená los elementos de «etapa de recién nacidos».",
+              "x-group": "Secciones",
+              "x-widget": "list",
+              "items": {
+                "title": "Talle de recién nacido",
+                "description": "Ingresá el texto de «talle de recién nacido».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "x-exampleData": true
+              }
+            },
+            "bebes": {
+              "type": "array",
+              "title": "Etapa de bebés",
+              "description": "Agregá, quitá o reordená los elementos de «etapa de bebés».",
+              "x-group": "Secciones",
+              "x-widget": "list",
+              "items": {
+                "title": "Talle de bebé",
+                "description": "Ingresá el texto de «talle de bebé».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "x-exampleData": true
+              }
+            },
+            "ninos": {
+              "type": "array",
+              "title": "Etapa de niños",
+              "description": "Agregá, quitá o reordená los elementos de «etapa de niños».",
+              "x-group": "Secciones",
+              "x-widget": "list",
+              "items": {
+                "title": "Talle infantil",
+                "description": "Ingresá el texto de «talle infantil».",
+                "x-group": "Secciones",
+                "x-widget": "text",
+                "type": "string",
+                "x-exampleData": true
+              }
+            }
+          },
+          "required": [
+            "recien-nacidos",
+            "bebes",
+            "ninos"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "fabrics",
+        "babySizes",
+        "kidsSizes",
+        "colorSwatches",
+        "quickFilters",
+        "stageSizes"
+      ],
+      "additionalProperties": false
+    },
+    "settings": {
+      "type": "object",
+      "title": "Ajustes del catálogo",
+      "description": "Configurá los datos de «ajustes del catálogo».",
+      "x-group": "Secciones",
+      "properties": {
+        "crossSellCategory": {
+          "title": "Categoría de productos relacionados",
+          "description": "Ingresá el texto de «categoría de productos relacionados».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Accesorios & Packs"
+          ],
+          "x-exampleData": true
+        },
+        "babySizeAlias": {
+          "title": "Equivalencia de talle de bebé",
+          "description": "Ingresá el texto de «equivalencia de talle de bebé».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "0-12m"
+          ],
+          "x-exampleData": true
+        },
+        "singleSizeAlias": {
+          "title": "Equivalencia de talle único",
+          "description": "Ingresá el texto de «equivalencia de talle único».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Talle Único"
+          ],
+          "x-exampleData": true
+        }
+      },
+      "required": [
+        "crossSellCategory",
+        "babySizeAlias",
+        "singleSizeAlias"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "categories",
+    "products",
+    "filters",
+    "settings"
+  ],
+  "additionalProperties": false
+}

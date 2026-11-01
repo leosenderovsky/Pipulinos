@@ -1,5 +1,6 @@
 import React from 'react';
 import { BRAND_CONFIG } from '../brand.config';
+import { formatText } from '../formatText';
 import { CreditCard, Truck, RefreshCw, ArrowRight } from 'lucide-react';
 
 interface HeroBannerProps {
@@ -30,10 +31,14 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
             <div className="space-y-1.5 text-xs sm:text-sm font-medium">
               <p className="font-extrabold text-brand-text-muted flex items-center gap-1.5">
                 <CreditCard className="w-4 h-4 text-brand-text-muted" />
-                {BRAND_CONFIG.hero.promoCreditCard}
+                {formatText(BRAND_CONFIG.hero.promoCreditCard, {
+                  installments: BRAND_CONFIG.commerce.installmentsWithoutInterest,
+                })}
               </p>
               <p className="font-bold text-emerald-700 bg-emerald-100/60 inline-block px-2.5 py-1 rounded-xl border border-emerald-200">
-                {BRAND_CONFIG.hero.promoTransfer}
+                {formatText(BRAND_CONFIG.hero.promoTransfer, {
+                  percent: BRAND_CONFIG.commerce.transferDiscountPercent,
+                })}
               </p>
             </div>
 
@@ -80,7 +85,11 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
             <CreditCard className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-extrabold text-xs text-brand-text">3 y 6 Cuotas Sin Interés</p>
+            <p className="font-extrabold text-xs text-brand-text">
+              {formatText(BRAND_CONFIG.ui.hero.benefitInstallmentsTitle, {
+                installments: BRAND_CONFIG.commerce.installmentsWithoutInterest,
+              })}
+            </p>
             <p className="text-[11px] font-medium text-purple-400">Con todas las tarjetas vía Mercado Pago</p>
           </div>
         </div>

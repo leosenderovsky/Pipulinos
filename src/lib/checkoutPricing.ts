@@ -1,5 +1,5 @@
 import { BRAND_CONFIG } from '../brand.config';
-import { PRODUCTS } from '../data/products';
+import { PRODUCTS } from '../catalog';
 
 export interface CheckoutItemInput {
   id: string;
@@ -66,12 +66,12 @@ export function calculateCheckout(input: CheckoutInput) {
 
     return {
       id: product.id,
-      title: `${product.nombre}${item.size ? ` (Talle: ${item.size})` : ''}${item.color ? ` - ${item.color}` : ''}`,
+      title: `${product.name}${item.size ? ` (Talle: ${item.size})` : ''}${item.color ? ` - ${item.color}` : ''}`,
       description: `${BRAND_CONFIG.name} - Talle: ${item.size || 'Único'} - Color: ${item.color || 'Estándar'}`,
       quantity: item.quantity,
       currency_id: BRAND_CONFIG.commerce.currency,
-      unit_price: product.precio,
-      picture_url: product.imagenes[0],
+      unit_price: product.price,
+      picture_url: product.images[0],
     };
   });
 

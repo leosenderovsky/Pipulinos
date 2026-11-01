@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { PRODUCTS, Product, MAX_CATALOG_PRICE } from '../data/products';
+import { PRODUCTS, Product, MAX_CATALOG_PRICE } from '../catalog';
 import { BRAND_CONFIG } from '../brand.config';
 import { HeroBanner } from './HeroBanner';
 import { FilterSidebar } from './FilterSidebar';
@@ -75,12 +75,12 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
 
   const sortedProducts = useMemo(() => {
     const items = [...filteredProducts];
-    if (sortOrder === 'menor_precio') return items.sort((a, b) => a.precio - b.precio);
-    if (sortOrder === 'mayor_precio') return items.sort((a, b) => b.precio - a.precio);
+    if (sortOrder === 'menor_precio') return items.sort((a, b) => a.price - b.price);
+    if (sortOrder === 'mayor_precio') return items.sort((a, b) => b.price - a.price);
     if (sortOrder === 'descuento')
       return items.sort((a, b) => {
-        const discA = a.precioAnterior ? a.precioAnterior - a.precio : 0;
-        const discB = b.precioAnterior ? b.precioAnterior - b.precio : 0;
+        const discA = a.compareAtPrice ? a.compareAtPrice - a.price : 0;
+        const discB = b.compareAtPrice ? b.compareAtPrice - b.price : 0;
         return discB - discA;
       });
 
@@ -114,11 +114,16 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   }
 
   if (selectedAgeGroup !== 'all') {
-    activeFilterPills.push({
-      id: 'age',
-      label: selectedAgeGroup === 'recien-nacidos' ? '0-12m' : selectedAgeGroup === 'bebes' ? '1-3 años' : '4-10 años',
-      onRemove: () => onSelectAgeGroup('all'),
-    });
+    const label = QUICK_FILTERS.find(
+      (filter) => filter.axis === 'stage' && filter.value === selectedAgeGroup,
+    )?.activeLabel;
+    if (label) {
+      activeFilterPills.push({
+        id: 'age',
+        label,
+        onRemove: () => onSelectAgeGroup('all'),
+      });
+    }
   }
 
   if (selectedTag) {
@@ -186,7 +191,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
             </span>
             <span className="text-purple-300">/</span>
             <span className="text-brand-primary bg-brand-surface-pink px-2.5 py-0.5 rounded-full border border-brand-primary/20 font-extrabold">
-              {BRAND_CONFIG.copy.catalogTitle} {BRAND_CONFIG.shortName} {BRAND_CONFIG.catalogYear}
+              {BRAND_CONFIG.copy.catalogTitle} {BRAND_CONFIG.shortName} {BRAND_CONFIG.copy.catalogYear}
             </span>
           </div>
 
@@ -250,7 +255,7 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
                   <span className="text-base sm:text-lg">⭐</span>
                   <h1 className="font-extrabold text-lg sm:text-xl text-brand-text tracking-tight">
                     {BRAND_CONFIG.copy.catalogCollectionTitle} {BRAND_CONFIG.shortName}{' '}
-                    {BRAND_CONFIG.catalogYear}
+                    {BRAND_CONFIG.copy.catalogYear}
                   </h1>
                 </div>
                 <p className="text-xs font-semibold text-purple-900/80 flex items-center gap-1.5 flex-wrap">

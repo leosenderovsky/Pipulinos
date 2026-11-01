@@ -1,0 +1,1926 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "BrandConfig",
+  "description": "Configuración editable para la marca.",
+  "x-group": "Secciones",
+  "properties": {
+    "$schema": {
+      "title": "Archivo del esquema",
+      "description": "Ruta al esquema que define esta configuración.",
+      "x-group": "Secciones",
+      "x-widget": "text",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "title": "Versión del esquema",
+      "description": "Versión del formato de configuración.",
+      "x-group": "Secciones",
+      "x-widget": "number",
+      "type": "number"
+    },
+    "name": {
+      "title": "Nombre de la marca",
+      "description": "Ingresá el texto de «nombre de la marca».",
+      "x-group": "Marca",
+      "x-widget": "text",
+      "type": "string",
+      "examples": [
+        "Pipulinos"
+      ],
+      "x-exampleData": true
+    },
+    "shortName": {
+      "title": "Nombre corto de la marca",
+      "description": "Ingresá el texto de «nombre corto de la marca».",
+      "x-group": "Marca",
+      "x-widget": "text",
+      "type": "string",
+      "examples": [
+        "Pipulinos"
+      ],
+      "x-exampleData": true
+    },
+    "tagline": {
+      "title": "Descripción breve de la marca",
+      "description": "Ingresá el texto de «descripción breve de la marca».",
+      "x-group": "Marca",
+      "x-widget": "text",
+      "type": "string",
+      "examples": [
+        "Showroom de Indumentaria Infantil"
+      ],
+      "x-exampleData": true
+    },
+    "slogan": {
+      "title": "Frase de marca",
+      "description": "Ingresá el texto de «frase de marca».",
+      "x-group": "Marca",
+      "x-widget": "text",
+      "type": "string",
+      "examples": [
+        "Amor en cada puntada para crecer jugando 🎈"
+      ],
+      "x-exampleData": true
+    },
+    "seo": {
+      "type": "object",
+      "title": "Metadatos para buscadores",
+      "description": "Configurá los datos de «metadatos para buscadores».",
+      "x-group": "Secciones",
+      "properties": {
+        "titleSuffix": {
+          "title": "Sufijo del título",
+          "description": "Ingresá el texto de «sufijo del título».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Showroom & Catálogo de Indumentaria Infantil"
+          ],
+          "x-exampleData": true
+        },
+        "description": {
+          "title": "Descripción",
+          "description": "Ingresá el texto de «descripción».",
+          "x-group": "Textos",
+          "x-widget": "textarea",
+          "type": "string",
+          "examples": [
+            "Showroom y catálogo de indumentaria infantil. Ropa tierna para bebés y niños de 0 a 10 años, compra online con Mercado Pago y WhatsApp."
+          ],
+          "x-exampleData": true
+        },
+        "socialImage": {
+          "title": "Imagen para compartir",
+          "description": "Elegí la imagen que se usará para «imagen para compartir».",
+          "x-group": "Imágenes",
+          "x-widget": "image",
+          "type": "string",
+          "examples": [
+            "/assets/misc/og-image.jpg"
+          ],
+          "x-exampleData": true,
+          "x-asset": {
+            "path": "/assets/misc/og-image.jpg",
+            "minWidth": 1200,
+            "ratio": 1.9047619047619047,
+            "maxKB": 200
+          }
+        }
+      },
+      "required": [
+        "titleSuffix",
+        "description",
+        "socialImage"
+      ],
+      "additionalProperties": false
+    },
+    "typography": {
+      "type": "object",
+      "title": "Tipografía del sitio",
+      "description": "Configurá los datos de «tipografía del sitio».",
+      "x-group": "Secciones",
+      "properties": {
+        "headings": {
+          "title": "Tipografía de títulos",
+          "description": "Ingresá el texto de «tipografía de títulos».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Plus Jakarta Sans, sans-serif"
+          ],
+          "x-exampleData": true
+        },
+        "body": {
+          "title": "Tipografía del texto",
+          "description": "Ingresá el texto de «tipografía del texto».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Plus Jakarta Sans, sans-serif"
+          ],
+          "x-exampleData": true
+        },
+        "stylesheetUrl": {
+          "title": "Dirección de la tipografía",
+          "description": "Ingresá el texto de «dirección de la tipografía».",
+          "x-group": "Secciones",
+          "x-widget": "url",
+          "type": "string",
+          "examples": [
+            "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+          ],
+          "x-exampleData": true
+        }
+      },
+      "required": [
+        "headings",
+        "body",
+        "stylesheetUrl"
+      ],
+      "additionalProperties": false
+    },
+    "theme": {
+      "type": "object",
+      "title": "Colores del sitio",
+      "description": "Configurá los datos de «colores del sitio».",
+      "x-group": "Secciones",
+      "properties": {
+        "primary": {
+          "title": "Color principal",
+          "description": "Elegí el color para «color principal».",
+          "x-group": "Botones",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FF6B57"
+          ],
+          "x-exampleData": true
+        },
+        "primaryHover": {
+          "title": "Color principal al pasar el cursor",
+          "description": "Elegí el color para «color principal al pasar el cursor».",
+          "x-group": "Botones",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FF8A1E"
+          ],
+          "x-exampleData": true
+        },
+        "secondary": {
+          "title": "Color secundario",
+          "description": "Elegí el color para «color secundario».",
+          "x-group": "Botones",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FFD026"
+          ],
+          "x-exampleData": true
+        },
+        "secondarySoft": {
+          "title": "Color secundario suave",
+          "description": "Elegí el color para «color secundario suave».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FFF4D0"
+          ],
+          "x-exampleData": true
+        },
+        "background": {
+          "title": "Fondo de la página",
+          "description": "Elegí el color para «fondo de la página».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FFFDF9"
+          ],
+          "x-exampleData": true
+        },
+        "surface": {
+          "title": "Fondo de las tarjetas",
+          "description": "Elegí el color para «fondo de las tarjetas».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FFFFFF"
+          ],
+          "x-exampleData": true
+        },
+        "surfaceCheckout": {
+          "title": "Fondo del pago",
+          "description": "Elegí el color para «fondo del pago».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FAF9FF"
+          ],
+          "x-exampleData": true
+        },
+        "surfaceLilac": {
+          "title": "Fondo lila",
+          "description": "Elegí el color para «fondo lila».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FAF4FF"
+          ],
+          "x-exampleData": true
+        },
+        "surfacePink": {
+          "title": "Fondo rosa",
+          "description": "Elegí el color para «fondo rosa».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FFE9E5"
+          ],
+          "x-exampleData": true
+        },
+        "surfacePinkStrong": {
+          "title": "Fondo rosa intenso",
+          "description": "Elegí el color para «fondo rosa intenso».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FFD4CC"
+          ],
+          "x-exampleData": true
+        },
+        "surfaceBlue": {
+          "title": "Fondo celeste",
+          "description": "Elegí el color para «fondo celeste».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#E2F3FF"
+          ],
+          "x-exampleData": true
+        },
+        "surfaceGreen": {
+          "title": "Fondo verde",
+          "description": "Elegí el color para «fondo verde».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#E3F9ED"
+          ],
+          "x-exampleData": true
+        },
+        "surfacePurple": {
+          "title": "Fondo violeta",
+          "description": "Elegí el color para «fondo violeta».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#F1EAFE"
+          ],
+          "x-exampleData": true
+        },
+        "surfaceWarm": {
+          "title": "Fondo cálido",
+          "description": "Elegí el color para «fondo cálido».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FFFDF6"
+          ],
+          "x-exampleData": true
+        },
+        "text": {
+          "title": "Color del texto principal",
+          "description": "Elegí el color para «color del texto principal».",
+          "x-group": "Textos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#1E2046"
+          ],
+          "x-exampleData": true,
+          "x-contrastWith": "background"
+        },
+        "textMuted": {
+          "title": "Color del texto secundario",
+          "description": "Elegí el color para «color del texto secundario».",
+          "x-group": "Textos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#8B5CF6"
+          ],
+          "x-exampleData": true,
+          "x-contrastWith": "background"
+        },
+        "accentBlue": {
+          "title": "Acento celeste",
+          "description": "Elegí el color para «acento celeste».",
+          "x-group": "Acentos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#26A4F8"
+          ],
+          "x-exampleData": true
+        },
+        "accentBlueDark": {
+          "title": "Acento celeste oscuro",
+          "description": "Elegí el color para «acento celeste oscuro».",
+          "x-group": "Acentos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#0284C7"
+          ],
+          "x-exampleData": true
+        },
+        "payment": {
+          "title": "Botón de pago",
+          "description": "Elegí el color para «botón de pago».",
+          "x-group": "Botones",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#009EE3"
+          ],
+          "x-exampleData": true
+        },
+        "paymentHover": {
+          "title": "Botón de pago al pasar el cursor",
+          "description": "Elegí el color para «botón de pago al pasar el cursor».",
+          "x-group": "Botones",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#0089c7"
+          ],
+          "x-exampleData": true
+        },
+        "success": {
+          "title": "Color de confirmación",
+          "description": "Elegí el color para «color de confirmación».",
+          "x-group": "Estados",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#2DD382"
+          ],
+          "x-exampleData": true
+        },
+        "whatsapp": {
+          "title": "Botón de WhatsApp",
+          "description": "Elegí el color para «botón de whatsapp».",
+          "x-group": "Botones",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#25D366"
+          ],
+          "x-exampleData": true
+        },
+        "whatsappHover": {
+          "title": "Botón de WhatsApp al pasar el cursor",
+          "description": "Elegí el color para «botón de whatsapp al pasar el cursor».",
+          "x-group": "Botones",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#20ba59"
+          ],
+          "x-exampleData": true
+        },
+        "neutral": {
+          "title": "Color de los bordes",
+          "description": "Elegí el color para «color de los bordes».",
+          "x-group": "Bordes",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#E7DFD5"
+          ],
+          "x-exampleData": true
+        },
+        "blueTint": {
+          "title": "Fondo azul suave",
+          "description": "Elegí el color para «fondo azul suave».",
+          "x-group": "Fondos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#F1F6FF"
+          ],
+          "x-exampleData": true
+        },
+        "productPastelBlue": {
+          "title": "Color celeste de producto",
+          "description": "Elegí el color para «color celeste de producto».",
+          "x-group": "Acentos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#93C5FD"
+          ],
+          "x-exampleData": true
+        },
+        "productCoral": {
+          "title": "Color coral de producto",
+          "description": "Elegí el color para «color coral de producto».",
+          "x-group": "Acentos",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FB7185"
+          ],
+          "x-exampleData": true
+        }
+      },
+      "required": [
+        "primary",
+        "primaryHover",
+        "secondary",
+        "secondarySoft",
+        "background",
+        "surface",
+        "surfaceCheckout",
+        "surfaceLilac",
+        "surfacePink",
+        "surfacePinkStrong",
+        "surfaceBlue",
+        "surfaceGreen",
+        "surfacePurple",
+        "surfaceWarm",
+        "text",
+        "textMuted",
+        "accentBlue",
+        "accentBlueDark",
+        "payment",
+        "paymentHover",
+        "success",
+        "whatsapp",
+        "whatsappHover",
+        "neutral",
+        "blueTint",
+        "productPastelBlue",
+        "productCoral"
+      ],
+      "additionalProperties": false
+    },
+    "storage": {
+      "type": "object",
+      "title": "Almacenamiento del carrito",
+      "description": "Configurá los datos de «almacenamiento del carrito».",
+      "x-group": "Secciones",
+      "properties": {
+        "cartKey": {
+          "title": "Clave del carrito",
+          "description": "Ingresá el texto de «clave del carrito».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "pipulinos_cart"
+          ],
+          "x-exampleData": true
+        }
+      },
+      "required": [
+        "cartKey"
+      ],
+      "additionalProperties": false
+    },
+    "demo": {
+      "type": "object",
+      "title": "Datos de demostración",
+      "description": "Configurá los datos de «datos de demostración».",
+      "x-group": "Secciones",
+      "properties": {
+        "prefillCart": {
+          "title": "Precargar el carrito",
+          "description": "Activá esta opción cuando corresponda.",
+          "x-group": "Secciones",
+          "x-widget": "boolean",
+          "type": "boolean"
+        },
+        "prefillCheckout": {
+          "title": "Precargar el pago",
+          "description": "Activá esta opción cuando corresponda.",
+          "x-group": "Secciones",
+          "x-widget": "boolean",
+          "type": "boolean"
+        },
+        "giftDedication": {
+          "title": "Dedicatoria de ejemplo",
+          "description": "Ingresá el texto de «dedicatoria de ejemplo».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "¡Bienvenido Benicio al mundo! Te amamos tus tíos Sofi y Lucas 💕 ⭐"
+          ],
+          "x-exampleData": true
+        },
+        "coupon": {
+          "title": "Cupón de ejemplo",
+          "description": "Ingresá el texto de «cupón de ejemplo».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "PROMO-PACK"
+          ],
+          "x-exampleData": true
+        },
+        "giftPackaging": {
+          "title": "Activar el envoltorio de regalo",
+          "description": "Activá esta opción cuando corresponda.",
+          "x-group": "Secciones",
+          "x-widget": "boolean",
+          "type": "boolean"
+        },
+        "checkout": {
+          "type": "object",
+          "title": "Datos de pago de ejemplo",
+          "description": "Configurá los datos de «datos de pago de ejemplo».",
+          "x-group": "Secciones",
+          "properties": {
+            "name": {
+              "title": "Nombre de la persona",
+              "description": "Ingresá el texto de «nombre de la persona».",
+              "x-group": "Marca",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Laura Gómez"
+              ],
+              "x-exampleData": true
+            },
+            "email": {
+              "title": "Correo electrónico",
+              "description": "Ingresá el texto de «correo electrónico».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "laura.gomez@gmail.com"
+              ],
+              "x-exampleData": true
+            },
+            "phone": {
+              "title": "Teléfono",
+              "description": "Ingresá el texto de «teléfono».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "+54 9 11 5555-1234"
+              ],
+              "x-exampleData": true
+            },
+            "streetAddress": {
+              "title": "Calle y número",
+              "description": "Ingresá el texto de «calle y número».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Av. Coronel Díaz 2145"
+              ],
+              "x-exampleData": true
+            },
+            "apartment": {
+              "title": "Piso o departamento",
+              "description": "Ingresá el texto de «piso o departamento».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "6to A"
+              ],
+              "x-exampleData": true
+            },
+            "zipCode": {
+              "title": "Código postal",
+              "description": "Ingresá el texto de «código postal».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "C1425"
+              ],
+              "x-exampleData": true
+            },
+            "city": {
+              "title": "Localidad",
+              "description": "Ingresá el texto de «localidad».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Palermo, CABA"
+              ],
+              "x-exampleData": true
+            },
+            "deliveryNotes": {
+              "title": "Indicaciones de entrega",
+              "description": "Ingresá el texto de «indicaciones de entrega».",
+              "x-group": "Secciones",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Entregar por la tarde."
+              ],
+              "x-exampleData": true
+            }
+          },
+          "required": [
+            "name",
+            "email",
+            "phone",
+            "streetAddress",
+            "apartment",
+            "zipCode",
+            "city",
+            "deliveryNotes"
+          ],
+          "additionalProperties": false
+        },
+        "showPrototypeBanner": {
+          "title": "Mostrar el banner del prototipo",
+          "description": "Activá esta opción cuando corresponda.",
+          "x-group": "Secciones",
+          "x-widget": "boolean",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "prefillCart",
+        "prefillCheckout",
+        "giftDedication",
+        "coupon",
+        "giftPackaging",
+        "checkout",
+        "showPrototypeBanner"
+      ],
+      "additionalProperties": false
+    },
+    "logo": {
+      "type": "object",
+      "title": "Logo del sitio",
+      "description": "Configurá los datos de «logo del sitio».",
+      "x-group": "Secciones",
+      "properties": {
+        "url": {
+          "title": "Dirección de la imagen",
+          "description": "Elegí la imagen que se usará para «dirección de la imagen».",
+          "x-group": "Imágenes",
+          "x-widget": "image",
+          "type": "string",
+          "examples": [
+            "/assets/logo/logo.png"
+          ],
+          "x-exampleData": true,
+          "x-asset": {
+            "path": "/assets/logo/logo.png",
+            "maxKB": 120
+          }
+        },
+        "alt": {
+          "title": "Texto alternativo de la imagen",
+          "description": "Ingresá el texto de «texto alternativo de la imagen».",
+          "x-group": "Secciones",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Pipulinos - Indumentaria Infantil"
+          ],
+          "x-exampleData": true
+        },
+        "faviconUrl": {
+          "title": "Ícono del sitio",
+          "description": "Elegí la imagen que se usará para «ícono del sitio».",
+          "x-group": "Imágenes",
+          "x-widget": "image",
+          "type": "string",
+          "examples": [
+            "/assets/logo/favicon-32.png"
+          ],
+          "x-exampleData": true,
+          "x-asset": {
+            "path": "/assets/logo/favicon-32.png",
+            "minWidth": 32,
+            "ratio": 1
+          }
+        },
+        "appleTouchIconUrl": {
+          "title": "Ícono para dispositivos Apple",
+          "description": "Elegí la imagen que se usará para «ícono para dispositivos apple».",
+          "x-group": "Imágenes",
+          "x-widget": "image",
+          "type": "string",
+          "examples": [
+            "/assets/logo/apple-touch-icon.png"
+          ],
+          "x-exampleData": true,
+          "x-asset": {
+            "path": "/assets/logo/apple-touch-icon.png",
+            "minWidth": 180,
+            "ratio": 1
+          }
+        },
+        "iconBackground": {
+          "title": "Fondo de los íconos",
+          "description": "Elegí el color para «fondo de los íconos».",
+          "x-group": "Secciones",
+          "x-widget": "color",
+          "type": "string",
+          "examples": [
+            "#FFFDF9"
+          ],
+          "x-exampleData": true
+        },
+        "iconCrop": {
+          "type": "object",
+          "title": "Recorte del logo",
+          "description": "Configurá los datos de «recorte del logo».",
+          "x-group": "Secciones",
+          "properties": {
+            "left": {
+              "title": "Margen izquierdo del recorte",
+              "description": "Ingresá el valor de «margen izquierdo del recorte».",
+              "x-group": "Secciones",
+              "x-widget": "number",
+              "type": "number"
+            },
+            "top": {
+              "title": "Margen superior del recorte",
+              "description": "Ingresá el valor de «margen superior del recorte».",
+              "x-group": "Secciones",
+              "x-widget": "number",
+              "type": "number"
+            },
+            "width": {
+              "title": "Ancho del recorte",
+              "description": "Ingresá el valor de «ancho del recorte».",
+              "x-group": "Secciones",
+              "x-widget": "number",
+              "type": "number"
+            },
+            "height": {
+              "title": "Alto del recorte",
+              "description": "Ingresá el valor de «alto del recorte».",
+              "x-group": "Secciones",
+              "x-widget": "number",
+              "type": "number"
+            }
+          },
+          "required": [
+            "left",
+            "top",
+            "width",
+            "height"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "url",
+        "alt",
+        "faviconUrl",
+        "appleTouchIconUrl",
+        "iconBackground",
+        "iconCrop"
+      ],
+      "additionalProperties": false
+    },
+    "contact": {
+      "type": "object",
+      "title": "Datos de contacto",
+      "description": "Configurá los datos de «datos de contacto».",
+      "x-group": "Secciones",
+      "properties": {
+        "whatsappNumberFormatted": {
+          "title": "Número de WhatsApp para mostrar",
+          "description": "Ingresá el texto de «número de whatsapp para mostrar».",
+          "x-group": "Contacto",
+          "x-widget": "whatsapp",
+          "type": "string",
+          "examples": [
+            "+54 9 11 4820-9912"
+          ],
+          "x-exampleData": true
+        },
+        "whatsappRaw": {
+          "title": "Número de WhatsApp para enlaces",
+          "description": "Ingresá el texto de «número de whatsapp para enlaces».",
+          "x-group": "Contacto",
+          "x-widget": "whatsapp",
+          "type": "string",
+          "examples": [
+            "5491148209912"
+          ],
+          "x-exampleData": true
+        },
+        "whatsappAdvisorName": {
+          "title": "Nombre de quien atiende",
+          "description": "Ingresá el texto de «nombre de quien atiende».",
+          "x-group": "Contacto",
+          "x-widget": "whatsapp",
+          "type": "string",
+          "examples": [
+            "Sofi de Pipulinos"
+          ],
+          "x-exampleData": true
+        },
+        "instagramHandle": {
+          "title": "Usuario de Instagram",
+          "description": "Ingresá el texto de «usuario de instagram».",
+          "x-group": "Contacto",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "@pipulinos.kids"
+          ],
+          "x-exampleData": true
+        },
+        "instagramUrl": {
+          "title": "Dirección de Instagram",
+          "description": "Ingresá el texto de «dirección de instagram».",
+          "x-group": "Contacto",
+          "x-widget": "url",
+          "type": "string",
+          "examples": [
+            "https://instagram.com/pipulinos.kids"
+          ],
+          "x-exampleData": true
+        },
+        "showroomAddress": {
+          "title": "Dirección del local",
+          "description": "Ingresá el texto de «dirección del local».",
+          "x-group": "Contacto",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Palermo Soho, CABA (Honduras 4850)"
+          ],
+          "x-exampleData": true
+        },
+        "showroomId": {
+          "title": "Nombre del local",
+          "description": "Ingresá el texto de «nombre del local».",
+          "x-group": "Contacto",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Showroom Pipulinos Palermo"
+          ],
+          "x-exampleData": true
+        },
+        "showroomHours": {
+          "title": "Horarios del local",
+          "description": "Ingresá el texto de «horarios del local».",
+          "x-group": "Contacto",
+          "x-widget": "hours-list",
+          "type": "string",
+          "examples": [
+            "Lunes a Sábados de 10:00 a 19:00 hs"
+          ],
+          "x-exampleData": true
+        },
+        "email": {
+          "title": "Correo electrónico",
+          "description": "Ingresá el texto de «correo electrónico».",
+          "x-group": "Contacto",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "pedidos@pipulinos.kids"
+          ],
+          "x-exampleData": true
+        }
+      },
+      "required": [
+        "whatsappNumberFormatted",
+        "whatsappRaw",
+        "whatsappAdvisorName",
+        "instagramHandle",
+        "instagramUrl",
+        "showroomAddress",
+        "showroomId",
+        "showroomHours",
+        "email"
+      ],
+      "additionalProperties": false
+    },
+    "commerce": {
+      "type": "object",
+      "title": "Reglas comerciales",
+      "description": "Configurá los datos de «reglas comerciales».",
+      "x-group": "Secciones",
+      "properties": {
+        "currency": {
+          "title": "Moneda",
+          "description": "Ingresá el texto de «moneda».",
+          "x-group": "Comercial",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "ARS"
+          ],
+          "x-exampleData": true
+        },
+        "currencySymbol": {
+          "title": "Símbolo de la moneda",
+          "description": "Ingresá el texto de «símbolo de la moneda».",
+          "x-group": "Comercial",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "$"
+          ],
+          "x-exampleData": true
+        },
+        "coupons": {
+          "type": "array",
+          "title": "Cupones",
+          "description": "Agregá, quitá o reordená los elementos de «cupones».",
+          "x-group": "Comercial",
+          "x-widget": "list",
+          "items": {
+            "type": "object",
+            "title": "Cupón",
+            "description": "Configurá los datos de «cupón».",
+            "x-group": "Comercial",
+            "properties": {
+              "code": {
+                "title": "Código",
+                "description": "Ingresá el texto de «código».",
+                "x-group": "Comercial",
+                "x-widget": "text",
+                "type": "string",
+                "examples": [
+                  "PIPULINOS10"
+                ],
+                "x-exampleData": true
+              },
+              "type": {
+                "title": "Tipo de descuento",
+                "description": "Elegí una opción para «tipo de descuento».",
+                "x-group": "Comercial",
+                "x-widget": "select",
+                "type": "string",
+                "examples": [
+                  "percent"
+                ],
+                "x-exampleData": true,
+                "enum": [
+                  "percent",
+                  "fixed"
+                ]
+              },
+              "value": {
+                "title": "Valor",
+                "description": "Ingresá el valor de «valor».",
+                "x-group": "Comercial",
+                "x-widget": "number",
+                "type": "number"
+              }
+            },
+            "required": [
+              "code",
+              "type",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "freeShippingThreshold": {
+          "title": "Monto mínimo para el envío gratis",
+          "description": "Ingresá el valor de «monto mínimo para el envío gratis».",
+          "x-group": "Comercial",
+          "x-widget": "number",
+          "type": "number"
+        },
+        "transferDiscountPercent": {
+          "title": "Descuento por transferencia",
+          "description": "Ingresá el valor de «descuento por transferencia».",
+          "x-group": "Comercial",
+          "x-widget": "number",
+          "type": "number"
+        },
+        "installmentsWithoutInterest": {
+          "title": "Cuotas sin interés",
+          "description": "Ingresá el valor de «cuotas sin interés».",
+          "x-group": "Comercial",
+          "x-widget": "number",
+          "type": "number"
+        },
+        "expressShippingCost": {
+          "title": "Costo del envío rápido",
+          "description": "Ingresá el valor de «costo del envío rápido».",
+          "x-group": "Comercial",
+          "x-widget": "number",
+          "type": "number"
+        },
+        "standardShippingDays": {
+          "title": "Plazo del envío estándar",
+          "description": "Ingresá el texto de «plazo del envío estándar».",
+          "x-group": "Comercial",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "3 a 5 días hábiles (Correo Argentino)"
+          ],
+          "x-exampleData": true
+        },
+        "expressShippingDays": {
+          "title": "Plazo del envío rápido",
+          "description": "Ingresá el texto de «plazo del envío rápido».",
+          "x-group": "Comercial",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Llega en 24hs (Moto CABA/GBA)"
+          ],
+          "x-exampleData": true
+        },
+        "exchangePeriodDays": {
+          "title": "Plazo para cambios",
+          "description": "Ingresá el valor de «plazo para cambios».",
+          "x-group": "Comercial",
+          "x-widget": "number",
+          "type": "number"
+        }
+      },
+      "required": [
+        "currency",
+        "currencySymbol",
+        "coupons",
+        "freeShippingThreshold",
+        "transferDiscountPercent",
+        "installmentsWithoutInterest",
+        "expressShippingCost",
+        "standardShippingDays",
+        "expressShippingDays",
+        "exchangePeriodDays"
+      ],
+      "additionalProperties": false
+    },
+    "announcement": {
+      "type": "object",
+      "title": "Aviso superior",
+      "description": "Configurá los datos de «aviso superior».",
+      "x-group": "Secciones",
+      "properties": {
+        "enabled": {
+          "title": "Mostrar el aviso",
+          "description": "Activá esta opción cuando corresponda.",
+          "x-group": "Textos",
+          "x-widget": "boolean",
+          "type": "boolean"
+        },
+        "text": {
+          "title": "Texto del aviso",
+          "description": "Ingresá el texto de «texto del aviso». Variables: {amount} significa monto mínimo para el envío gratis; {installments} significa cantidad de cuotas sin interés.",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Envíos gratis desde {amount} • {installments} cuotas sin interés con Mercado Pago • ¡Atención personalizada por WhatsApp!"
+          ],
+          "x-exampleData": true,
+          "x-vars": [
+            "amount",
+            "installments"
+          ]
+        }
+      },
+      "required": [
+        "enabled",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "hero": {
+      "type": "object",
+      "title": "Portada",
+      "description": "Configurá los datos de «portada».",
+      "x-group": "Secciones",
+      "properties": {
+        "badge": {
+          "title": "Etiqueta destacada",
+          "description": "Ingresá el texto de «etiqueta destacada».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "NUEVA COLECCIÓN 2027"
+          ],
+          "x-exampleData": true
+        },
+        "title": {
+          "title": "Título",
+          "description": "Ingresá el texto de «título».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Amor en cada puntada para crecer jugando 🎈"
+          ],
+          "x-exampleData": true
+        },
+        "subtitle": {
+          "title": "Bajada",
+          "description": "Ingresá el texto de «bajada».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Prendas suaves, nobles e hipoalergénicas para acompañar los primeros pasos y sueños de tu peque."
+          ],
+          "x-exampleData": true
+        },
+        "promoCreditCard": {
+          "title": "Promoción con tarjeta",
+          "description": "Ingresá el texto de «promoción con tarjeta». Variables: {installments} significa cantidad de cuotas sin interés.",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Hasta {installments} Cuotas Sin Interés con Mercado Pago"
+          ],
+          "x-exampleData": true,
+          "x-vars": [
+            "installments"
+          ]
+        },
+        "promoTransfer": {
+          "title": "Promoción por transferencia",
+          "description": "Ingresá el texto de «promoción por transferencia». Variables: {percent} significa porcentaje de descuento por transferencia.",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "+ {percent}% OFF abonando por Transferencia Bancaria"
+          ],
+          "x-exampleData": true,
+          "x-vars": [
+            "percent"
+          ]
+        },
+        "bannerImageUrl": {
+          "title": "Imagen de portada",
+          "description": "Elegí la imagen que se usará para «imagen de portada».",
+          "x-group": "Imágenes",
+          "x-widget": "image",
+          "type": "string",
+          "examples": [
+            "/assets/hero/hero-1.jpg"
+          ],
+          "x-exampleData": true,
+          "x-asset": {
+            "path": "/assets/hero/hero-1.jpg"
+          }
+        },
+        "bannerImageAlt": {
+          "title": "Descripción de la imagen de portada",
+          "description": "Ingresá el texto de «descripción de la imagen de portada».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Bebés jugando felices con prendas suaves Pipulinos en showroom"
+          ],
+          "x-exampleData": true
+        },
+        "trustPill": {
+          "title": "Mensaje destacado",
+          "description": "Ingresá el texto de «mensaje destacado».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "100% Algodón Peinado Suave"
+          ],
+          "x-exampleData": true
+        }
+      },
+      "required": [
+        "badge",
+        "title",
+        "subtitle",
+        "promoCreditCard",
+        "promoTransfer",
+        "bannerImageUrl",
+        "bannerImageAlt",
+        "trustPill"
+      ],
+      "additionalProperties": false
+    },
+    "copy": {
+      "type": "object",
+      "title": "Textos generales",
+      "description": "Configurá los datos de «textos generales».",
+      "x-group": "Secciones",
+      "properties": {
+        "sizeAssistancePrompt": {
+          "title": "Mensaje para pedir ayuda con el talle",
+          "description": "Ingresá el texto de «mensaje para pedir ayuda con el talle».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "¿Dudas con el talle de tu peque? Escribinos por WhatsApp y una asesora te pasa medidas en centímetros y fotos en vivo."
+          ],
+          "x-exampleData": true
+        },
+        "giftPackagingTitle": {
+          "title": "Título del regalo",
+          "description": "Ingresá el texto de «título del regalo».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "¿Es para regalo? 🎁"
+          ],
+          "x-exampleData": true
+        },
+        "giftPackagingDescription": {
+          "title": "Descripción del regalo",
+          "description": "Ingresá el texto de «descripción del regalo».",
+          "x-group": "Textos",
+          "x-widget": "textarea",
+          "type": "string",
+          "examples": [
+            "Te enviamos la bolsita ilustrada Pipulinos con moño, papel de seda y tarjetita con dedicatoria lista para sorprender."
+          ],
+          "x-exampleData": true
+        },
+        "footerAbout": {
+          "title": "Texto de presentación del pie",
+          "description": "Ingresá el texto de «texto de presentación del pie».",
+          "x-group": "Textos de interfaz",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Showroom oficial de ropa tierna y noble para bebés y peques de 0 a 10 años. Diseñado con amor para jugar, explorar y dormir felices."
+          ],
+          "x-exampleData": true
+        },
+        "footerDisclaimer": {
+          "title": "Aviso de demostración",
+          "description": "Ingresá el texto de «aviso de demostración».",
+          "x-group": "Textos de interfaz",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Marca, productos y precios de ejemplo — prototipo de demostración"
+          ],
+          "x-exampleData": true
+        },
+        "whatsappShippingMessage": {
+          "title": "Mensaje sobre envíos y cambios",
+          "description": "Ingresá el texto de «mensaje sobre envíos y cambios».",
+          "x-group": "Textos",
+          "x-widget": "whatsapp",
+          "type": "string",
+          "examples": [
+            "tengo una consulta sobre envíos y cambios"
+          ],
+          "x-exampleData": true
+        },
+        "whatsappFaqMessage": {
+          "title": "Mensaje sobre preguntas frecuentes",
+          "description": "Ingresá el texto de «mensaje sobre preguntas frecuentes».",
+          "x-group": "Textos",
+          "x-widget": "whatsapp",
+          "type": "string",
+          "examples": [
+            "tengo preguntas frecuentes"
+          ],
+          "x-exampleData": true
+        },
+        "whatsappSizeMessage": {
+          "title": "Mensaje sobre talles",
+          "description": "Ingresá el texto de «mensaje sobre talles».",
+          "x-group": "Textos",
+          "x-widget": "whatsapp",
+          "type": "string",
+          "examples": [
+            "tengo dudas con las medidas para mi bebé"
+          ],
+          "x-exampleData": true
+        },
+        "whatsappOrderConfirmation": {
+          "title": "Mensaje para confirmar el pedido",
+          "description": "Ingresá el texto de «mensaje para confirmar el pedido».",
+          "x-group": "Textos",
+          "x-widget": "whatsapp",
+          "type": "string",
+          "examples": [
+            "confirmo mi pedido"
+          ],
+          "x-exampleData": true
+        },
+        "catalogTitle": {
+          "title": "Título del catálogo",
+          "description": "Ingresá el texto de «título del catálogo».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Catálogo Showroom"
+          ],
+          "x-exampleData": true
+        },
+        "catalogCollectionTitle": {
+          "title": "Título de la colección",
+          "description": "Ingresá el texto de «título de la colección».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Colección Showroom"
+          ],
+          "x-exampleData": true
+        },
+        "customerServiceLabel": {
+          "title": "Nombre de atención al cliente",
+          "description": "Ingresá el texto de «nombre de atención al cliente».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Atendido por Madres"
+          ],
+          "x-exampleData": true
+        },
+        "handmadeGuarantee": {
+          "title": "Garantía del producto",
+          "description": "Ingresá el texto de «garantía del producto».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Garantía de confección artesanal Showroom"
+          ],
+          "x-exampleData": true
+        },
+        "crossSellTitle": {
+          "title": "Título de productos relacionados",
+          "description": "Ingresá el texto de «título de productos relacionados».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Completá el Conjunto"
+          ],
+          "x-exampleData": true
+        },
+        "checkoutOrderHeading": {
+          "title": "Título del pedido",
+          "description": "Ingresá el texto de «título del pedido».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "NUEVO PEDIDO SHOWROOM"
+          ],
+          "x-exampleData": true
+        },
+        "thankYouMessage": {
+          "title": "Mensaje de agradecimiento",
+          "description": "Ingresá el texto de «mensaje de agradecimiento».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "¡Gracias por elegir!"
+          ],
+          "x-exampleData": true
+        },
+        "orderPreparationMessage": {
+          "title": "Mensaje de preparación del pedido",
+          "description": "Ingresá el texto de «mensaje de preparación del pedido».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Preparamos tus prendas con todo el amor en nuestro showroom."
+          ],
+          "x-exampleData": true
+        },
+        "giftDedicationPlaceholder": {
+          "title": "Ayuda para escribir una dedicatoria",
+          "description": "Ingresá el texto de «ayuda para escribir una dedicatoria».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Ej: ¡Bienvenido al mundo! Con mucho cariño"
+          ],
+          "x-exampleData": true
+        },
+        "checkoutPlaceholders": {
+          "type": "object",
+          "title": "Ayuda para completar el pago",
+          "description": "Configurá los datos de «ayuda para completar el pago».",
+          "x-group": "Textos",
+          "properties": {
+            "name": {
+              "title": "Nombre del producto",
+              "description": "Ingresá el texto de «nombre del producto».",
+              "x-group": "Marca",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Nombre y apellido"
+              ],
+              "x-exampleData": true
+            },
+            "email": {
+              "title": "Correo electrónico",
+              "description": "Ingresá el texto de «correo electrónico».",
+              "x-group": "Textos",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "tu@email.com"
+              ],
+              "x-exampleData": true
+            },
+            "phone": {
+              "title": "Ayuda para ingresar el teléfono",
+              "description": "Ingresá el texto de «ayuda para ingresar el teléfono».",
+              "x-group": "Textos",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "11 2345 6789"
+              ],
+              "x-exampleData": true
+            },
+            "street": {
+              "title": "Calle",
+              "description": "Ingresá el texto de «calle».",
+              "x-group": "Textos",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Calle y número"
+              ],
+              "x-exampleData": true
+            },
+            "apartment": {
+              "title": "Piso o departamento",
+              "description": "Ingresá el texto de «piso o departamento».",
+              "x-group": "Textos",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Piso / depto (opcional)"
+              ],
+              "x-exampleData": true
+            },
+            "zip": {
+              "title": "Código postal",
+              "description": "Ingresá el texto de «código postal».",
+              "x-group": "Textos",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Código postal"
+              ],
+              "x-exampleData": true
+            },
+            "city": {
+              "title": "Localidad",
+              "description": "Ingresá el texto de «localidad».",
+              "x-group": "Textos",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Localidad"
+              ],
+              "x-exampleData": true
+            },
+            "notes": {
+              "title": "Indicaciones de entrega",
+              "description": "Ingresá el texto de «indicaciones de entrega».",
+              "x-group": "Textos",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Indicaciones para la entrega (opcional)"
+              ],
+              "x-exampleData": true
+            }
+          },
+          "required": [
+            "name",
+            "email",
+            "phone",
+            "street",
+            "apartment",
+            "zip",
+            "city",
+            "notes"
+          ],
+          "additionalProperties": false
+        },
+        "catalogYear": {
+          "title": "Año de la colección",
+          "description": "Ingresá el valor de «año de la colección».",
+          "x-group": "Textos",
+          "x-widget": "number",
+          "type": "number"
+        },
+        "sizeHintFallback": {
+          "title": "Texto alternativo para el talle",
+          "description": "Ingresá el texto de «texto alternativo para el talle».",
+          "x-group": "Textos",
+          "x-widget": "text",
+          "type": "string",
+          "examples": [
+            "Disponible"
+          ],
+          "x-exampleData": true
+        }
+      },
+      "required": [
+        "sizeAssistancePrompt",
+        "giftPackagingTitle",
+        "giftPackagingDescription",
+        "footerAbout",
+        "footerDisclaimer",
+        "whatsappShippingMessage",
+        "whatsappFaqMessage",
+        "whatsappSizeMessage",
+        "whatsappOrderConfirmation",
+        "catalogTitle",
+        "catalogCollectionTitle",
+        "customerServiceLabel",
+        "handmadeGuarantee",
+        "crossSellTitle",
+        "checkoutOrderHeading",
+        "thankYouMessage",
+        "orderPreparationMessage",
+        "giftDedicationPlaceholder",
+        "checkoutPlaceholders",
+        "catalogYear",
+        "sizeHintFallback",
+        "sizeHintFallback"
+      ],
+      "additionalProperties": false
+    },
+    "ui": {
+      "type": "object",
+      "title": "Textos de interfaz",
+      "description": "Configurá los datos de «textos de interfaz».",
+      "x-group": "Secciones",
+      "properties": {
+        "catalog": {
+          "type": "object",
+          "title": "Catálogo",
+          "description": "Configurá los datos de «catálogo».",
+          "x-group": "Textos de interfaz",
+          "properties": {
+            "allCategoryLabel": {
+              "title": "Opción para ver todas las categorías",
+              "description": "Ingresá el texto de «opción para ver todas las categorías».",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Todos los artículos"
+              ],
+              "x-exampleData": true
+            }
+          },
+          "required": [
+            "allCategoryLabel"
+          ],
+          "additionalProperties": false
+        },
+        "footer": {
+          "type": "object",
+          "title": "Pie de página",
+          "description": "Configurá los datos de «pie de página».",
+          "x-group": "Textos de interfaz",
+          "properties": {
+            "copyright": {
+              "title": "Texto de derechos reservados",
+              "description": "Ingresá el texto de «texto de derechos reservados». Variables: {year} significa año actual; {shortName} significa nombre corto de la marca.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "© {year} {shortName} Showroom Infantil. Todos los derechos reservados."
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "year",
+                "shortName"
+              ]
+            }
+          },
+          "required": [
+            "copyright"
+          ],
+          "additionalProperties": false
+        },
+        "productDetail": {
+          "title": "Detalle del producto",
+          "description": "Configurá los datos de «detalle del producto».",
+          "x-group": "Textos de interfaz",
+          "type": "object",
+          "properties": {
+            "sizeHints": {
+              "title": "Ayudas para elegir talle",
+              "description": "Agregá, quitá o reordená los elementos de «ayudas para elegir talle».",
+              "x-group": "Textos de interfaz",
+              "x-widget": "list",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sizeFragment": {
+                    "title": "Talle al que corresponde la ayuda",
+                    "description": "Ingresá el texto de «talle al que corresponde la ayuda».",
+                    "x-group": "Textos de interfaz",
+                    "x-widget": "text",
+                    "type": "string"
+                  },
+                  "text": {
+                    "title": "Ayuda para elegir el talle",
+                    "description": "Ingresá el texto de «ayuda para elegir el talle».",
+                    "x-group": "Textos de interfaz",
+                    "x-widget": "text",
+                    "type": "string",
+                    "x-exampleData": true
+                  }
+                },
+                "required": [
+                  "sizeFragment",
+                  "text"
+                ],
+                "additionalProperties": false,
+                "title": "Ayuda para elegir el talle",
+                "x-group": "Textos de interfaz",
+                "description": "Configurá los datos de «ayuda para elegir el talle»."
+              }
+            },
+            "exchangeTitle": {
+              "title": "Mensaje sobre cambios",
+              "description": "Ingresá el texto de «mensaje sobre cambios». Variables: {days} significa cantidad de días para cambios.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Cambios sin costo dentro de los {days} días"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "days"
+              ]
+            }
+          },
+          "required": [
+            "sizeHints",
+            "exchangeTitle"
+          ],
+          "additionalProperties": false
+        },
+        "cart": {
+          "title": "Carrito",
+          "description": "Configurá los datos de «carrito».",
+          "x-group": "Textos de interfaz",
+          "type": "object",
+          "properties": {
+            "whatsappText": {
+              "title": "Texto del botón de WhatsApp",
+              "description": "Ingresá el texto de «texto del botón de whatsapp». Variables: {percent} significa porcentaje de descuento por transferencia.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "whatsapp",
+              "type": "string",
+              "examples": [
+                "Asesoramiento, talles y {percent}% OFF transferencia"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "percent"
+              ]
+            },
+            "trustExchangeTitle": {
+              "title": "Mensaje sobre cambios",
+              "description": "Ingresá el texto de «mensaje sobre cambios». Variables: {days} significa cantidad de días para cambios.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "{days} días para cambios"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "days"
+              ]
+            }
+          },
+          "required": [
+            "whatsappText",
+            "trustExchangeTitle"
+          ],
+          "additionalProperties": false
+        },
+        "checkout": {
+          "title": "Datos de pago de ejemplo",
+          "description": "Configurá los datos de «datos de pago de ejemplo».",
+          "x-group": "Textos de interfaz",
+          "type": "object",
+          "properties": {
+            "whatsappBadge": {
+              "title": "Etiqueta de WhatsApp",
+              "description": "Ingresá el texto de «etiqueta de whatsapp». Variables: {percent} significa porcentaje de descuento por transferencia.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "whatsapp",
+              "type": "string",
+              "examples": [
+                "{percent}% OFF"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "percent"
+              ]
+            },
+            "guaranteeTitle": {
+              "title": "Garantía de cambio",
+              "description": "Ingresá el texto de «garantía de cambio». Variables: {days} significa cantidad de días para cambios.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "Garantía de Crecimiento • {days} días de cambio"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "days"
+              ]
+            },
+            "banner": {
+              "title": "Aviso del pago",
+              "description": "Ingresá el texto de «aviso del pago». Variables: {installments} significa cantidad de cuotas sin interés.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "✨ Compra 100% Segura • {installments} cuotas sin interés • Despachos garantizados a todo el país ✨"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "installments"
+              ]
+            },
+            "installmentThree": {
+              "title": "Texto de cuotas",
+              "description": "Ingresá el texto de «texto de cuotas». Variables: {installments} significa cantidad de cuotas sin interés.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "{installments} Cuotas sin interés"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "installments"
+              ]
+            }
+          },
+          "required": [
+            "whatsappBadge",
+            "guaranteeTitle",
+            "banner",
+            "installmentThree"
+          ],
+          "additionalProperties": false
+        },
+        "orderSuccess": {
+          "title": "Confirmación del pedido",
+          "description": "Configurá los datos de «confirmación del pedido».",
+          "x-group": "Textos de interfaz",
+          "type": "object",
+          "properties": {
+            "nextExchange": {
+              "title": "Mensaje sobre cambios",
+              "description": "Ingresá el texto de «mensaje sobre cambios». Variables: {days} significa cantidad de días para cambios.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "¡Tenés {days} días para cualquier cambio de talle con tranquilidad!"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "days"
+              ]
+            }
+          },
+          "required": [
+            "nextExchange"
+          ],
+          "additionalProperties": false
+        },
+        "hero": {
+          "title": "Portada",
+          "description": "Configurá los datos de «portada».",
+          "x-group": "Textos de interfaz",
+          "type": "object",
+          "properties": {
+            "benefitInstallmentsTitle": {
+              "title": "Beneficio de cuotas",
+              "description": "Ingresá el texto de «beneficio de cuotas». Variables: {installments} significa cantidad de cuotas sin interés.",
+              "x-group": "Textos de interfaz",
+              "x-widget": "text",
+              "type": "string",
+              "examples": [
+                "{installments} Cuotas Sin Interés"
+              ],
+              "x-exampleData": true,
+              "x-vars": [
+                "installments"
+              ]
+            }
+          },
+          "required": [
+            "benefitInstallmentsTitle"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "catalog",
+        "footer",
+        "productDetail",
+        "cart",
+        "checkout",
+        "orderSuccess",
+        "hero"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "name",
+    "shortName",
+    "tagline",
+    "slogan",
+    "seo",
+    "typography",
+    "theme",
+    "storage",
+    "demo",
+    "logo",
+    "contact",
+    "commerce",
+    "announcement",
+    "hero",
+    "copy",
+    "ui"
+  ],
+  "additionalProperties": false
+}

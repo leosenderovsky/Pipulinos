@@ -1,0 +1,281 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "SizeGuideConfig",
+  "description": "Configuración editable para la guía de talles.",
+  "x-group": "Secciones",
+  "properties": {
+    "$schema": {
+      "title": "Archivo del esquema",
+      "description": "Ruta al esquema que define esta configuración.",
+      "x-group": "Secciones",
+      "x-widget": "text",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "title": "Versión del esquema",
+      "description": "Versión del formato de configuración.",
+      "x-group": "Secciones",
+      "x-widget": "number",
+      "type": "number"
+    },
+    "babySizes": {
+      "type": "array",
+      "title": "Talles de bebé",
+      "description": "Agregá, quitá o reordená los elementos de «talles de bebé».",
+      "x-group": "Secciones",
+      "x-widget": "list",
+      "items": {
+        "type": "object",
+        "title": "Medida de talle de bebé",
+        "description": "Configurá los datos de «medida de talle de bebé».",
+        "x-group": "Secciones",
+        "properties": {
+          "size": {
+            "title": "Talle",
+            "description": "Ingresá el texto de «talle».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "RN"
+            ],
+            "x-exampleData": true
+          },
+          "suggestedAge": {
+            "title": "Edad sugerida",
+            "description": "Ingresá el texto de «edad sugerida».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "0 a 1 mes"
+            ],
+            "x-exampleData": true
+          },
+          "heightCm": {
+            "title": "Altura en centímetros",
+            "description": "Ingresá el texto de «altura en centímetros».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Hasta 52 cm"
+            ],
+            "x-exampleData": true
+          },
+          "weightKg": {
+            "title": "Peso en kilogramos",
+            "description": "Ingresá el texto de «peso en kilogramos».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Hasta 3.5 kg"
+            ],
+            "x-exampleData": true
+          },
+          "totalLengthCm": {
+            "title": "Largo total en centímetros",
+            "description": "Ingresá el valor de «largo total en centímetros».",
+            "x-group": "Secciones",
+            "x-widget": "number",
+            "type": "number"
+          },
+          "armholeWidthCm": {
+            "title": "Ancho de sisa en centímetros",
+            "description": "Ingresá el valor de «ancho de sisa en centímetros».",
+            "x-group": "Secciones",
+            "x-widget": "number",
+            "type": "number"
+          },
+          "note": {
+            "title": "Nota",
+            "description": "Ingresá el texto de «nota».",
+            "x-group": "Textos",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Ideal bolso de maternidad"
+            ],
+            "x-exampleData": true
+          }
+        },
+        "required": [
+          "size",
+          "suggestedAge",
+          "heightCm",
+          "weightKg",
+          "totalLengthCm",
+          "armholeWidthCm",
+          "note"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "kidsSizes": {
+      "type": "array",
+      "title": "Talles de niños",
+      "description": "Agregá, quitá o reordená los elementos de «talles de niños».",
+      "x-group": "Secciones",
+      "x-widget": "list",
+      "items": {
+        "type": "object",
+        "title": "Medida de talle infantil",
+        "description": "Configurá los datos de «medida de talle infantil».",
+        "x-group": "Secciones",
+        "properties": {
+          "size": {
+            "title": "Talle",
+            "description": "Ingresá el texto de «talle».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "T2"
+            ],
+            "x-exampleData": true
+          },
+          "suggestedAge": {
+            "title": "Edad sugerida",
+            "description": "Ingresá el texto de «edad sugerida».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "2 a 3 años"
+            ],
+            "x-exampleData": true
+          },
+          "heightCm": {
+            "title": "Altura en centímetros",
+            "description": "Ingresá el texto de «altura en centímetros».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "92 - 98 cm"
+            ],
+            "x-exampleData": true
+          },
+          "weightKg": {
+            "title": "Peso en kilogramos",
+            "description": "Ingresá el texto de «peso en kilogramos».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "13 - 15 kg"
+            ],
+            "x-exampleData": true
+          },
+          "chestCm": {
+            "title": "Contorno de pecho en centímetros",
+            "description": "Ingresá el valor de «contorno de pecho en centímetros».",
+            "x-group": "Secciones",
+            "x-widget": "number",
+            "type": "number"
+          },
+          "waistCm": {
+            "title": "Contorno de cintura en centímetros",
+            "description": "Ingresá el valor de «contorno de cintura en centímetros».",
+            "x-group": "Secciones",
+            "x-widget": "number",
+            "type": "number"
+          },
+          "totalLengthCm": {
+            "title": "Largo total en centímetros",
+            "description": "Ingresá el valor de «largo total en centímetros».",
+            "x-group": "Secciones",
+            "x-widget": "number",
+            "type": "number"
+          },
+          "note": {
+            "title": "Nota",
+            "description": "Ingresá el texto de «nota».",
+            "x-group": "Textos",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Jardín maternal"
+            ],
+            "x-exampleData": true
+          }
+        },
+        "required": [
+          "size",
+          "suggestedAge",
+          "heightCm",
+          "weightKg",
+          "chestCm",
+          "waistCm",
+          "totalLengthCm",
+          "note"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "tips": {
+      "type": "object",
+      "title": "Consejos para medir",
+      "description": "Configurá los datos de «consejos para medir».",
+      "x-group": "Secciones",
+      "properties": {
+        "mainTip": {
+          "title": "Consejo principal",
+          "description": "Ingresá el texto de «consejo principal».",
+          "x-group": "Textos",
+          "x-widget": "textarea",
+          "type": "string",
+          "examples": [
+            "El algodón Pima y las telas de punto ceden cómodamente entre un 8% y 12% para permitir libertad total de movimiento."
+          ],
+          "x-exampleData": true
+        },
+        "parentAdvice": {
+          "title": "Recomendación para las familias",
+          "description": "Ingresá el texto de «recomendación para las familias».",
+          "x-group": "Textos",
+          "x-widget": "textarea",
+          "type": "string",
+          "examples": [
+            "Si dudás entre dos talles, te aconsejamos elegir el más grande: las prendas durarán mucho más y las botamangas o puños se pueden arremangar cómodamente."
+          ],
+          "x-exampleData": true
+        },
+        "measuringSteps": {
+          "type": "array",
+          "title": "Pasos para tomar las medidas",
+          "description": "Agregá, quitá o reordená los elementos de «pasos para tomar las medidas».",
+          "x-group": "Textos",
+          "x-widget": "list",
+          "items": {
+            "title": "Paso para tomar las medidas",
+            "description": "Ingresá el texto de «paso para tomar las medidas».",
+            "x-group": "Secciones",
+            "x-widget": "text",
+            "type": "string",
+            "examples": [
+              "Apoyá una prenda que le quede cómoda sobre una superficie plana (mesa o cama)."
+            ],
+            "x-exampleData": true
+          }
+        }
+      },
+      "required": [
+        "mainTip",
+        "parentAdvice",
+        "measuringSteps"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "babySizes",
+    "kidsSizes",
+    "tips"
+  ],
+  "additionalProperties": false
+}

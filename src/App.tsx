@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CartProvider, useCart } from './context/CartContext';
-import { Product, PRODUCTS, MAX_CATALOG_PRICE } from './data/products';
+import { Product, PRODUCTS, MAX_CATALOG_PRICE } from './catalog';
 import { Header } from './components/Header';
 import { CatalogView } from './components/CatalogView';
 import { ProductDetailView } from './components/ProductDetailView';
@@ -11,6 +11,7 @@ import { MobileFilterDrawer } from './components/MobileFilterDrawer';
 import { OrderSuccessModal } from './components/OrderSuccessModal';
 import { Footer } from './components/Footer';
 import { applyCatalogFilters } from './lib/catalogFilters';
+import { BRAND_CONFIG } from './brand.config';
 // DEMO ONLY — borrar este import y esta línea, más PrototypeBanner.tsx y demoBanner.config.ts, para pasar este proyecto a un cliente real
 import { PrototypeBanner } from './components/PrototypeBanner';
 
@@ -167,7 +168,7 @@ export default function App() {
       <CheckoutReturnHandler onNotice={setCheckoutNotice} />
       <div className="min-h-screen flex flex-col bg-brand-background text-brand-text">
         <div className="sticky top-0 z-50 [&>header]:static">
-          <PrototypeBanner />
+          {BRAND_CONFIG.demo.showPrototypeBanner && <PrototypeBanner />}
           <Header
             currentView={currentView}
             onNavigate={(view) => {

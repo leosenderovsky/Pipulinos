@@ -85,13 +85,13 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
               </thead>
               <tbody className="divide-y divide-purple-50 text-purple-900">
                 {BABY_SIZE_GUIDE.map((row) => (
-                  <tr key={row.talle} className="hover:bg-purple-50/40">
-                    <td className="p-3 font-extrabold text-brand-primary">{row.talle}</td>
-                    <td className="p-3">{row.edadSugerida}</td>
-                    <td className="p-3">{row.alturaCm}</td>
-                    <td className="p-3">{row.pesoKg}</td>
-                    <td className="p-3 font-bold">{row.largoTotalCm} cm</td>
-                    <td className="p-3">{row.anchoSisaCm} cm</td>
+                  <tr key={row.size} className="hover:bg-purple-50/40">
+                    <td className="p-3 font-extrabold text-brand-primary">{row.size}</td>
+                    <td className="p-3">{row.suggestedAge}</td>
+                    <td className="p-3">{row.heightCm}</td>
+                    <td className="p-3">{row.weightKg}</td>
+                    <td className="p-3 font-bold">{row.totalLengthCm} cm</td>
+                    <td className="p-3">{row.armholeWidthCm} cm</td>
                   </tr>
                 ))}
               </tbody>
@@ -113,14 +113,14 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
               </thead>
               <tbody className="divide-y divide-purple-50 text-purple-900">
                 {KIDS_SIZE_GUIDE.map((row) => (
-                  <tr key={row.talle} className="hover:bg-purple-50/40">
-                    <td className="p-3 font-extrabold text-brand-accent-blue">{row.talle}</td>
-                    <td className="p-3">{row.edadSugerida}</td>
-                    <td className="p-3">{row.alturaCm}</td>
-                    <td className="p-3">{row.pesoKg}</td>
-                    <td className="p-3">{row.pechoCm} cm</td>
-                    <td className="p-3">{row.cinturaCm} cm</td>
-                    <td className="p-3 font-bold">{row.largoTotalCm} cm</td>
+                  <tr key={row.size} className="hover:bg-purple-50/40">
+                    <td className="p-3 font-extrabold text-brand-accent-blue">{row.size}</td>
+                    <td className="p-3">{row.suggestedAge}</td>
+                    <td className="p-3">{row.heightCm}</td>
+                    <td className="p-3">{row.weightKg}</td>
+                    <td className="p-3">{row.chestCm} cm</td>
+                    <td className="p-3">{row.waistCm} cm</td>
+                    <td className="p-3 font-bold">{row.totalLengthCm} cm</td>
                   </tr>
                 ))}
               </tbody>

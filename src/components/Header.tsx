@@ -1,5 +1,6 @@
 import React from 'react';
 import { BRAND_CONFIG } from '../brand.config';
+import { formatText } from '../formatText';
 import { useCart } from '../context/CartContext';
 import { Search, ShoppingBag, User, ArrowRight, X } from 'lucide-react';
 import { QUICK_FILTERS } from '../data/filterOptions';
@@ -50,7 +51,12 @@ export const Header: React.FC<HeaderProps> = ({
       {BRAND_CONFIG.announcement.enabled && (
         <div className="bg-gradient-to-r from-brand-secondary via-brand-primary-hover to-brand-primary text-white px-4 py-2 text-center font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs">
           <span className="animate-bounce inline-block text-base">✨</span>
-          <span className="font-extrabold tracking-wide drop-shadow-xs">{BRAND_CONFIG.announcement.text}</span>
+          <span className="font-extrabold tracking-wide drop-shadow-xs">
+            {formatText(BRAND_CONFIG.announcement.text, {
+              amount: `${BRAND_CONFIG.commerce.currencySymbol}${BRAND_CONFIG.commerce.freeShippingThreshold.toLocaleString('es-AR')}`,
+              installments: BRAND_CONFIG.commerce.installmentsWithoutInterest,
+            })}
+          </span>
           <span className="animate-bounce inline-block text-base">✨</span>
         </div>
       )}

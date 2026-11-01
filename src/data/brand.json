@@ -1,0 +1,219 @@
+{
+  "$schema": "./brand.schema.json",
+  "schemaVersion": 1,
+  "name": "Pipulinos",
+  "shortName": "Pipulinos",
+  "tagline": "Showroom de Indumentaria Infantil",
+  "slogan": "Amor en cada puntada para crecer jugando 🎈",
+  "seo": {
+    "titleSuffix": "Showroom & Catálogo de Indumentaria Infantil",
+    "description": "Showroom y catálogo de indumentaria infantil. Ropa tierna para bebés y niños de 0 a 10 años, compra online con Mercado Pago y WhatsApp.",
+    "socialImage": "/assets/misc/og-image.jpg"
+  },
+  "typography": {
+    "headings": "Plus Jakarta Sans, sans-serif",
+    "body": "Plus Jakarta Sans, sans-serif",
+    "stylesheetUrl": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+  },
+  "theme": {
+    "primary": "#FF6B57",
+    "primaryHover": "#FF8A1E",
+    "secondary": "#FFD026",
+    "secondarySoft": "#FFF4D0",
+    "background": "#FFFDF9",
+    "surface": "#FFFFFF",
+    "surfaceCheckout": "#FAF9FF",
+    "surfaceLilac": "#FAF4FF",
+    "surfacePink": "#FFE9E5",
+    "surfacePinkStrong": "#FFD4CC",
+    "surfaceBlue": "#E2F3FF",
+    "surfaceGreen": "#E3F9ED",
+    "surfacePurple": "#F1EAFE",
+    "surfaceWarm": "#FFFDF6",
+    "text": "#1E2046",
+    "textMuted": "#8B5CF6",
+    "accentBlue": "#26A4F8",
+    "accentBlueDark": "#0284C7",
+    "payment": "#009EE3",
+    "paymentHover": "#0089c7",
+    "success": "#2DD382",
+    "whatsapp": "#25D366",
+    "whatsappHover": "#20ba59",
+    "neutral": "#E7DFD5",
+    "blueTint": "#F1F6FF",
+    "productPastelBlue": "#93C5FD",
+    "productCoral": "#FB7185"
+  },
+  "storage": {
+    "cartKey": "pipulinos_cart"
+  },
+  "demo": {
+    "prefillCart": false,
+    "prefillCheckout": false,
+    "giftDedication": "¡Bienvenido Benicio al mundo! Te amamos tus tíos Sofi y Lucas 💕 ⭐",
+    "coupon": "PROMO-PACK",
+    "giftPackaging": true,
+    "checkout": {
+      "name": "Laura Gómez",
+      "email": "laura.gomez@gmail.com",
+      "phone": "+54 9 11 5555-1234",
+      "streetAddress": "Av. Coronel Díaz 2145",
+      "apartment": "6to A",
+      "zipCode": "C1425",
+      "city": "Palermo, CABA",
+      "deliveryNotes": "Entregar por la tarde."
+    },
+    "showPrototypeBanner": true
+  },
+  "logo": {
+    "url": "/assets/logo/logo.png",
+    "alt": "Pipulinos - Indumentaria Infantil",
+    "faviconUrl": "/assets/logo/favicon-32.png",
+    "appleTouchIconUrl": "/assets/logo/apple-touch-icon.png",
+    "iconBackground": "#FFFDF9",
+    "iconCrop": {
+      "left": 0.27,
+      "top": 0.11,
+      "width": 0.46,
+      "height": 0.46
+    }
+  },
+  "contact": {
+    "whatsappNumberFormatted": "+54 9 11 4820-9912",
+    "whatsappRaw": "5491148209912",
+    "whatsappAdvisorName": "Sofi de Pipulinos",
+    "instagramHandle": "@pipulinos.kids",
+    "instagramUrl": "https://instagram.com/pipulinos.kids",
+    "showroomAddress": "Palermo Soho, CABA (Honduras 4850)",
+    "showroomId": "Showroom Pipulinos Palermo",
+    "showroomHours": "Lunes a Sábados de 10:00 a 19:00 hs",
+    "email": "pedidos@pipulinos.kids"
+  },
+  "commerce": {
+    "currency": "ARS",
+    "currencySymbol": "$",
+    "coupons": [
+      {
+        "code": "PIPULINOS10",
+        "type": "percent",
+        "value": 10
+      },
+      {
+        "code": "PROMO-PACK",
+        "type": "fixed",
+        "value": 5000
+      },
+      {
+        "code": "BIENVENIDA",
+        "type": "percent",
+        "value": 10
+      }
+    ],
+    "freeShippingThreshold": 45000,
+    "transferDiscountPercent": 10,
+    "installmentsWithoutInterest": 3,
+    "expressShippingCost": 3500,
+    "standardShippingDays": "3 a 5 días hábiles (Correo Argentino)",
+    "expressShippingDays": "Llega en 24hs (Moto CABA/GBA)",
+    "exchangePeriodDays": 30
+  },
+  "announcement": {
+    "enabled": true,
+    "text": "Envíos gratis desde {amount} • {installments} cuotas sin interés con Mercado Pago • ¡Atención personalizada por WhatsApp!"
+  },
+  "hero": {
+    "badge": "NUEVA COLECCIÓN 2027",
+    "title": "Amor en cada puntada para crecer jugando 🎈",
+    "subtitle": "Prendas suaves, nobles e hipoalergénicas para acompañar los primeros pasos y sueños de tu peque.",
+    "promoCreditCard": "Hasta {installments} Cuotas Sin Interés con Mercado Pago",
+    "promoTransfer": "+ {percent}% OFF abonando por Transferencia Bancaria",
+    "bannerImageUrl": "/assets/hero/hero-1.jpg",
+    "bannerImageAlt": "Bebés jugando felices con prendas suaves Pipulinos en showroom",
+    "trustPill": "100% Algodón Peinado Suave"
+  },
+  "copy": {
+    "sizeAssistancePrompt": "¿Dudas con el talle de tu peque? Escribinos por WhatsApp y una asesora te pasa medidas en centímetros y fotos en vivo.",
+    "giftPackagingTitle": "¿Es para regalo? 🎁",
+    "giftPackagingDescription": "Te enviamos la bolsita ilustrada Pipulinos con moño, papel de seda y tarjetita con dedicatoria lista para sorprender.",
+    "footerAbout": "Showroom oficial de ropa tierna y noble para bebés y peques de 0 a 10 años. Diseñado con amor para jugar, explorar y dormir felices.",
+    "footerDisclaimer": "Marca, productos y precios de ejemplo — prototipo de demostración",
+    "whatsappShippingMessage": "tengo una consulta sobre envíos y cambios",
+    "whatsappFaqMessage": "tengo preguntas frecuentes",
+    "whatsappSizeMessage": "tengo dudas con las medidas para mi bebé",
+    "whatsappOrderConfirmation": "confirmo mi pedido",
+    "catalogTitle": "Catálogo Showroom",
+    "catalogCollectionTitle": "Colección Showroom",
+    "customerServiceLabel": "Atendido por Madres",
+    "handmadeGuarantee": "Garantía de confección artesanal Showroom",
+    "crossSellTitle": "Completá el Conjunto",
+    "checkoutOrderHeading": "NUEVO PEDIDO SHOWROOM",
+    "thankYouMessage": "¡Gracias por elegir!",
+    "orderPreparationMessage": "Preparamos tus prendas con todo el amor en nuestro showroom.",
+    "giftDedicationPlaceholder": "Ej: ¡Bienvenido al mundo! Con mucho cariño",
+    "checkoutPlaceholders": {
+      "name": "Nombre y apellido",
+      "email": "tu@email.com",
+      "phone": "11 2345 6789",
+      "street": "Calle y número",
+      "apartment": "Piso / depto (opcional)",
+      "zip": "Código postal",
+      "city": "Localidad",
+      "notes": "Indicaciones para la entrega (opcional)"
+    },
+    "catalogYear": 2027,
+    "sizeHintFallback": "Disponible"
+  },
+  "ui": {
+    "cart": {
+      "whatsappText": "Asesoramiento, talles y {percent}% OFF transferencia",
+      "trustExchangeTitle": "{days} días para cambios"
+    },
+    "checkout": {
+      "whatsappBadge": "{percent}% OFF",
+      "guaranteeTitle": "Garantía de Crecimiento • {days} días de cambio",
+      "banner": "✨ Compra 100% Segura • {installments} cuotas sin interés • Despachos garantizados a todo el país ✨",
+      "installmentThree": "{installments} Cuotas sin interés"
+    },
+    "orderSuccess": {
+      "nextExchange": "¡Tenés {days} días para cualquier cambio de talle con tranquilidad!"
+    },
+    "hero": {
+      "benefitInstallmentsTitle": "{installments} Cuotas Sin Interés"
+    },
+    "catalog": {
+      "allCategoryLabel": "Todos los artículos"
+    },
+    "footer": {
+      "copyright": "© {year} {shortName} Showroom Infantil. Todos los derechos reservados."
+    },
+    "productDetail": {
+      "sizeHints": [
+        {
+          "sizeFragment": "RN",
+          "text": "Hasta 3.5 kg"
+        },
+        {
+          "sizeFragment": "0-3",
+          "text": "Hasta 5.5 kg"
+        },
+        {
+          "sizeFragment": "3-6",
+          "text": "Hasta 7.5 kg"
+        },
+        {
+          "sizeFragment": "6-9",
+          "text": "Hasta 9.0 kg"
+        },
+        {
+          "sizeFragment": "9-12",
+          "text": "Hasta 10.5 kg"
+        },
+        {
+          "sizeFragment": "12-18",
+          "text": "Hasta 12.0 kg"
+        }
+      ],
+      "exchangeTitle": "Cambios sin costo dentro de los {days} días"
+    }
+  }
+}

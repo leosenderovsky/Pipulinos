@@ -1,6 +1,6 @@
 import React from 'react';
-import { CATALOG_CATEGORIES, FABRICS_LIST } from '../data/products';
-import { COLOR_SWATCHES } from '../data/filterOptions';
+import { CATALOG_CATEGORIES, FABRICS_LIST } from '../catalog';
+import { BABY_SIZES, COLOR_SWATCHES, KIDS_SIZES, QUICK_FILTERS } from '../data/filterOptions';
 import { Sparkles, X, Ruler } from 'lucide-react';
 
 interface FilterSidebarProps {
@@ -40,8 +40,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onOpenSizeGuide,
   className = '',
 }) => {
-  const BABY_SIZES = ['RN', '0-3m', '3-6m', '6-9m', '9-12m', '12-18m', '18-24m'];
-  const KIDS_SIZES = ['T2', 'T4', 'T6', 'T8', 'T10'];
+  const selectedAgeLabel = QUICK_FILTERS.find(
+    (filter) => filter.axis === 'stage' && filter.value === selectedAgeGroup,
+  )?.activeLabel;
 
   return (
     <aside
@@ -89,13 +90,9 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             </span>
           )}
 
-          {selectedAgeGroup !== 'all' && (
+          {selectedAgeGroup !== 'all' && selectedAgeLabel && (
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-brand-surface-blue border border-sky-300 text-sky-800 font-bold text-xs">
-              {selectedAgeGroup === 'recien-nacidos'
-                ? '0-12m'
-                : selectedAgeGroup === 'bebes'
-                ? '1-3 años'
-                : '4-10 años'}
+              {selectedAgeLabel}
               <button
                 type="button"
                 onClick={() => onSelectAgeGroup('all')}

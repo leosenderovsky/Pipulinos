@@ -1,5 +1,6 @@
 import React from 'react';
 import { BRAND_CONFIG } from '../brand.config';
+import { formatText } from '../formatText';
 import { CheckCircle2, MessageCircle, ArrowRight, Heart } from 'lucide-react';
 
 interface OrderSuccessModalProps {
@@ -42,7 +43,11 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
           </p>
           <p>• {BRAND_CONFIG.copy.orderPreparationMessage}</p>
           <p>• Te enviaremos el número de guía para seguir el despacho en tiempo real por WhatsApp.</p>
-          <p>• ¡Tenés 30 días para cualquier cambio de talle con tranquilidad!</p>
+          <p>
+            • {formatText(BRAND_CONFIG.ui.orderSuccess.nextExchange, {
+              days: BRAND_CONFIG.commerce.exchangePeriodDays,
+            })}
+          </p>
         </div>
 
         <div className="flex flex-col gap-2.5 pt-1">

@@ -1,4 +1,4 @@
-import type { Product } from '../data/products';
+import type { Product } from '../catalog';
 import { productHasSize, stagesOf } from './sizes';
 import { searchProducts } from './search';
 
@@ -15,7 +15,7 @@ export interface CatalogFilters {
 
 export const applyStructuredFilters = (products: Product[], filters: CatalogFilters): Product[] =>
   products.filter((product) => {
-    if (filters.category !== 'todos' && product.categoria !== filters.category) return false;
+    if (filters.category !== 'todos' && product.category !== filters.category) return false;
 
     if (
       filters.ageGroup !== 'all' &&
@@ -26,13 +26,13 @@ export const applyStructuredFilters = (products: Product[], filters: CatalogFilt
 
     if (filters.size && !productHasSize(product, filters.size)) return false;
 
-    if (filters.color && !product.coloresDisponibles.some((color) => color.colorFamily === filters.color)) {
+    if (filters.color && !product.colors.some((color) => color.colorFamily === filters.color)) {
       return false;
     }
 
-    if (product.precio > filters.maxPrice) return false;
+    if (product.price > filters.maxPrice) return false;
 
-    if (filters.fabrics.length > 0 && !filters.fabrics.some((fabric) => product.tela === fabric)) {
+    if (filters.fabrics.length > 0 && !filters.fabrics.some((fabric) => product.material === fabric)) {
       return false;
     }
 
