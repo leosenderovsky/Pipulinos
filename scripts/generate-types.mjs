@@ -27,7 +27,7 @@ const toTypeScript = (schema) => {
   if (schema.type === 'object' && schema.additionalProperties && typeof schema.additionalProperties === 'object') {
     return `Record<string, ${toTypeScript(schema.additionalProperties)}>`;
   }
-  return schema.type ?? 'unknown';
+  return schema.type === 'integer' ? 'number' : schema.type ?? 'unknown';
 };
 
 const brandSchema = await readSchema('brand.schema.json');

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Txt } from './Txt';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { X, Check } from 'lucide-react';
 import { FilterSidebar } from './FilterSidebar';
 
@@ -43,9 +45,7 @@ export const MobileFilterDrawer: React.FC<MobileFilterDrawerProps> = (props) => 
         <div className="pt-3 px-5 pb-3 border-b border-purple-100 flex items-center justify-between shrink-0 bg-purple-50/50">
           <div className="flex items-center gap-2">
             <span className="w-8 h-1 bg-purple-200 rounded-full mx-auto block absolute top-2 left-1/2 -translate-x-1/2" />
-            <h3 className="font-extrabold text-base text-brand-text mt-1">
-              Filtrar Catálogo Showroom
-            </h3>
+            <Txt as="h3" className="font-extrabold text-base text-brand-text mt-1" value={BRAND_CONFIG.ui.mobileFilters.title} />
             {props.activeFiltersCount > 0 && (
               <span className="bg-brand-primary text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full mt-1">
                 {props.activeFiltersCount}
@@ -70,13 +70,10 @@ export const MobileFilterDrawer: React.FC<MobileFilterDrawerProps> = (props) => 
         {/* Sticky Apply Button */}
         <div className="p-4 border-t border-purple-100 bg-white/95 backdrop-blur-sm shrink-0 flex items-center gap-2">
           {props.activeFiltersCount > 0 && (
-            <button
+            <Txt as="button"
               type="button"
               onClick={props.onResetFilters}
-              className="py-3 px-4 rounded-2xl bg-purple-50 text-purple-800 font-bold text-xs hover:bg-purple-100"
-            >
-              Borrar
-            </button>
+              className="py-3 px-4 rounded-2xl bg-purple-50 text-purple-800 font-bold text-xs hover:bg-purple-100" value={BRAND_CONFIG.ui.mobileFilters.clear} />
           )}
           <button
             type="button"
@@ -84,7 +81,7 @@ export const MobileFilterDrawer: React.FC<MobileFilterDrawerProps> = (props) => 
             className="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-brand-primary to-brand-primary-hover text-white font-extrabold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all"
           >
             <Check className="w-4 h-4" />
-            <span>Ver {props.filteredCount} modelos</span>
+            <span>{formatText(BRAND_CONFIG.ui.mobileFilters.apply, { count: String(props.filteredCount) })}</span>
           </button>
         </div>
       </div>

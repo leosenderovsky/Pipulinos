@@ -6,3 +6,4 @@ import brandData from './data/brand.json' with { type: 'json' };
 import type { BrandConfig } from './generated/brand.types';
 
 export const BRAND_CONFIG: BrandConfig = brandData as BrandConfig;
+export { formatText } from './formatText';
