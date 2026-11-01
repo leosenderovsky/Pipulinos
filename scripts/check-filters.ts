@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PRODUCTS, CATALOG_CATEGORIES, FABRICS_LIST, MAX_CATALOG_PRICE, TAG_VOCAB, type ProductTag } from '../src/data/products';
+import { PRODUCTS, CATALOG_CATEGORIES, FABRICS_LIST, MAX_CATALOG_PRICE, TAG_VOCAB, type ProductTag } from '../src/catalog';
 import { BABY_SIZES, KIDS_SIZES, COLOR_SWATCHES } from '../src/data/filterOptions';
 import { applyCatalogFilters, type CatalogFilters } from '../src/lib/catalogFilters';
 
@@ -129,24 +129,24 @@ for (const category of CATALOG_CATEGORIES.filter((item) => item.id !== 'todos'))
     fabrics: [],
     tag: null,
   }).items.map((product) => product.id);
-  const expectedCategory = PRODUCTS.filter((product) => product.categoria === category.id).map((product) => product.id);
+  const expectedCategory = PRODUCTS.filter((product) => product.category === category.id).map((product) => product.id);
   checkSet(`Categoría ${category.id}`, actual, expectedCategory);
 }
 
 for (const swatch of COLOR_SWATCHES) {
   const actual = filterIds({ color: swatch.id });
   const expectedSwatch = PRODUCTS.filter((product) =>
-    product.coloresDisponibles.some((color) => color.colorFamily === swatch.id)
+    product.colors.some((color) => color.colorFamily === swatch.id)
   ).map((product) => product.id);
   checkSet(`Swatch ${swatch.id}`, actual, expectedSwatch);
 }
 
 const literalIncludesSize = (product: (typeof PRODUCTS)[number], size: string): boolean => {
-  if (product.tallesDisponibles.includes(size)) return true;
-  if (product.tallesDisponibles.includes('0-12m') && ['RN', '0-3m', '3-6m', '6-9m', '9-12m'].includes(size)) {
+  if (product.sizes.includes(size)) return true;
+  if (product.sizes.includes('0-12m') && ['RN', '0-3m', '3-6m', '6-9m', '9-12m'].includes(size)) {
     return true;
   }
-  if (product.tallesDisponibles.includes('Talle Único') && ['RN', '0-3m', '3-6m', '6-9m', '9-12m', '12-18m', '18-24m', 'T2'].includes(size)) {
+  if (product.sizes.includes('Talle Único') && ['RN', '0-3m', '3-6m', '6-9m', '9-12m', '12-18m', '18-24m', 'T2'].includes(size)) {
     return product.id === 'babero-bandana-gotitas';
   }
   return false;
@@ -169,7 +169,7 @@ for (const size of [...BABY_SIZES, ...KIDS_SIZES]) {
 
 for (const fabric of FABRICS_LIST) {
   const actual = filterIds({ fabrics: [fabric] });
-  const expectedFabric = PRODUCTS.filter((product) => product.tela === fabric).map((product) => product.id);
+  const expectedFabric = PRODUCTS.filter((product) => product.material === fabric).map((product) => product.id);
   checkSet(`Tela ${fabric}`, actual, expectedFabric);
 }
 
@@ -245,7 +245,7 @@ rows.push({
   faltantes: diff(actualPijamas, expectedPijamas).faltantes.join(', ') || '(ninguno)',
 });
 
-const packIds = PRODUCTS.filter((product) => product.esPack).map((product) => product.id);
+const packIds = PRODUCTS.filter((product) => product.isBundle).map((product) => product.id);
 const tagPackIds = realTag('pack');
 rows.push({
   name: 'Tag pack == esPack',
@@ -258,7 +258,7 @@ rows.push({
 
 const invalidTalles = PRODUCTS.flatMap((product) => {
   const aliases = new Set(['0-12m', 'Talle Único']);
-  return product.tallesDisponibles.filter((size) => !aliases.has(size) && !['RN', '0-3m', '3-6m', '6-9m', '9-12m', '12-18m', '18-24m', 'T2', 'T4', 'T6', 'T8', 'T10'].includes(size));
+  return product.sizes.filter((size) => !aliases.has(size) && !['RN', '0-3m', '3-6m', '6-9m', '9-12m', '12-18m', '18-24m', 'T2', 'T4', 'T6', 'T8', 'T10'].includes(size));
 });
 rows.push({
   name: 'Talles estándar o alias permitidos',
@@ -269,14 +269,14 @@ rows.push({
   faltantes: '(ninguno)',
 });
 
-const hasOnlyBaberoOverride = PRODUCTS.filter((product) => product.etapasOverride).every((product) => product.id === 'babero-bandana-gotitas');
+const hasOnlyBaberoOverride = PRODUCTS.filter((product) => product.ageStagesOverride).every((product) => product.id === 'babero-bandana-gotitas');
 rows.push({
   name: 'etapasOverride solo en babero',
   ok: hasOnlyBaberoOverride,
-  actual: PRODUCTS.filter((product) => product.etapasOverride).map((product) => product.id).join(', ') || '(ninguno)',
+  actual: PRODUCTS.filter((product) => product.ageStagesOverride).map((product) => product.id).join(', ') || '(ninguno)',
   expected: 'babero-bandana-gotitas',
-  sobrantes: PRODUCTS.filter((product) => product.etapasOverride && product.id !== 'babero-bandana-gotitas').map((product) => product.id).join(', ') || '(ninguno)',
-  faltantes: PRODUCTS.filter((product) => product.id === 'babero-bandana-gotitas' && !product.etapasOverride).map((product) => product.id).join(', ') || '(ninguno)',
+  sobrantes: PRODUCTS.filter((product) => product.ageStagesOverride && product.id !== 'babero-bandana-gotitas').map((product) => product.id).join(', ') || '(ninguno)',
+  faltantes: PRODUCTS.filter((product) => product.id === 'babero-bandana-gotitas' && !product.ageStagesOverride).map((product) => product.id).join(', ') || '(ninguno)',
 });
 
 const failures = rows.filter((row) => !row.ok);

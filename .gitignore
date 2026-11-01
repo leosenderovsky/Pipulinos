@@ -3,6 +3,7 @@ build/
 dist/
 coverage/
 .image-originals/
+scripts/_*
 .DS_Store
 *.log
 .env*

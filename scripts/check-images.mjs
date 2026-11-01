@@ -4,6 +4,10 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 const productsDir = path.join(process.cwd(), 'public', 'assets', 'products');
+const catalog = JSON.parse(
+  await fs.readFile(path.join(process.cwd(), 'src', 'data', 'catalog.json'), 'utf8'),
+);
+const productIds = new Set(catalog.products.map(({ id }) => id));
 const strict = process.argv.includes('--strict');
 const files = (await fs.readdir(productsDir))
   .filter((name) => name.toLowerCase().endsWith('.jpg'))
@@ -28,6 +32,7 @@ for (const file of files) {
     .replace(/-\d+$/, '');
   const record = { file, width, height, ratio, bytes: stats.size, hash, productKey, flags: [] };
 
+  if (!productIds.has(productKey)) record.flags.push('SIN_PRODUCTO');
   if (width < 900) record.flags.push('BAJA RESOLUCIÓN');
   if (Math.abs(ratio - 0.8) > 0.02 && Math.abs(ratio - 1) > 0.02) record.flags.push('RATIO');
   try {
