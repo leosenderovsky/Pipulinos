@@ -117,7 +117,11 @@ export const CatalogView: React.FC<CatalogViewProps> = ({
   if (selectedAgeGroup !== 'all') {
     activeFilterPills.push({
       id: 'age',
-      label: selectedAgeGroup === 'recien-nacidos' ? '0-12m' : selectedAgeGroup === 'bebes' ? '1-3 años' : '4-10 años',
+      label: selectedAgeGroup === 'recien-nacidos'
+        ? BRAND_CONFIG.ui.filters.ageNewborn
+        : selectedAgeGroup === 'bebes'
+        ? BRAND_CONFIG.ui.filters.ageBabies
+        : BRAND_CONFIG.ui.filters.ageKids,
       onRemove: () => onSelectAgeGroup('all'),
     });
   }

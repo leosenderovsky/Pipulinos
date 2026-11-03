@@ -3,19 +3,19 @@
   "type": "object",
   "title": "CatalogConfig",
   "description": "Configuración editable para el catálogo.",
-  "x-group": "Secciones",
+  "x-group": "Comercial",
   "properties": {
     "$schema": {
       "title": "Archivo del esquema",
       "description": "Ruta al esquema que define esta configuración.",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "x-widget": "text",
       "type": "string"
     },
     "schemaVersion": {
       "title": "Versión del esquema",
       "description": "Versión del formato de configuración.",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "x-widget": "number",
       "type": "number"
     },
@@ -23,18 +23,18 @@
       "type": "array",
       "title": "Categorías",
       "description": "Agregá, quitá o reordená los elementos de «categorías».",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "x-widget": "list",
       "items": {
         "type": "object",
         "title": "Categoría",
         "description": "Configurá los datos de «categoría».",
-        "x-group": "Secciones",
+        "x-group": "Comercial",
         "properties": {
           "id": {
             "title": "Identificador",
             "description": "Ingresá el texto de «identificador».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -45,7 +45,7 @@
           "label": {
             "title": "Nombre para mostrar",
             "description": "Ingresá el texto de «nombre para mostrar».",
-            "x-group": "Secciones",
+            "x-group": "Textos",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -55,15 +55,16 @@
           },
           "emoji": {
             "title": "Ícono de la categoría",
-            "description": "Elegí una opción para «ícono de la categoría».",
-            "x-group": "Secciones",
-            "x-widget": "icon",
+            "description": "Un emoji",
+            "x-group": "Comercial",
+            "x-widget": "text",
             "type": "string",
             "examples": [
               "🧸"
             ],
             "x-exampleData": true
-          }
+          },
+          "x-group": "Comercial"
         },
         "required": [
           "id",
@@ -77,18 +78,18 @@
       "type": "array",
       "title": "Productos",
       "description": "Agregá, quitá o reordená los elementos de «productos».",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "x-widget": "list",
       "items": {
         "type": "object",
         "title": "Producto",
         "description": "Configurá los datos de «producto».",
-        "x-group": "Secciones",
+        "x-group": "Comercial",
         "properties": {
           "id": {
             "title": "Identificador",
             "description": "Ingresá el texto de «identificador».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -99,7 +100,7 @@
           "name": {
             "title": "Nombre del producto",
             "description": "Ingresá el texto de «nombre del producto».",
-            "x-group": "Secciones",
+            "x-group": "Textos",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -110,7 +111,7 @@
           "category": {
             "title": "Categoría",
             "description": "Ingresá el texto de «categoría».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -121,7 +122,7 @@
           "subcategory": {
             "title": "Subcategoría",
             "description": "Ingresá el texto de «subcategoría».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -132,14 +133,14 @@
           "price": {
             "title": "Precio",
             "description": "Ingresá el valor de «precio».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "number",
             "type": "number"
           },
           "compareAtPrice": {
             "title": "Precio anterior",
             "description": "Ingresá el valor de «precio anterior».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "number",
             "type": "number",
             "x-optional": true
@@ -148,12 +149,12 @@
             "type": "array",
             "title": "Talles disponibles",
             "description": "Agregá, quitá o reordená los elementos de «talles disponibles».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "list",
             "items": {
               "title": "Talle disponible",
               "description": "Ingresá el texto de «talle disponible».",
-              "x-group": "Secciones",
+              "x-group": "Comercial",
               "x-widget": "text",
               "type": "string",
               "examples": [
@@ -166,18 +167,18 @@
             "type": "array",
             "title": "Colores disponibles",
             "description": "Agregá, quitá o reordená los elementos de «colores disponibles».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "list",
             "items": {
               "type": "object",
               "title": "Color disponible",
               "description": "Configurá los datos de «color disponible».",
-              "x-group": "Secciones",
+              "x-group": "Comercial",
               "properties": {
                 "name": {
                   "title": "Nombre del producto",
                   "description": "Ingresá el texto de «nombre del producto».",
-                  "x-group": "Secciones",
+                  "x-group": "Comercial",
                   "x-widget": "text",
                   "type": "string",
                   "examples": [
@@ -188,7 +189,7 @@
                 "hex": {
                   "title": "Código del color",
                   "description": "Elegí el color para «código del color».",
-                  "x-group": "Secciones",
+                  "x-group": "Comercial",
                   "x-widget": "color",
                   "type": "string",
                   "examples": [
@@ -199,7 +200,7 @@
                 "colorFamily": {
                   "title": "Familia del color",
                   "description": "Elegí una opción para «familia del color».",
-                  "x-group": "Secciones",
+                  "x-group": "Comercial",
                   "x-widget": "select",
                   "type": "string",
                   "examples": [
@@ -216,7 +217,8 @@
                     "neutro"
                   ],
                   "x-optional": true
-                }
+                },
+                "x-group": "Comercial"
               },
               "required": [
                 "name",
@@ -244,17 +246,18 @@
               "x-asset": {
                 "path": "/assets/products/{id}.jpg",
                 "minWidth": 900,
-                "ratio": [
-                  0.8,
-                  1
-                ]
+                "ratios": [
+                  "4:5",
+                  "1:1"
+                ],
+                "ratioTolerance": 0.02
               }
             }
           },
           "description": {
             "title": "Descripción",
             "description": "Ingresá el texto de «descripción».",
-            "x-group": "Secciones",
+            "x-group": "Textos",
             "x-widget": "textarea",
             "type": "string",
             "examples": [
@@ -265,7 +268,7 @@
           "shortDescription": {
             "title": "Descripción breve del producto",
             "description": "Ingresá el texto de «descripción breve del producto».",
-            "x-group": "Secciones",
+            "x-group": "Textos",
             "x-widget": "textarea",
             "type": "string",
             "examples": [
@@ -276,7 +279,7 @@
           "material": {
             "title": "Material",
             "description": "Ingresá el texto de «material».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -287,7 +290,7 @@
           "badge": {
             "title": "Etiqueta destacada",
             "description": "Ingresá el texto de «etiqueta destacada».",
-            "x-group": "Secciones",
+            "x-group": "Textos",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -299,7 +302,7 @@
           "badgeType": {
             "title": "Tipo de etiqueta",
             "description": "Elegí una opción para «tipo de etiqueta».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "select",
             "type": "string",
             "examples": [
@@ -319,12 +322,12 @@
             "type": "array",
             "title": "Características",
             "description": "Agregá, quitá o reordená los elementos de «características».",
-            "x-group": "Secciones",
+            "x-group": "Textos",
             "x-widget": "list",
             "items": {
               "title": "Característica del producto",
               "description": "Ingresá el texto de «característica del producto».",
-              "x-group": "Secciones",
+              "x-group": "Textos",
               "x-widget": "text",
               "type": "string",
               "examples": [
@@ -337,12 +340,12 @@
             "type": "array",
             "title": "Cuidados",
             "description": "Agregá, quitá o reordená los elementos de «cuidados».",
-            "x-group": "Secciones",
+            "x-group": "Textos",
             "x-widget": "list",
             "items": {
               "title": "Instrucción de cuidado",
               "description": "Ingresá el texto de «instrucción de cuidado».",
-              "x-group": "Secciones",
+              "x-group": "Textos",
               "x-widget": "textarea",
               "type": "string",
               "examples": [
@@ -355,20 +358,20 @@
             "type": "object",
             "title": "Stock por talle",
             "description": "Indicá la cantidad disponible para cada talle.",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "list",
             "additionalProperties": {
               "type": "number",
               "title": "Cantidad disponible",
               "description": "Ingresá la cantidad de unidades disponibles.",
-              "x-group": "Secciones",
+              "x-group": "Comercial",
               "x-widget": "number"
             }
           },
           "featured": {
             "title": "Destacar el producto",
             "description": "Activá esta opción cuando corresponda.",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "boolean",
             "type": "boolean",
             "x-optional": true
@@ -377,12 +380,12 @@
             "type": "array",
             "title": "Etiquetas de búsqueda",
             "description": "Agregá, quitá o reordená los elementos de «etiquetas de búsqueda».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "list",
             "items": {
               "title": "Etiqueta de búsqueda",
               "description": "Elegí una opción para «etiqueta de búsqueda».",
-              "x-group": "Secciones",
+              "x-group": "Comercial",
               "x-widget": "select",
               "type": "string",
               "enum": [
@@ -429,7 +432,7 @@
           "isBundle": {
             "title": "Es un conjunto",
             "description": "Activá esta opción cuando corresponda.",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "boolean",
             "type": "boolean",
             "x-optional": true
@@ -438,12 +441,12 @@
             "type": "array",
             "title": "Etapas de edad del producto",
             "description": "Agregá, quitá o reordená los elementos de «etapas de edad del producto».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "list",
             "items": {
               "title": "Etapa de edad",
               "description": "Elegí una opción para «etapa de edad».",
-              "x-group": "Secciones",
+              "x-group": "Comercial",
               "x-widget": "select",
               "type": "string",
               "enum": [
@@ -457,7 +460,8 @@
               "x-exampleData": true
             },
             "x-optional": true
-          }
+          },
+          "x-group": "Comercial"
         },
         "required": [
           "id",
@@ -483,18 +487,18 @@
       "type": "object",
       "title": "Filtros del catálogo",
       "description": "Configurá los datos de «filtros del catálogo».",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "properties": {
         "fabrics": {
           "type": "array",
           "title": "Materiales para filtrar",
           "description": "Agregá, quitá o reordená los elementos de «materiales para filtrar».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "x-widget": "list",
           "items": {
             "title": "Material para filtrar",
             "description": "Ingresá el texto de «material para filtrar».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -507,12 +511,12 @@
           "type": "array",
           "title": "Talles de bebé",
           "description": "Agregá, quitá o reordená los elementos de «talles de bebé».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "x-widget": "list",
           "items": {
             "title": "Talle de bebé",
             "description": "Ingresá el texto de «talle de bebé».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -525,12 +529,12 @@
           "type": "array",
           "title": "Talles de niños",
           "description": "Agregá, quitá o reordená los elementos de «talles de niños».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "x-widget": "list",
           "items": {
             "title": "Talle infantil",
             "description": "Ingresá el texto de «talle infantil».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -543,18 +547,18 @@
           "type": "array",
           "title": "Colores para filtrar",
           "description": "Agregá, quitá o reordená los elementos de «colores para filtrar».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "x-widget": "list",
           "items": {
             "type": "object",
             "title": "Color para filtrar",
             "description": "Configurá los datos de «color para filtrar».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "properties": {
               "id": {
                 "title": "Identificador",
                 "description": "Ingresá el texto de «identificador».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "examples": [
@@ -565,7 +569,7 @@
               "name": {
                 "title": "Nombre del producto",
                 "description": "Ingresá el texto de «nombre del producto».",
-                "x-group": "Secciones",
+                "x-group": "Textos",
                 "x-widget": "text",
                 "type": "string",
                 "examples": [
@@ -576,14 +580,15 @@
               "hex": {
                 "title": "Código del color",
                 "description": "Elegí el color para «código del color».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "color",
                 "type": "string",
                 "examples": [
                   "#FFD026"
                 ],
                 "x-exampleData": true
-              }
+              },
+              "x-group": "Comercial"
             },
             "required": [
               "id",
@@ -597,18 +602,18 @@
           "type": "array",
           "title": "Filtros rápidos",
           "description": "Agregá, quitá o reordená los elementos de «filtros rápidos».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "x-widget": "list",
           "items": {
             "type": "object",
             "title": "Filtro rápido",
             "description": "Configurá los datos de «filtro rápido».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "properties": {
               "id": {
                 "title": "Identificador",
                 "description": "Ingresá el texto de «identificador».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "examples": [
@@ -619,7 +624,7 @@
               "axis": {
                 "title": "Eje del filtro",
                 "description": "Elegí una opción para «eje del filtro».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "select",
                 "type": "string",
                 "examples": [
@@ -634,7 +639,7 @@
               "value": {
                 "title": "Valor",
                 "description": "Ingresá el texto de «valor».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "examples": [
@@ -645,7 +650,7 @@
               "label": {
                 "title": "Nombre para mostrar",
                 "description": "Ingresá el texto de «nombre para mostrar».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "examples": [
@@ -655,9 +660,9 @@
               },
               "emoji": {
                 "title": "Ícono de la categoría",
-                "description": "Elegí una opción para «ícono de la categoría».",
-                "x-group": "Secciones",
-                "x-widget": "icon",
+                "description": "Un emoji",
+                "x-group": "Comercial",
+                "x-widget": "text",
                 "type": "string",
                 "examples": [
                   "🍼"
@@ -667,7 +672,7 @@
               "activeClass": {
                 "title": "Estilo del filtro activo",
                 "description": "Ingresá el texto de «estilo del filtro activo».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "examples": [
@@ -678,7 +683,7 @@
               "idleClass": {
                 "title": "Estilo del filtro inactivo",
                 "description": "Ingresá el texto de «estilo del filtro inactivo».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "examples": [
@@ -689,7 +694,7 @@
               "activeLabel": {
                 "title": "Rótulo del filtro seleccionado",
                 "description": "Ingresá el texto de «rótulo del filtro seleccionado».",
-                "x-group": "Textos de interfaz",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "x-optional": true,
                 "type": "string",
@@ -697,7 +702,8 @@
                   "0-12m"
                 ],
                 "x-exampleData": true
-              }
+              },
+              "x-group": "Comercial"
             },
             "required": [
               "id",
@@ -715,18 +721,18 @@
           "type": "object",
           "title": "Talles según etapa",
           "description": "Configurá los datos de «talles según etapa».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "properties": {
             "recien-nacidos": {
               "type": "array",
               "title": "Etapa de recién nacidos",
               "description": "Agregá, quitá o reordená los elementos de «etapa de recién nacidos».",
-              "x-group": "Secciones",
+              "x-group": "Comercial",
               "x-widget": "list",
               "items": {
                 "title": "Talle de recién nacido",
                 "description": "Ingresá el texto de «talle de recién nacido».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "x-exampleData": true
@@ -736,12 +742,12 @@
               "type": "array",
               "title": "Etapa de bebés",
               "description": "Agregá, quitá o reordená los elementos de «etapa de bebés».",
-              "x-group": "Secciones",
+              "x-group": "Comercial",
               "x-widget": "list",
               "items": {
                 "title": "Talle de bebé",
                 "description": "Ingresá el texto de «talle de bebé».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "x-exampleData": true
@@ -751,17 +757,18 @@
               "type": "array",
               "title": "Etapa de niños",
               "description": "Agregá, quitá o reordená los elementos de «etapa de niños».",
-              "x-group": "Secciones",
+              "x-group": "Comercial",
               "x-widget": "list",
               "items": {
                 "title": "Talle infantil",
                 "description": "Ingresá el texto de «talle infantil».",
-                "x-group": "Secciones",
+                "x-group": "Comercial",
                 "x-widget": "text",
                 "type": "string",
                 "x-exampleData": true
               }
-            }
+            },
+            "x-group": "Comercial"
           },
           "required": [
             "recien-nacidos",
@@ -769,7 +776,8 @@
             "ninos"
           ],
           "additionalProperties": false
-        }
+        },
+        "x-group": "Comercial"
       },
       "required": [
         "fabrics",
@@ -785,12 +793,12 @@
       "type": "object",
       "title": "Ajustes del catálogo",
       "description": "Configurá los datos de «ajustes del catálogo».",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "properties": {
         "crossSellCategory": {
           "title": "Categoría de productos relacionados",
           "description": "Ingresá el texto de «categoría de productos relacionados».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "x-widget": "text",
           "type": "string",
           "examples": [
@@ -801,7 +809,7 @@
         "babySizeAlias": {
           "title": "Equivalencia de talle de bebé",
           "description": "Ingresá el texto de «equivalencia de talle de bebé».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "x-widget": "text",
           "type": "string",
           "examples": [
@@ -812,14 +820,15 @@
         "singleSizeAlias": {
           "title": "Equivalencia de talle único",
           "description": "Ingresá el texto de «equivalencia de talle único».",
-          "x-group": "Secciones",
+          "x-group": "Comercial",
           "x-widget": "text",
           "type": "string",
           "examples": [
             "Talle Único"
           ],
           "x-exampleData": true
-        }
+        },
+        "x-group": "Comercial"
       },
       "required": [
         "crossSellCategory",
@@ -827,7 +836,8 @@
         "singleSizeAlias"
       ],
       "additionalProperties": false
-    }
+    },
+    "x-group": "Comercial"
   },
   "required": [
     "$schema",

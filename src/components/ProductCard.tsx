@@ -22,9 +22,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const defaultSize = product.sizes[0] || 'Único';
+    const defaultSize = product.sizes[0] || BRAND_CONFIG.ui.defaults.size;
     const defaultColor = product.colors[0] || {
-      name: 'Estándar',
+      name: BRAND_CONFIG.ui.defaults.color,
       hex: BRAND_CONFIG.theme.primary,
     };
     addToCart(product, defaultSize, defaultColor, 1);
@@ -118,9 +118,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
               />
             ))}
             {product.colors.length > 3 && (
-              <span className="text-[10px] font-extrabold text-purple-400 ml-1">
-                +{product.colors.length - 3} tonos
-              </span>
+              <Txt
+                as="span"
+                className="text-[10px] font-extrabold text-purple-400 ml-1"
+                value={formatText(BRAND_CONFIG.ui.productCard.moreColors, {
+                  count: String(product.colors.length - 3),
+                })}
+              />
             )}
           </div>
 

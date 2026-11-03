@@ -92,10 +92,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           {selectedAgeGroup !== 'all' && selectedAgeLabel && (
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-brand-surface-blue border border-sky-300 text-sky-800 font-bold text-xs">
               {selectedAgeGroup === 'recien-nacidos'
-                ? '0-12m'
+                ? BRAND_CONFIG.ui.filters.ageNewborn
                 : selectedAgeGroup === 'bebes'
-                ? '1-3 años'
-                : '4-10 años'}
+                ? BRAND_CONFIG.ui.filters.ageBabies
+                : BRAND_CONFIG.ui.filters.ageKids}
               <button
                 type="button"
                 onClick={() => onSelectAgeGroup('all')}

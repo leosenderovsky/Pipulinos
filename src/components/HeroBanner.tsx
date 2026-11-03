@@ -24,7 +24,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
               </span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-text tracking-tight leading-[1.15]">
+            <h2
+              aria-label={`${BRAND_CONFIG.hero.title}. ${BRAND_CONFIG.hero.subtitle}`}
+              className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-text tracking-tight leading-[1.15]"
+            >
               {BRAND_CONFIG.hero.title}
             </h2>
 
@@ -83,8 +86,14 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
             <CreditCard className="w-5 h-5" />
           </div>
           <div>
-            <p className="font-extrabold text-xs text-brand-text">3 y 6 Cuotas Sin Interés</p>
-            <p className="text-[11px] font-medium text-purple-400">Con todas las tarjetas vía Mercado Pago</p>
+            <Txt
+              as="p"
+              className="font-extrabold text-xs text-brand-text"
+              value={formatText(BRAND_CONFIG.ui.hero.benefitInstallmentsTitle, {
+                installments: String(BRAND_CONFIG.commerce.installmentsWithoutInterest),
+              })}
+            />
+            <Txt as="p" className="text-[11px] font-medium text-purple-400" value={BRAND_CONFIG.ui.hero.benefitInstallmentsText} />
           </div>
         </div>
 

@@ -1,6 +1,6 @@
-import { BRAND_CONFIG } from '../../src/brand.config';
-import { calculateCheckout, CheckoutInput, CheckoutInputError } from '../../src/lib/checkoutPricing';
-import { createExternalReference } from '../../src/lib/externalReference';
+import { BRAND_CONFIG } from '../../src/brand.config.ts';
+import { calculateCheckout, CheckoutInput, CheckoutInputError } from '../../src/lib/checkoutPricing.ts';
+import { createExternalReference } from '../../src/lib/externalReference.ts';
 
 interface CustomerPayload {
   name: string;

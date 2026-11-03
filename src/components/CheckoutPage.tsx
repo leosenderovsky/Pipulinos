@@ -193,7 +193,13 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
     if (!validateCheckout()) return;
 
     const itemsText = items
-      .map((i) => `• ${i.quantity}x ${i.product.name} (Talle: ${i.size} | Color: ${i.color.name}) - $${(i.unitPrice * i.quantity).toLocaleString('es-AR')}`)
+      .map((i) => formatText(BRAND_CONFIG.ui.checkout.whatsapp.itemLine, {
+        quantity: String(i.quantity),
+        name: i.product.name,
+        size: i.size,
+        color: i.color.name,
+        price: `$${(i.unitPrice * i.quantity).toLocaleString('es-AR')}`,
+      }))
       .join('\n');
 
     const deliveryAddress = [streetAddress, apartment, city, zipCode]
@@ -239,7 +245,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
         {/* Minimalist Checkout Header */}
         <header className="w-full flex flex-col bg-white rounded-3xl shadow-sm border-2 border-purple-100 overflow-hidden">
           <div className="w-full bg-gradient-to-r from-brand-secondary via-brand-primary-hover to-brand-primary text-white py-2 px-4 text-center text-xs font-bold flex items-center justify-center gap-2">
-            <span>✨ Compra 100% Segura • 3 y 6 cuotas sin interés • Despachos garantizados a todo el país ✨</span>
+            <Txt
+              as="span"
+              value={formatText(BRAND_CONFIG.ui.checkout.banner, {
+                installments: String(BRAND_CONFIG.commerce.installmentsWithoutInterest),
+              })}
+            />
           </div>
 
           <div className="w-full px-4 py-4 grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 sm:flex sm:justify-between sm:gap-4 sm:px-6">
@@ -394,7 +405,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       <div>
                         <div className="font-extrabold text-xs text-brand-text flex items-center gap-2">
                           <Txt as="span" value={BRAND_CONFIG.ui.checkout.standardTitle} />
-                          <Txt as="span" className="bg-brand-secondary-soft text-amber-900 text-[10px] px-2 py-0.2 rounded-full font-bold" value={BRAND_CONFIG.ui.checkout.standardBadge} />
+                          <Txt as="span" title={BRAND_CONFIG.commerce.standardShippingDays} className="bg-brand-secondary-soft text-amber-900 text-[10px] px-2 py-0.2 rounded-full font-bold" value={BRAND_CONFIG.ui.checkout.standardBadge} />
                         </div>
                         <Txt as="p" className="text-[11px] text-purple-900/60 font-medium" value={BRAND_CONFIG.ui.checkout.standardText} />
                       </div>
@@ -422,7 +433,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                       <div>
                         <div className="font-extrabold text-xs text-brand-text flex items-center gap-2">
                           <Txt as="span" value={BRAND_CONFIG.ui.checkout.expressTitle} />
-                          <Txt as="span" className="bg-brand-surface-blue text-brand-accent-blue-dark text-[10px] px-2 py-0.2 rounded-full font-bold" value={BRAND_CONFIG.ui.checkout.expressBadge} />
+                          <Txt as="span" title={BRAND_CONFIG.commerce.expressShippingDays} className="bg-brand-surface-blue text-brand-accent-blue-dark text-[10px] px-2 py-0.2 rounded-full font-bold" value={BRAND_CONFIG.ui.checkout.expressBadge} />
                         </div>
                         <Txt as="p" className="text-[11px] text-purple-900/60 font-medium" value={BRAND_CONFIG.ui.checkout.expressText} />
                       </div>
@@ -642,7 +653,12 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                           />
                           <div>
                             <span className="text-xs font-bold text-brand-text block">
-                              3 Cuotas sin interés
+                              <Txt
+                                as="span"
+                                value={formatText(BRAND_CONFIG.ui.checkout.installmentThree, {
+                                  installments: String(BRAND_CONFIG.commerce.installmentsWithoutInterest),
+                                })}
+                              />
                             </span>
                             <span className="text-[11px] text-brand-accent-blue-dark font-semibold">
                               {formatText(BRAND_CONFIG.ui.checkout.installmentAmount, { count: String(BRAND_CONFIG.commerce.installmentsWithoutInterest), amount: `$${installmentPerMonth.toLocaleString('es-AR')}` })}
@@ -714,9 +730,13 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
                     />
                     <Txt as="span" className="font-extrabold text-sm text-brand-text" value={BRAND_CONFIG.ui.checkout.whatsappTitle} />
                   </label>
-                  <span className="bg-brand-secondary-soft text-amber-900 font-extrabold text-xs px-2.5 py-0.5 rounded-lg border border-amber-200">
-                    10% OFF
-                  </span>
+                  <Txt
+                    as="span"
+                    className="bg-brand-secondary-soft text-amber-900 font-extrabold text-xs px-2.5 py-0.5 rounded-lg border border-amber-200"
+                    value={formatText(BRAND_CONFIG.ui.checkout.whatsappBadge, {
+                      percent: String(BRAND_CONFIG.commerce.transferDiscountPercent),
+                    })}
+                  />
                 </div>
 
                 <p className="text-xs text-purple-900/80 font-medium leading-relaxed pl-6">
@@ -837,13 +857,18 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({
               <div className="p-3.5 bg-brand-surface-blue/60 rounded-2xl flex items-start gap-2.5 border border-sky-200">
                 <span className="text-base">⭐</span>
                 <div>
-                  <h5 className="font-extrabold text-xs text-sky-950">
-                    Garantía de Crecimiento • 30 días de cambio
-                  </h5>
-                  <p className="text-[11px] text-sky-900/80 font-medium mt-0.5 leading-snug">
-                    Si le queda chico o preferís otro color, el primer cambio es 100% ágil y gratuito
-                    en showroom o correo.
-                  </p>
+                  <Txt
+                    as="h5"
+                    className="font-extrabold text-xs text-sky-950"
+                    value={formatText(BRAND_CONFIG.ui.checkout.guaranteeTitle, {
+                      days: String(BRAND_CONFIG.commerce.exchangePeriodDays),
+                    })}
+                  />
+                  <Txt
+                    as="p"
+                    className="text-[11px] text-sky-900/80 font-medium mt-0.5 leading-snug"
+                    value={BRAND_CONFIG.ui.checkout.guaranteeText}
+                  />
                 </div>
               </div>
 

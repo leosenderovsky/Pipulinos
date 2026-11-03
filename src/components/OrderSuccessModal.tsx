@@ -39,8 +39,13 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
           <p className="flex items-center gap-1.5 font-bold text-brand-text">
             <span>📦</span>{" "}{BRAND_CONFIG.ui.orderSuccess.nextTitle}</p>
           <p>• {BRAND_CONFIG.copy.orderPreparationMessage}</p>
-          <p>• Te enviaremos el número de guía para seguir el despacho en tiempo real por WhatsApp.</p>
-          <p>• ¡Tenés 30 días para cualquier cambio de talle con tranquilidad!</p>
+          <Txt as="p" value={BRAND_CONFIG.ui.orderSuccess.nextTracking} />
+          <Txt
+            as="p"
+            value={formatText(BRAND_CONFIG.ui.orderSuccess.nextExchange, {
+              days: String(BRAND_CONFIG.commerce.exchangePeriodDays),
+            })}
+          />
         </div>
 
         <div className="flex flex-col gap-2.5 pt-1">

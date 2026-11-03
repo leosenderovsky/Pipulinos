@@ -126,7 +126,10 @@ export const CartPage: React.FC<CartPageProps> = ({
             <span className="flex items-center gap-1 text-brand-primary">
               <ShieldCheck className="w-3.5 h-3.5" />{" "}{BRAND_CONFIG.ui.cart.trustProtectedTitle}</span>
             <span className="flex items-center gap-1">
-              <RefreshCw className="w-3.5 h-3.5 text-brand-success" /> 30 días para cambios
+              <RefreshCw className="w-3.5 h-3.5 text-brand-success" />{" "}
+              {formatText(BRAND_CONFIG.ui.cart.trustExchangeTitle, {
+                days: String(BRAND_CONFIG.commerce.exchangePeriodDays),
+              })}
             </span>
             <span className="flex items-center gap-1">
               <Truck className="w-3.5 h-3.5 text-brand-accent-blue" />{" "}{BRAND_CONFIG.ui.cart.trustDispatchTitle}</span>
@@ -541,12 +544,14 @@ export const CartPage: React.FC<CartPageProps> = ({
                       <MessageCircle className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex flex-col text-left">
-                      <span className="font-extrabold text-sm leading-tight">
-                        Coordinar por WhatsApp
-                      </span>
-                      <span className="text-white/90 text-[10px] font-medium leading-tight">
-                        Asesoramiento, talles y 10% OFF transferencia
-                      </span>
+                      <Txt as="span" className="font-extrabold text-sm leading-tight" value={BRAND_CONFIG.ui.cart.whatsappTitle} />
+                      <Txt
+                        as="span"
+                        className="text-white/90 text-[10px] font-medium leading-tight"
+                        value={formatText(BRAND_CONFIG.ui.cart.whatsappText, {
+                          percent: String(BRAND_CONFIG.commerce.transferDiscountPercent),
+                        })}
+                      />
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 transition-transform" />

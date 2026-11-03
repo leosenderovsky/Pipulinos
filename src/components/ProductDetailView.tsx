@@ -37,12 +37,12 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<ProductColor>(
     product.colors[0] || {
-      name: 'Estándar',
+      name: BRAND_CONFIG.ui.defaults.color,
       hex: BRAND_CONFIG.theme.primary,
     }
   );
   const [selectedSize, setSelectedSize] = useState<string>(
-    product.sizes[0] || 'Único'
+    product.sizes[0] || BRAND_CONFIG.ui.defaults.size
   );
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -73,7 +73,12 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const totalPurchasePrice = product.price * quantity;
 
   // WhatsApp order link
-  const whatsappProductMessage = `¡Hola ${BRAND_CONFIG.name}! Me interesa el "${product.name}" en talle ${selectedSize} y color ${selectedColor.name}. ¿Tienen disponibilidad en showroom?`;
+  const whatsappProductMessage = formatText(BRAND_CONFIG.ui.whatsapp.productInterest, {
+    name: BRAND_CONFIG.name,
+    product: product.name,
+    size: selectedSize,
+    color: selectedColor.name,
+  });
   const whatsappUrl = `https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(whatsappProductMessage)}`;
 
   return (
@@ -218,7 +223,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           <div>
             <div className="flex items-center justify-between gap-2 flex-wrap mb-1">
               <span className="font-extrabold text-xs uppercase tracking-wider text-brand-primary">
-                Línea Showroom {BRAND_CONFIG.shortName} • {product.material}
+                {formatText(BRAND_CONFIG.ui.productDetail.lineTitle, {
+                  name: BRAND_CONFIG.shortName,
+                  fabric: product.material,
+                })}
               </span>
               <div className="flex items-center gap-1 text-amber-500 font-extrabold text-xs">
                 <span>⭐ ⭐ ⭐ ⭐ ⭐</span>
@@ -247,7 +255,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               )}
               {product.compareAtPrice && (
                 <span className="bg-rose-500 text-white font-extrabold text-xs px-2.5 py-0.5 rounded-full shadow-xs">
-                  Ahorrás ${((product.compareAtPrice ?? product.price) - product.price).toLocaleString('es-AR')} 💛
+                  {formatText(BRAND_CONFIG.ui.productDetail.savings, {
+                    amount: `$${((product.compareAtPrice ?? product.price) - product.price).toLocaleString('es-AR')}`,
+                  })}
                 </span>
               )}
             </div>
@@ -280,7 +290,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               <span className="font-extrabold text-xs sm:text-sm text-brand-text">{BRAND_CONFIG.ui.productDetail.colorLabel}{" "}<strong className="text-brand-primary">{selectedColor.name}</strong>
               </span>
               <span className="text-xs font-bold text-purple-400">
-                {product.colors.length} tonos disponibles
+                {formatText(BRAND_CONFIG.ui.productDetail.colorsCount, {
+                  count: String(product.colors.length),
+                })}
               </span>
             </div>
 
@@ -362,18 +374,18 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
                     </div>
                     <span className="text-[11px] font-semibold text-purple-900/60 mt-1">
                       {sz.includes('RN')
-                        ? 'Hasta 3.5 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight1
                         : sz.includes('0-3')
-                        ? 'Hasta 5.5 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight2
                         : sz.includes('3-6')
-                        ? 'Hasta 7.5 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight3
                         : sz.includes('6-9')
-                        ? 'Hasta 9.0 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight4
                         : sz.includes('9-12')
-                        ? 'Hasta 10.5 kg'
+                        ? BRAND_CONFIG.ui.productDetail.weight5
                         : sz.includes('12-18')
-                        ? 'Hasta 12.0 kg'
-                        : 'Disponible'}
+                        ? BRAND_CONFIG.ui.productDetail.weight6
+                        : BRAND_CONFIG.ui.productDetail.available}
                     </span>
                   </button>
                 );
@@ -459,11 +471,11 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
               {openAccordion === 'acc-1' && (
                 <div className="p-3.5 pt-0 text-xs font-medium text-purple-900/80 space-y-1.5 leading-relaxed">
-                  <p>• {product.material} puro certificado peinado de máxima suavidad al tacto.</p>
-                  <p>• Lavado recomendado con agua fría (máx 30°C) con programa delicado o a mano.</p>
-                  <p>• Usar jabón blanco neutro especial para recién nacidos y pieles atópicas.</p>
-                  <p>• No usar secarropas con calor directo; secar a la sombra.</p>
-                  <p>• Planchar del revés a temperatura suave.</p>
+                  <Txt as="p" value={formatText(BRAND_CONFIG.ui.productDetail.careComposition, { fabric: product.material })} />
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careWash} />
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careSoap} />
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careDry} />
+                  <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careIron} />
                 </div>
               )}
             </div>
@@ -508,7 +520,12 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               >
                 <span className="flex items-center gap-2">
                   <RefreshCw className="w-4 h-4 text-brand-success" />
-                  <span>Cambios sin costo dentro de los 30 días</span>
+                  <Txt
+                    as="span"
+                    value={formatText(BRAND_CONFIG.ui.productDetail.exchangeTitle, {
+                      days: String(BRAND_CONFIG.commerce.exchangePeriodDays),
+                    })}
+                  />
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 text-purple-400 transition-transform duration-200 ${

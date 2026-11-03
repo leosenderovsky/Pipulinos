@@ -3,19 +3,19 @@
   "type": "object",
   "title": "SizeGuideConfig",
   "description": "Configuración editable para la guía de talles.",
-  "x-group": "Secciones",
+  "x-group": "Comercial",
   "properties": {
     "$schema": {
       "title": "Archivo del esquema",
       "description": "Ruta al esquema que define esta configuración.",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "x-widget": "text",
       "type": "string"
     },
     "schemaVersion": {
       "title": "Versión del esquema",
       "description": "Versión del formato de configuración.",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "x-widget": "number",
       "type": "number"
     },
@@ -23,18 +23,18 @@
       "type": "array",
       "title": "Talles de bebé",
       "description": "Agregá, quitá o reordená los elementos de «talles de bebé».",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "x-widget": "list",
       "items": {
         "type": "object",
         "title": "Medida de talle de bebé",
         "description": "Configurá los datos de «medida de talle de bebé».",
-        "x-group": "Secciones",
+        "x-group": "Comercial",
         "properties": {
           "size": {
             "title": "Talle",
             "description": "Ingresá el texto de «talle».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -45,7 +45,7 @@
           "suggestedAge": {
             "title": "Edad sugerida",
             "description": "Ingresá el texto de «edad sugerida».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -56,7 +56,7 @@
           "heightCm": {
             "title": "Altura en centímetros",
             "description": "Ingresá el texto de «altura en centímetros».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -67,7 +67,7 @@
           "weightKg": {
             "title": "Peso en kilogramos",
             "description": "Ingresá el texto de «peso en kilogramos».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -78,14 +78,14 @@
           "totalLengthCm": {
             "title": "Largo total en centímetros",
             "description": "Ingresá el valor de «largo total en centímetros».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "number",
             "type": "number"
           },
           "armholeWidthCm": {
             "title": "Ancho de sisa en centímetros",
             "description": "Ingresá el valor de «ancho de sisa en centímetros».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "number",
             "type": "number"
           },
@@ -99,7 +99,8 @@
               "Ideal bolso de maternidad"
             ],
             "x-exampleData": true
-          }
+          },
+          "x-group": "Comercial"
         },
         "required": [
           "size",
@@ -117,18 +118,18 @@
       "type": "array",
       "title": "Talles de niños",
       "description": "Agregá, quitá o reordená los elementos de «talles de niños».",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "x-widget": "list",
       "items": {
         "type": "object",
         "title": "Medida de talle infantil",
         "description": "Configurá los datos de «medida de talle infantil».",
-        "x-group": "Secciones",
+        "x-group": "Comercial",
         "properties": {
           "size": {
             "title": "Talle",
             "description": "Ingresá el texto de «talle».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -139,7 +140,7 @@
           "suggestedAge": {
             "title": "Edad sugerida",
             "description": "Ingresá el texto de «edad sugerida».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -150,7 +151,7 @@
           "heightCm": {
             "title": "Altura en centímetros",
             "description": "Ingresá el texto de «altura en centímetros».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -161,7 +162,7 @@
           "weightKg": {
             "title": "Peso en kilogramos",
             "description": "Ingresá el texto de «peso en kilogramos».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -172,21 +173,21 @@
           "chestCm": {
             "title": "Contorno de pecho en centímetros",
             "description": "Ingresá el valor de «contorno de pecho en centímetros».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "number",
             "type": "number"
           },
           "waistCm": {
             "title": "Contorno de cintura en centímetros",
             "description": "Ingresá el valor de «contorno de cintura en centímetros».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "number",
             "type": "number"
           },
           "totalLengthCm": {
             "title": "Largo total en centímetros",
             "description": "Ingresá el valor de «largo total en centímetros».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "number",
             "type": "number"
           },
@@ -200,7 +201,8 @@
               "Jardín maternal"
             ],
             "x-exampleData": true
-          }
+          },
+          "x-group": "Comercial"
         },
         "required": [
           "size",
@@ -219,12 +221,12 @@
       "type": "object",
       "title": "Consejos para medir",
       "description": "Configurá los datos de «consejos para medir».",
-      "x-group": "Secciones",
+      "x-group": "Comercial",
       "properties": {
         "mainTip": {
           "title": "Consejo principal",
           "description": "Ingresá el texto de «consejo principal».",
-          "x-group": "Textos",
+          "x-group": "Comercial",
           "x-widget": "textarea",
           "type": "string",
           "examples": [
@@ -235,7 +237,7 @@
         "parentAdvice": {
           "title": "Recomendación para las familias",
           "description": "Ingresá el texto de «recomendación para las familias».",
-          "x-group": "Textos",
+          "x-group": "Comercial",
           "x-widget": "textarea",
           "type": "string",
           "examples": [
@@ -247,12 +249,12 @@
           "type": "array",
           "title": "Pasos para tomar las medidas",
           "description": "Agregá, quitá o reordená los elementos de «pasos para tomar las medidas».",
-          "x-group": "Textos",
+          "x-group": "Comercial",
           "x-widget": "list",
           "items": {
             "title": "Paso para tomar las medidas",
             "description": "Ingresá el texto de «paso para tomar las medidas».",
-            "x-group": "Secciones",
+            "x-group": "Comercial",
             "x-widget": "text",
             "type": "string",
             "examples": [
@@ -260,7 +262,8 @@
             ],
             "x-exampleData": true
           }
-        }
+        },
+        "x-group": "Comercial"
       },
       "required": [
         "mainTip",
@@ -268,7 +271,8 @@
         "measuringSteps"
       ],
       "additionalProperties": false
-    }
+    },
+    "x-group": "Comercial"
   },
   "required": [
     "$schema",

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Txt } from './Txt';
 import { BRAND_CONFIG, formatText } from '../brand.config';
+import { getDemoLegend } from '../demoBanner.config';
 import { Ruler, HelpCircle, Truck, MessageCircle, Instagram } from 'lucide-react';
 
 interface FooterProps {
@@ -58,6 +59,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
             </button>
             <a
               href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(formatText(BRAND_CONFIG.ui.whatsapp.greeting, { name: BRAND_CONFIG.shortName, message: BRAND_CONFIG.copy.whatsappShippingMessage }))}`}
+              title={BRAND_CONFIG.contact.whatsappAdvisorName}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold text-purple-800 hover:text-brand-primary transition-colors flex items-center gap-1.5"
@@ -67,6 +69,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
             </a>
             <a
               href={`https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(formatText(BRAND_CONFIG.ui.whatsapp.greeting, { name: BRAND_CONFIG.shortName, message: BRAND_CONFIG.copy.whatsappFaqMessage }))}`}
+              title={BRAND_CONFIG.contact.whatsappAdvisorName}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-bold text-purple-800 hover:text-brand-primary transition-colors flex items-center gap-1.5"
@@ -116,13 +119,18 @@ export const Footer: React.FC<FooterProps> = ({ onOpenSizeGuideModal, onNavigate
         {/* Bottom bar with MANDATORY DISCLAIMER (Requirement 9) */}
         <div className="pt-5 border-t border-purple-200/80 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex flex-col sm:flex-row items-center gap-2 text-center md:text-left">
-            <p className="text-xs font-bold text-purple-900/70">
-              © {BRAND_CONFIG.foundedYear} {BRAND_CONFIG.shortName} Showroom Infantil. Todos los derechos reservados.
-            </p>
+            <Txt
+              as="p"
+              className="text-xs font-bold text-purple-900/70"
+              value={formatText(BRAND_CONFIG.ui.footer.copyright, {
+                year: String(new Date().getFullYear()),
+                name: BRAND_CONFIG.name,
+              })}
+            />
             <span className="hidden sm:inline text-purple-300">•</span>
             {/* MANDATORY FOOTER DISCLAIMER */}
             <p className="text-[11px] font-semibold text-purple-900/60 tracking-tight">
-              {BRAND_CONFIG.copy.footerDisclaimer}
+              <Txt as="span" value={getDemoLegend(BRAND_CONFIG.copy.footerDisclaimer)} />
             </p>
           </div>
 

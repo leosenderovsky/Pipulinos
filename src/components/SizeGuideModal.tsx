@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Txt } from './Txt';
-import { BRAND_CONFIG } from '../brand.config';
+import { BRAND_CONFIG, formatText } from '../brand.config';
 import { BABY_SIZE_GUIDE, KIDS_SIZE_GUIDE, SIZE_GUIDE_TIPS } from '../data/sizeGuide';
 import { X, Ruler, Sparkles, CheckCircle2 } from 'lucide-react';
 
@@ -84,8 +84,8 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
                     <td className="p-3">{row.suggestedAge}</td>
                     <td className="p-3">{row.heightCm}</td>
                     <td className="p-3">{row.weightKg}</td>
-                    <td className="p-3 font-bold">{row.totalLengthCm} cm</td>
-                    <td className="p-3">{row.armholeWidthCm} cm</td>
+                    <td className="p-3 font-bold">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.totalLengthCm) })}</td>
+                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.armholeWidthCm) })}</td>
                   </tr>
                 ))}
               </tbody>
@@ -112,9 +112,9 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
                     <td className="p-3">{row.suggestedAge}</td>
                     <td className="p-3">{row.heightCm}</td>
                     <td className="p-3">{row.weightKg}</td>
-                    <td className="p-3">{row.chestCm} cm</td>
-                    <td className="p-3">{row.waistCm} cm</td>
-                    <td className="p-3 font-bold">{row.totalLengthCm} cm</td>
+                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.chestCm) })}</td>
+                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.waistCm) })}</td>
+                    <td className="p-3 font-bold">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.totalLengthCm) })}</td>
                   </tr>
                 ))}
               </tbody>

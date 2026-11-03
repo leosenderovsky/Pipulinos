@@ -184,6 +184,61 @@ const contrastRatio = (foreground, background) => {
 };
 
 const brandSchema = await readJson('src/data/brand.schema.json');
+const validAssetKeys = new Set([
+  'path',
+  'minWidth',
+  'maxWidth',
+  'ratio',
+  'ratios',
+  'ratioTolerance',
+  'maxKB',
+]);
+const ratioPattern = /^\d+:\d+$/;
+for (const [schemaPath, schema] of [
+  ['src/data/brand.schema.json', brandSchema],
+  ['src/data/catalog.schema.json', catalogSchema],
+  ['src/data/size-guide.schema.json', await readJson('src/data/size-guide.schema.json')],
+]) {
+  const inspectAssets = (node, fieldPath) => {
+    if (!node || typeof node !== 'object') return;
+    const asset = node['x-asset'];
+    if (asset) {
+      for (const key of Object.keys(asset)) {
+        if (!validAssetKeys.has(key)) {
+          errors.push(`${schemaPath}.${fieldPath}.x-asset.${key}: propiedad no permitida`);
+        }
+      }
+      if (typeof asset.path !== 'string' || !asset.path) {
+        errors.push(`${schemaPath}.${fieldPath}.x-asset.path: falta la ruta`);
+      }
+      if (asset.ratio !== undefined && (typeof asset.ratio !== 'string' || !ratioPattern.test(asset.ratio))) {
+        errors.push(`${schemaPath}.${fieldPath}.x-asset.ratio: debe usar el formato "W:H"`);
+      }
+      if (asset.ratios !== undefined && (
+        !Array.isArray(asset.ratios) || !asset.ratios.every((ratio) => typeof ratio === 'string' && ratioPattern.test(ratio))
+      )) {
+        errors.push(`${schemaPath}.${fieldPath}.x-asset.ratios: debe ser una lista de proporciones "W:H"`);
+      }
+      if (asset.ratio === undefined && asset.ratios === undefined) {
+        if (fieldPath === 'properties.seo.properties.socialImage'
+          || fieldPath === 'properties.products.items.properties.images.items'
+          || fieldPath === 'properties.logo.properties.faviconUrl'
+          || fieldPath === 'properties.logo.properties.appleTouchIconUrl') {
+          errors.push(`${schemaPath}.${fieldPath}.x-asset: falta ratio o ratios`);
+        }
+      }
+      if (asset.ratioTolerance !== undefined && (
+        typeof asset.ratioTolerance !== 'number' || asset.ratioTolerance < 0
+      )) {
+        errors.push(`${schemaPath}.${fieldPath}.x-asset.ratioTolerance: debe ser un número no negativo`);
+      }
+    }
+    for (const [key, value] of Object.entries(node)) {
+      if (value && typeof value === 'object') inspectAssets(value, fieldPath ? `${fieldPath}.${key}` : key);
+    }
+  };
+  inspectAssets(schema, '');
+}
 for (const [key, tokenSchema] of Object.entries(brandSchema.properties.theme.properties)) {
   const against = tokenSchema['x-contrastWith'];
   if (!against) continue;

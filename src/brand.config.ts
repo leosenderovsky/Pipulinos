@@ -3,7 +3,7 @@
  * La configuración editable está en src/data/brand.json.
  */
 import brandData from './data/brand.json' with { type: 'json' };
-import type { BrandConfig } from './generated/brand.types';
+import type { BrandConfig } from './generated/brand.types.ts';
 
 export const BRAND_CONFIG: BrandConfig = brandData as BrandConfig;
-export { formatText } from './formatText';
+export { formatText } from './formatText.ts';

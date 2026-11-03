@@ -1,5 +1,5 @@
-import { BRAND_CONFIG } from '../brand.config';
-import { PRODUCTS } from '../catalog';
+import { BRAND_CONFIG } from '../brand.config.ts';
+import { PRODUCTS } from '../catalog.ts';
 
 export interface CheckoutItemInput {
   id: string;

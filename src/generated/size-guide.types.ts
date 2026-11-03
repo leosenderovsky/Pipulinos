@@ -9,6 +9,7 @@ export type SizeGuideConfig = {
   "totalLengthCm": number;
   "armholeWidthCm": number;
   "note": string;
+  "x-group"?: unknown;
 })[];
   "kidsSizes": ({
   "size": string;
@@ -19,12 +20,15 @@ export type SizeGuideConfig = {
   "waistCm": number;
   "totalLengthCm": number;
   "note": string;
+  "x-group"?: unknown;
 })[];
   "tips": {
   "mainTip": string;
   "parentAdvice": string;
   "measuringSteps": (string)[];
+  "x-group"?: unknown;
 };
+  "x-group"?: unknown;
 };
 export type BabySizeRow = SizeGuideConfig["babySizes"][number];
 export type KidSizeRow = SizeGuideConfig["kidsSizes"][number];

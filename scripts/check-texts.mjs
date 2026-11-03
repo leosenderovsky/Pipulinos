@@ -17,6 +17,13 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/check-texts.config.json'), 'utf8'));
 const exclude = new Set(cfg.excludeFiles ?? []);
 const allowStrings = new Set((cfg.allowStrings ?? []).map((s) => s.trim()));
+const usedByTooling = cfg.usedByTooling ?? {};
+const toolingFiles = [
+  'index.html',
+  'vite.config.ts',
+  'scripts/make-icons.mjs',
+  'server.ts',
+];
 
 const SKIP_ATTRS = new Set(['className', 'style', 'id', 'key', 'type', 'href', 'src', 'srcSet', 'rel', 'target', 'name', 'htmlFor', 'role', 'inputMode', 'autoComplete', 'loading', 'decoding', 'fetchPriority', 'sizes', 'method', 'viewBox', 'd', 'fill', 'stroke', 'strokeLinecap', 'strokeLinejoin', 'xmlns', 'width', 'height', 'mode', 'variant', 'size', 'as', 'to', 'step', 'min', 'max', 'pattern', 'accept', 'lang', 'dir', 'tabIndex', 'crossOrigin', 'referrerPolicy', 'media', 'color', 'align', 'aria-modal', 'aria-hidden', 'aria-live', 'aria-busy', 'aria-haspopup', 'aria-orientation', 'aria-selected', 'aria-checked', 'aria-pressed', 'aria-expanded', 'aria-current', 'aria-controls', 'aria-describedby', 'aria-labelledby', 'data-testid']);
 const files = [];
@@ -74,4 +81,72 @@ if (findings.length) {
   console.error('o, si es un dato técnico, agregalo a "allowStrings" en scripts/check-texts.config.json.');
   process.exit(1);
 }
-console.log('Todos los textos visibles salen de brand.json.');
+
+const brand = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/brand.json'), 'utf8'));
+const stringPaths = [];
+const collectStringPaths = (value, prefix = []) => {
+  if (typeof value === 'string') {
+    stringPaths.push(prefix.join('.'));
+    return;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectStringPaths(item, [...prefix, String(index)]));
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+  for (const [key, child] of Object.entries(value)) {
+    collectStringPaths(child, [...prefix, key]);
+  }
+};
+
+for (const section of ['announcement', 'hero', 'copy', 'ui', 'seo', 'contact']) {
+  collectStringPaths(brand[section], [section]);
+}
+collectStringPaths(brand.logo?.alt, ['logo', 'alt']);
+collectStringPaths(brand.commerce?.standardShippingDays, ['commerce', 'standardShippingDays']);
+collectStringPaths(brand.commerce?.expressShippingDays, ['commerce', 'expressShippingDays']);
+
+const sourceFiles = files.map((file) => ({
+  rel: path.relative(ROOT, file).replaceAll('\\', '/'),
+  code: fs.readFileSync(file, 'utf8'),
+}));
+const externalFiles = toolingFiles
+  .map((rel) => ({ rel, file: path.join(ROOT, rel) }))
+  .filter(({ file }) => fs.existsSync(file))
+  .map(({ rel, file }) => ({ rel, code: fs.readFileSync(file, 'utf8') }));
+const unusedKeys = [];
+for (const keyPath of stringPaths) {
+  const expression = new RegExp(
+    `\\bBRAND_CONFIG\\.${keyPath.replaceAll('.', '\\.')}(?![\\w])`,
+  );
+  if (sourceFiles.some(({ code }) => expression.test(code))) continue;
+  const isDynamicallyReadArrayEntry = keyPath.includes('.') && sourceFiles.some(({ code }) => {
+    const parts = keyPath.split('.');
+    const arrayIndex = parts.findIndex((part) => /^\d+$/.test(part));
+    if (arrayIndex < 0) return false;
+    const parentPath = parts.slice(0, arrayIndex).join('.');
+    const dynamicRead = new RegExp(
+      `\\bBRAND_CONFIG\\.${parentPath.replaceAll('.', '\\.')}\\.(?:find|map|filter)\\b`,
+    );
+    return dynamicRead.test(code);
+  });
+  if (isDynamicallyReadArrayEntry) continue;
+  const toolingUse = externalFiles.some(({ code }) => expression.test(code));
+  const reason = usedByTooling[keyPath];
+  if (toolingUse && typeof reason === 'string' && reason.trim()) continue;
+  unusedKeys.push(keyPath);
+}
+for (const [keyPath, reason] of Object.entries(usedByTooling)) {
+  if (typeof reason !== 'string' || !reason.trim()) {
+    unusedKeys.push(`${keyPath} (usedByTooling: falta el motivo)`);
+  } else if (!stringPaths.includes(keyPath)) {
+    unusedKeys.push(`${keyPath} (usedByTooling: clave inexistente)`);
+  }
+}
+
+if (unusedKeys.length) {
+  unusedKeys.forEach((keyPath) => console.error(`  ERROR clave sin uso: ${keyPath}`));
+  console.error(`\n${unusedKeys.length} clave(s) de texto de brand.json sin uso en src.`);
+  process.exit(1);
+}
+console.log(`Todos los textos visibles salen de brand.json; ${stringPaths.length} claves editables tienen uso.`);

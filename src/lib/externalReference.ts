@@ -1,4 +1,4 @@
-import { BRAND_CONFIG } from '../brand.config';
+import { BRAND_CONFIG } from '../brand.config.ts';
 
 export function createExternalReference() {
   const brandSlug = BRAND_CONFIG.shortName

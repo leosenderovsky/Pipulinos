@@ -4,11 +4,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createServer as createViteServer } from 'vite';
 import dotenv from 'dotenv';
-import { BRAND_CONFIG } from './src/brand.config';
-import { calculateCheckout, CheckoutInputError } from './src/lib/checkoutPricing';
-import { createExternalReference } from './src/lib/externalReference';
-import { getHealthPayload } from './netlify/functions/health';
-import { handler as handleMercadoPagoWebhook } from './netlify/functions/mp-webhook';
+import { BRAND_CONFIG } from './src/brand.config.ts';
+import { calculateCheckout, CheckoutInputError } from './src/lib/checkoutPricing.ts';
+import { createExternalReference } from './src/lib/externalReference.ts';
+import { getHealthPayload } from './netlify/functions/health.ts';
+import { handler as handleMercadoPagoWebhook } from './netlify/functions/mp-webhook.ts';
 
 dotenv.config();
 

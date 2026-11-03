@@ -5,6 +5,7 @@ export type CatalogConfig = {
   "id": string;
   "label": string;
   "emoji": string;
+  "x-group"?: unknown;
 })[];
   "products": ({
   "id": string;
@@ -18,6 +19,7 @@ export type CatalogConfig = {
   "name": string;
   "hex": string;
   "colorFamily"?: "amarillo" | "coral" | "celeste" | "verde" | "lila" | "naranja" | "neutro";
+  "x-group"?: unknown;
 })[];
   "images": (string)[];
   "description": string;
@@ -32,6 +34,7 @@ export type CatalogConfig = {
   "tags": ("body" | "algodon-pima" | "basico" | "abrigo" | "termico" | "suave" | "invierno" | "pijama" | "remera" | "pack" | "conjunto" | "jogging" | "friza" | "antideslizante" | "noche" | "jardinero" | "denim" | "calza" | "escarpines" | "accesorio" | "gorro" | "babero" | "recien-nacido" | "buzo" | "campera" | "polar" | "medias" | "rustico" | "comodo" | "vestido" | "verano" | "muselina" | "pantalon")[];
   "isBundle"?: boolean;
   "ageStagesOverride"?: ("recien-nacidos" | "bebes" | "ninos")[];
+  "x-group"?: unknown;
 })[];
   "filters": {
   "fabrics": (string)[];
@@ -41,6 +44,7 @@ export type CatalogConfig = {
   "id": string;
   "name": string;
   "hex": string;
+  "x-group"?: unknown;
 })[];
   "quickFilters": ({
   "id": string;
@@ -51,18 +55,23 @@ export type CatalogConfig = {
   "activeClass": string;
   "idleClass": string;
   "activeLabel"?: string;
+  "x-group"?: unknown;
 })[];
   "stageSizes": {
   "recien-nacidos": (string)[];
   "bebes": (string)[];
   "ninos": (string)[];
+  "x-group"?: unknown;
 };
+  "x-group"?: unknown;
 };
   "settings": {
   "crossSellCategory": string;
   "babySizeAlias": string;
   "singleSizeAlias": string;
+  "x-group"?: unknown;
 };
+  "x-group"?: unknown;
 };
 export type Product = CatalogConfig["products"][number];
 export type ProductColor = Product["colors"][number];

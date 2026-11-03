@@ -156,12 +156,14 @@ export type BrandConfig = {
   "app": {
   "retry": string;
   "closeNotice": string;
+  "x-group"?: unknown;
 };
   "payment": {
   "received": string;
   "verifyError": string;
   "pending": string;
   "failed": string;
+  "x-group"?: unknown;
 };
   "cart": {
   "emptyTitle": string;
@@ -230,6 +232,7 @@ export type BrandConfig = {
   "installmentOf": string;
   "transferLine": string;
   "shippingFree": string;
+  "x-group"?: unknown;
 };
   "catalog": {
   "breadcrumbHome": string;
@@ -260,6 +263,7 @@ export type BrandConfig = {
   "filterButton": string;
   "activeCount": string;
   "allCategoryLabel": string;
+  "x-group"?: unknown;
 };
   "footer": {
   "helpTitle": string;
@@ -276,6 +280,7 @@ export type BrandConfig = {
   "whatsappLine": string;
   "instagramLine": string;
   "copyright": string;
+  "x-group"?: unknown;
 };
   "header": {
   "season": string;
@@ -287,6 +292,7 @@ export type BrandConfig = {
   "clearSearch": string;
   "searchTitle": string;
   "whatsappMessage": string;
+  "x-group"?: unknown;
 };
   "hero": {
   "cta": string;
@@ -298,11 +304,13 @@ export type BrandConfig = {
   "freeShippingBadge": string;
   "benefitShippingTitle": string;
   "benefitExchangeTitle": string;
+  "x-group"?: unknown;
 };
   "mobileFilters": {
   "title": string;
   "clear": string;
   "apply": string;
+  "x-group"?: unknown;
 };
   "orderSuccess": {
   "title": string;
@@ -313,6 +321,7 @@ export type BrandConfig = {
   "back": string;
   "registered": string;
   "paymentMethod": string;
+  "x-group"?: unknown;
 };
   "productCard": {
   "removeFavorite": string;
@@ -323,6 +332,7 @@ export type BrandConfig = {
   "moreColors": string;
   "installmentsStart": string;
   "noInterest": string;
+  "x-group"?: unknown;
 };
   "sizeGuide": {
   "title": string;
@@ -339,6 +349,7 @@ export type BrandConfig = {
   "colWaist": string;
   "close": string;
   "cm": string;
+  "x-group"?: unknown;
 };
   "checkout": {
   "errors": {
@@ -353,6 +364,7 @@ export type BrandConfig = {
   "mpInvalidPreference": string;
   "mpUnexpected": string;
   "paymentFailed": string;
+  "x-group"?: unknown;
 };
   "paymentWhatsapp": string;
   "banner": string;
@@ -429,6 +441,7 @@ export type BrandConfig = {
   "standard": string;
   "notes": string;
   "message": string;
+  "x-group"?: unknown;
 };
   "pickupTitle": string;
   "pickupHours": string;
@@ -448,6 +461,7 @@ export type BrandConfig = {
   "demoMode": string;
   "demoModeReal": string;
   "demoMethodLabel": string;
+  "x-group"?: unknown;
 };
   "filters": {
   "activeTitle": string;
@@ -470,6 +484,7 @@ export type BrandConfig = {
   "ageKids": string;
   "selectedCount": string;
   "priceUpTo": string;
+  "x-group"?: unknown;
 };
   "productDetail": {
   "breadcrumbLabel": string;
@@ -547,17 +562,22 @@ export type BrandConfig = {
   "sizeHints": ({
   "sizeFragment": string;
   "text": string;
+  "x-group"?: unknown;
 })[];
+  "x-group"?: unknown;
 };
   "whatsapp": {
   "greeting": string;
   "greetingOrder": string;
   "productInterest": string;
+  "x-group"?: unknown;
 };
   "defaults": {
   "size": string;
   "color": string;
+  "x-group"?: unknown;
 };
+  "x-group"?: unknown;
 };
   "$schema": string;
 };
