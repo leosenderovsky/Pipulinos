@@ -1,5 +1,6 @@
-import type { Product } from '../data/products';
+import type { Product } from '../catalog';
 import SEARCH_SYNONYMS from '../data/searchSynonyms';
+import { BABY_SIZES, KIDS_SIZES } from '../data/filterOptions';
 import { productHasSize } from './sizes';
 
 const STOPWORDS = new Set([
@@ -58,15 +59,15 @@ const getFields = (product: Product): SearchFields => {
 
   if (!fields) {
     fields = {
-      name: getWords(product.nombre),
-      metadata: getWords([product.etiqueta, ...(product.tags ?? [])].filter(Boolean).join(' ')),
+      name: getWords(product.name),
+      metadata: getWords([product.badge, ...(product.tags ?? [])].filter(Boolean).join(' ')),
       description: getWords(
         [
-          product.descripcion,
-          product.descripcionCorta,
-          product.tela,
-          ...(product.caracteristicas ?? []),
-          ...product.coloresDisponibles.map((color) => color.name),
+          product.description,
+          product.shortDescription,
+          product.material,
+          ...(product.features ?? []),
+          ...product.colors.map((color) => color.name),
         ]
           .filter(Boolean)
           .join(' ')
@@ -79,11 +80,20 @@ const getFields = (product: Product): SearchFields => {
 };
 
 const parseSizeQuery = (query: string): string | null => {
-  if (/^(?:t\s*|talle\s+)(2|4|6|8|10)$/.test(query)) {
-    return `T${query.match(/(2|4|6|8|10)$/)?.[1]}`;
+  const sizes = [...BABY_SIZES, ...KIDS_SIZES];
+  if (/^(?:t\s*|talle\s+)\d+$/.test(query)) {
+    const number = query.match(/\d+$/)?.[0];
+    return sizes.find((size) => normalize(size) === `t${number}`) ?? null;
   }
-  if (query === 'rn' || query === 'recien nacido' || query === 'recien nacidos') return 'RN';
-  if (/^0\s*3\s*m$/.test(query)) return '0-3m';
+  const firstBabySize = BABY_SIZES[0];
+  if (
+    query === normalize(firstBabySize) ||
+    query === 'recien nacido' ||
+    query === 'recien nacidos'
+  ) return firstBabySize;
+  const compactQuery = query.replace(/\s+/g, '');
+  const matchedSize = sizes.find((size) => normalize(size).replace(/\s+/g, '') === compactQuery);
+  if (matchedSize) return matchedSize;
   return null;
 };
 
@@ -116,7 +126,7 @@ const sortByRelevance = (products: Product[], tokenGroups: string[][]): Product[
       b.score[0] - a.score[0] ||
       b.score[1] - a.score[1] ||
       b.score[2] - a.score[2] ||
-      Number(Boolean(b.product.destacado)) - Number(Boolean(a.product.destacado))
+      Number(Boolean(b.product.featured)) - Number(Boolean(a.product.featured))
     )
     .map(({ product }) => product);
 

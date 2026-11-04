@@ -7,7 +7,7 @@ const root = process.cwd();
 const logoDirectory = path.join(root, 'public', 'assets', 'logo');
 const differentPixelLimit = 0.001;
 const channelTolerance = 2;
-const staleMessage = 'íconos desactualizados: ejecutá npm run icons:make';
+const staleMessage = 'íconos desactualizados: ejecutá npm run make:icons';
 
 function parseBackground(color) {
   const hex = color.replace(/^#/, '');

@@ -40,7 +40,12 @@ export const OrderSuccessModal: React.FC<OrderSuccessModalProps> = ({
             <span>📦</span>{" "}{BRAND_CONFIG.ui.orderSuccess.nextTitle}</p>
           <p>• {BRAND_CONFIG.copy.orderPreparationMessage}</p>
           <Txt as="p" value={BRAND_CONFIG.ui.orderSuccess.nextTracking} />
-          <Txt as="p" value={BRAND_CONFIG.ui.orderSuccess.nextExchange} />
+          <Txt
+            as="p"
+            value={formatText(BRAND_CONFIG.ui.orderSuccess.nextExchange, {
+              days: String(BRAND_CONFIG.commerce.exchangePeriodDays),
+            })}
+          />
         </div>
 
         <div className="flex flex-col gap-2.5 pt-1">

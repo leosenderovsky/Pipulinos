@@ -1,6 +1,9 @@
 import { DEMO_BANNER_CONFIG, getValidDemoBannerLink } from '../demoBanner.config';
+import { BRAND_CONFIG } from '../brand.config';
 
 export function PrototypeBanner() {
+  if (!BRAND_CONFIG.demo.showPrototypeBanner) return null;
+
   const companyName = DEMO_BANNER_CONFIG.companyName === '[EMPRESA]' ? '' : DEMO_BANNER_CONFIG.companyName;
   const link = companyName ? getValidDemoBannerLink(DEMO_BANNER_CONFIG.link) : null;
 
@@ -16,7 +19,7 @@ export function PrototypeBanner() {
           ) : (
             <strong className="font-semibold">{companyName}</strong>
           )}
-          .{link && ' Si querés un sitio como este para tu negocio, visitanos acá.'}
+          .
         </>
       ) : (
         <>Esta marca no existe. Este sitio es un prototipo de demostración de sitios web para comercios.</>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Txt } from './Txt';
-import { Product } from '../data/products';
+import { Product } from '../catalog';
 import { BRAND_CONFIG, formatText } from '../brand.config';
 import { Heart, ShoppingBag, Check } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -17,13 +17,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
   const [showQuickAddFeedback, setShowQuickAddFeedback] = useState(false);
 
   const installmentAmount = Math.round(
-    product.precio / BRAND_CONFIG.commerce.installmentsWithoutInterest
+    product.price / BRAND_CONFIG.commerce.installmentsWithoutInterest
   );
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const defaultSize = product.tallesDisponibles[0] || BRAND_CONFIG.ui.defaults.size;
-    const defaultColor = product.coloresDisponibles[0] || {
+    const defaultSize = product.sizes[0] || BRAND_CONFIG.ui.defaults.size;
+    const defaultColor = product.colors[0] || {
       name: BRAND_CONFIG.ui.defaults.color,
       hex: BRAND_CONFIG.theme.primary,
     };
@@ -58,8 +58,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
       {/* Media Box */}
       <div className="relative w-full aspect-[4/5] bg-purple-50/40 overflow-hidden">
         <ProductPicture
-          src={product.imagenes[0]}
-          alt={product.nombre}
+          src={product.images[0]}
+          alt={product.name}
           loading="lazy"
           decoding="async"
           width={800}
@@ -73,11 +73,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
           <span
             className={`px-3 py-1 rounded-full font-extrabold text-[11px] shadow-xs flex items-center gap-1 ${getBadgeStyle()}`}
           >
-            <span>✨</span> {product.tela}
+            <span>✨</span> {product.material}
           </span>
-          {product.etiqueta && (
+          {product.badge && (
             <span className="px-2.5 py-0.5 rounded-full bg-brand-secondary text-brand-text font-extrabold text-[10px] shadow-xs">
-              {product.etiqueta}
+              {product.badge}
             </span>
           )}
         </div>
@@ -99,8 +99,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
 
         {/* Size range badge */}
         <span className="absolute bottom-3 left-3 text-[11px] font-extrabold px-3 py-1 rounded-full bg-white/95 backdrop-blur-sm text-brand-text border border-purple-100 shadow-xs flex items-center gap-1 pointer-events-none">
-          <span>👶</span> {product.tallesDisponibles[0]} a{' '}
-          {product.tallesDisponibles[product.tallesDisponibles.length - 1]}
+          <span>👶</span> {product.sizes[0]} a{' '}
+          {product.sizes[product.sizes.length - 1]}
         </span>
       </div>
 
@@ -109,7 +109,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
         <div>
           {/* Swatches preview */}
           <div className="flex items-center gap-1.5 mb-2">
-            {product.coloresDisponibles.slice(0, 3).map((col, idx) => (
+            {product.colors.slice(0, 3).map((col, idx) => (
               <span
                 key={idx}
                 style={{ backgroundColor: col.hex }}
@@ -117,26 +117,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onOpenProduct
                 title={col.name}
               />
             ))}
-            {product.coloresDisponibles.length > 3 && (
-              <span className="text-[10px] font-extrabold text-purple-400 ml-1">
-                {formatText(BRAND_CONFIG.ui.productCard.moreColors, { count: String(product.coloresDisponibles.length - 3) })}
-              </span>
+            {product.colors.length > 3 && (
+              <Txt
+                as="span"
+                className="text-[10px] font-extrabold text-purple-400 ml-1"
+                value={formatText(BRAND_CONFIG.ui.productCard.moreColors, {
+                  count: String(product.colors.length - 3),
+                })}
+              />
             )}
           </div>
 
           <h3 className="font-bold text-sm text-brand-text line-clamp-2 group-hover:text-brand-primary transition-colors leading-snug">
-            {product.nombre}
+            {product.name}
           </h3>
         </div>
 
         <div className="pt-1 border-t border-purple-50">
           <div className="flex items-baseline gap-2 mb-0.5">
             <span className="font-extrabold text-lg text-brand-primary">
-              ${product.precio.toLocaleString('es-AR')}
+              ${product.price.toLocaleString('es-AR')}
             </span>
-            {product.precioAnterior && (
+            {product.compareAtPrice && (
               <span className="text-xs text-purple-400 line-through font-bold">
-                ${product.precioAnterior.toLocaleString('es-AR')}
+                ${product.compareAtPrice.toLocaleString('es-AR')}
               </span>
             )}
             <Txt as="span" className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full ml-auto" value={BRAND_CONFIG.ui.productCard.mercadoPago} />

@@ -10,5 +10,11 @@
     "src/lib/checkoutPricing.ts",
     "src/lib/search.ts"
   ],
-  "allowStrings": ["Accesorios & Packs", "Único", "Estándar", "Enter", "Talle Único"]
+  "allowStrings": ["Accesorios & Packs", "Único", "Estándar", "Enter", "Talle Único"],
+  "usedByTooling": {
+    "seo.titleSuffix": "vite.config.ts agrega el sufijo al título del documento.",
+    "seo.description": "vite.config.ts inyecta la descripción del sitio en los metadatos.",
+    "seo.socialImage": "vite.config.ts genera la URL de la imagen social.",
+    "contact.email": "server.ts usa el correo de contacto como dato predeterminado del pago."
+  }
 }

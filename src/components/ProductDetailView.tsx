@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Txt } from './Txt';
-import { Product, ProductColor } from '../data/products';
+import { Product, ProductColor } from '../catalog';
 import { BRAND_CONFIG, formatText } from '../brand.config';
 import { useCart } from '../context/CartContext';
 import { ProductPicture } from './ProductPicture';
@@ -36,13 +36,13 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   const { addToCart } = useCart();
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<ProductColor>(
-    product.coloresDisponibles[0] || {
+    product.colors[0] || {
       name: BRAND_CONFIG.ui.defaults.color,
       hex: BRAND_CONFIG.theme.primary,
     }
   );
   const [selectedSize, setSelectedSize] = useState<string>(
-    product.tallesDisponibles[0] || BRAND_CONFIG.ui.defaults.size
+    product.sizes[0] || BRAND_CONFIG.ui.defaults.size
   );
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -65,15 +65,20 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
   };
 
   const transferPrice = Math.round(
-    product.precio * (1 - BRAND_CONFIG.commerce.transferDiscountPercent / 100)
+    product.price * (1 - BRAND_CONFIG.commerce.transferDiscountPercent / 100)
   );
   const installmentAmount = Math.round(
-    product.precio / BRAND_CONFIG.commerce.installmentsWithoutInterest
+    product.price / BRAND_CONFIG.commerce.installmentsWithoutInterest
   );
-  const totalPurchasePrice = product.precio * quantity;
+  const totalPurchasePrice = product.price * quantity;
 
   // WhatsApp order link
-  const whatsappProductMessage = formatText(BRAND_CONFIG.ui.whatsapp.productInterest, { name: BRAND_CONFIG.name, product: product.nombre, size: selectedSize, color: selectedColor.name });
+  const whatsappProductMessage = formatText(BRAND_CONFIG.ui.whatsapp.productInterest, {
+    name: BRAND_CONFIG.name,
+    product: product.name,
+    size: selectedSize,
+    color: selectedColor.name,
+  });
   const whatsappUrl = `https://wa.me/${BRAND_CONFIG.contact.whatsappRaw}?text=${encodeURIComponent(whatsappProductMessage)}`;
 
   return (
@@ -94,11 +99,11 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           onClick={onBackToCatalog}
           className="hover:text-brand-primary transition-colors shrink-0 cursor-pointer"
         >
-          {product.categoria}
+          {product.category}
         </button>
         <ChevronRight className="w-3.5 h-3.5 text-purple-300 shrink-0" />
         <span className="text-brand-primary bg-brand-surface-pink px-2.5 py-0.5 rounded-full border border-brand-primary/20 font-extrabold truncate">
-          {product.nombre}
+          {product.name}
         </span>
       </nav>
 
@@ -111,7 +116,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
             {/* Badges overlay */}
             <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5 items-start">
               <span className="bg-brand-primary text-white font-extrabold text-[11px] px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
-                <Sparkles className="w-3 h-3" /> {product.tela}
+                <Sparkles className="w-3 h-3" /> {product.material}
               </span>
               <Txt as="span" className="bg-brand-secondary-soft text-amber-900 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-xs" value={BRAND_CONFIG.ui.productDetail.badgeHypoallergenic} />
             </div>
@@ -132,9 +137,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               className="aspect-[4/5] w-full bg-purple-50/30 overflow-hidden flex items-center justify-center cursor-zoom-in relative"
             >
               <ProductPicture
-                key={product.imagenes[selectedPhotoIndex] || product.imagenes[0]}
-                src={product.imagenes[selectedPhotoIndex] || product.imagenes[0]}
-                alt={product.nombre}
+                key={product.images[selectedPhotoIndex] || product.images[0]}
+                src={product.images[selectedPhotoIndex] || product.images[0]}
+                alt={product.name}
                 decoding="async"
                 fetchPriority="high"
                 width={800}
@@ -152,9 +157,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           </div>
 
           {/* Thumbnails row */}
-          {product.imagenes.length > 1 && (
+          {product.images.length > 1 && (
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
-              {product.imagenes.map((img, idx) => (
+              {product.images.map((img, idx) => (
                 <button
                   key={idx}
                   type="button"
@@ -218,7 +223,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           <div>
             <div className="flex items-center justify-between gap-2 flex-wrap mb-1">
               <span className="font-extrabold text-xs uppercase tracking-wider text-brand-primary">
-                {formatText(BRAND_CONFIG.ui.productDetail.lineTitle, { name: BRAND_CONFIG.shortName, fabric: product.tela })}
+                {formatText(BRAND_CONFIG.ui.productDetail.lineTitle, {
+                  name: BRAND_CONFIG.shortName,
+                  fabric: product.material,
+                })}
               </span>
               <div className="flex items-center gap-1 text-amber-500 font-extrabold text-xs">
                 <span>⭐ ⭐ ⭐ ⭐ ⭐</span>
@@ -227,10 +235,10 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-extrabold text-brand-text tracking-tight leading-tight">
-              {product.nombre}
+              {product.name}
             </h1>
             <p className="text-xs sm:text-sm text-purple-900/80 font-medium mt-2 leading-relaxed">
-              {product.descripcion}
+              {product.description}
             </p>
           </div>
 
@@ -238,16 +246,18 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           <div className="p-4 rounded-2xl bg-gradient-to-br from-brand-surface-warm via-white to-brand-surface-lilac border-2 border-brand-primary/20 shadow-xs flex flex-col gap-2">
             <div className="flex items-baseline gap-3 flex-wrap">
               <span className="text-3xl font-extrabold text-brand-primary tracking-tight">
-                ${product.precio.toLocaleString('es-AR')}
+                ${product.price.toLocaleString('es-AR')}
               </span>
-              {product.precioAnterior && (
+              {product.compareAtPrice && (
                 <span className="text-sm text-purple-300 line-through font-bold">
-                  ${product.precioAnterior.toLocaleString('es-AR')}
+                  ${product.compareAtPrice.toLocaleString('es-AR')}
                 </span>
               )}
-              {product.precioAnterior && (
+              {product.compareAtPrice && (
                 <span className="bg-rose-500 text-white font-extrabold text-xs px-2.5 py-0.5 rounded-full shadow-xs">
-                  {formatText(BRAND_CONFIG.ui.productDetail.savings, { amount: `$${(product.precioAnterior - product.precio).toLocaleString('es-AR')}` })}
+                  {formatText(BRAND_CONFIG.ui.productDetail.savings, {
+                    amount: `$${((product.compareAtPrice ?? product.price) - product.price).toLocaleString('es-AR')}`,
+                  })}
                 </span>
               )}
             </div>
@@ -280,12 +290,14 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               <span className="font-extrabold text-xs sm:text-sm text-brand-text">{BRAND_CONFIG.ui.productDetail.colorLabel}{" "}<strong className="text-brand-primary">{selectedColor.name}</strong>
               </span>
               <span className="text-xs font-bold text-purple-400">
-                {formatText(BRAND_CONFIG.ui.productDetail.colorsCount, { count: String(product.coloresDisponibles.length) })}
+                {formatText(BRAND_CONFIG.ui.productDetail.colorsCount, {
+                  count: String(product.colors.length),
+                })}
               </span>
             </div>
 
             <div className="flex items-center gap-2.5 flex-wrap">
-              {product.coloresDisponibles.map((col, idx) => {
+              {product.colors.map((col, idx) => {
                 const isSelected = selectedColor.name === col.name;
                 return (
                   <button
@@ -324,10 +336,14 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {product.tallesDisponibles.map((sz) => {
+              {product.sizes.map((sz) => {
                 const isSelected = selectedSize === sz;
-                const stock = product.stockPorTalle?.[sz] ?? 8;
+                const stock = product.stockBySize?.[sz] ?? 8;
                 const isLowStock = stock <= 3;
+                const sizeHint =
+                  BRAND_CONFIG.ui.productDetail.sizeHints.find(({ sizeFragment }) =>
+                    sz.includes(sizeFragment),
+                  )?.text ?? BRAND_CONFIG.copy.sizeHintFallback;
 
                 return (
                   <button
@@ -455,7 +471,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
 
               {openAccordion === 'acc-1' && (
                 <div className="p-3.5 pt-0 text-xs font-medium text-purple-900/80 space-y-1.5 leading-relaxed">
-                  <p>{formatText(BRAND_CONFIG.ui.productDetail.careComposition, { fabric: product.tela })}</p>
+                  <Txt as="p" value={formatText(BRAND_CONFIG.ui.productDetail.careComposition, { fabric: product.material })} />
                   <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careWash} />
                   <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careSoap} />
                   <Txt as="p" value={BRAND_CONFIG.ui.productDetail.careDry} />
@@ -504,7 +520,12 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
               >
                 <span className="flex items-center gap-2">
                   <RefreshCw className="w-4 h-4 text-brand-success" />
-                  <Txt as="span" value={BRAND_CONFIG.ui.productDetail.exchangeTitle} />
+                  <Txt
+                    as="span"
+                    value={formatText(BRAND_CONFIG.ui.productDetail.exchangeTitle, {
+                      days: String(BRAND_CONFIG.commerce.exchangePeriodDays),
+                    })}
+                  />
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 text-purple-400 transition-transform duration-200 ${
@@ -561,18 +582,18 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
             <tbody className="divide-y divide-purple-50 text-purple-900 font-medium">
               {BABY_SIZE_GUIDE.map((row) => (
                 <tr
-                  key={row.talle}
+                  key={row.size}
                   className={`hover:bg-purple-50/50 transition-colors ${
-                    selectedSize === row.talle ? 'bg-brand-secondary-soft/40 font-bold' : ''
+                    selectedSize === row.size ? 'bg-brand-secondary-soft/40 font-bold' : ''
                   }`}
                 >
-                  <td className="py-3 px-4 font-extrabold text-brand-primary">{row.talle}</td>
-                  <td className="py-3 px-4">{row.edadSugerida}</td>
-                  <td className="py-3 px-4">{row.alturaCm}</td>
-                  <td className="py-3 px-4">{row.pesoKg}</td>
-                  <td className="py-3 px-4 font-bold">{row.largoTotalCm} cm</td>
-                  <td className="py-3 px-4">{row.anchoSisaCm} cm</td>
-                  <td className="py-3 px-4 text-purple-400 text-[11px]">{row.nota}</td>
+                  <td className="py-3 px-4 font-extrabold text-brand-primary">{row.size}</td>
+                  <td className="py-3 px-4">{row.suggestedAge}</td>
+                  <td className="py-3 px-4">{row.heightCm}</td>
+                  <td className="py-3 px-4">{row.weightKg}</td>
+                  <td className="py-3 px-4 font-bold">{row.totalLengthCm} cm</td>
+                  <td className="py-3 px-4">{row.armholeWidthCm} cm</td>
+                  <td className="py-3 px-4 text-purple-400 text-[11px]">                  {row.note}</td>
                 </tr>
               ))}
             </tbody>
@@ -615,7 +636,7 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({
           <div className="flex flex-col">
             <Txt as="span" className="font-extrabold text-xs" value={BRAND_CONFIG.ui.productDetail.addedToast} />
             <span className="text-[11px] text-purple-200">
-              {quantity}x {product.nombre} ({selectedSize} - {selectedColor.name})
+              {quantity}x {product.name} ({selectedSize} - {selectedColor.name})
             </span>
           </div>
         </div>

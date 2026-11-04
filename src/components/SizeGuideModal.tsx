@@ -79,13 +79,13 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
               </thead>
               <tbody className="divide-y divide-purple-50 text-purple-900">
                 {BABY_SIZE_GUIDE.map((row) => (
-                  <tr key={row.talle} className="hover:bg-purple-50/40">
-                    <td className="p-3 font-extrabold text-brand-primary">{row.talle}</td>
-                    <td className="p-3">{row.edadSugerida}</td>
-                    <td className="p-3">{row.alturaCm}</td>
-                    <td className="p-3">{row.pesoKg}</td>
-                    <td className="p-3 font-bold">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.largoTotalCm) })}</td>
-                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.anchoSisaCm) })}</td>
+                  <tr key={row.size} className="hover:bg-purple-50/40">
+                    <td className="p-3 font-extrabold text-brand-primary">{row.size}</td>
+                    <td className="p-3">{row.suggestedAge}</td>
+                    <td className="p-3">{row.heightCm}</td>
+                    <td className="p-3">{row.weightKg}</td>
+                    <td className="p-3 font-bold">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.totalLengthCm) })}</td>
+                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.armholeWidthCm) })}</td>
                   </tr>
                 ))}
               </tbody>
@@ -107,14 +107,14 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({ isOpen, onClose 
               </thead>
               <tbody className="divide-y divide-purple-50 text-purple-900">
                 {KIDS_SIZE_GUIDE.map((row) => (
-                  <tr key={row.talle} className="hover:bg-purple-50/40">
-                    <td className="p-3 font-extrabold text-brand-accent-blue">{row.talle}</td>
-                    <td className="p-3">{row.edadSugerida}</td>
-                    <td className="p-3">{row.alturaCm}</td>
-                    <td className="p-3">{row.pesoKg}</td>
-                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.pechoCm) })}</td>
-                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.cinturaCm) })}</td>
-                    <td className="p-3 font-bold">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.largoTotalCm) })}</td>
+                  <tr key={row.size} className="hover:bg-purple-50/40">
+                    <td className="p-3 font-extrabold text-brand-accent-blue">{row.size}</td>
+                    <td className="p-3">{row.suggestedAge}</td>
+                    <td className="p-3">{row.heightCm}</td>
+                    <td className="p-3">{row.weightKg}</td>
+                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.chestCm) })}</td>
+                    <td className="p-3">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.waistCm) })}</td>
+                    <td className="p-3 font-bold">{formatText(BRAND_CONFIG.ui.sizeGuide.cm, { value: String(row.totalLengthCm) })}</td>
                   </tr>
                 ))}
               </tbody>

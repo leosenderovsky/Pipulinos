@@ -1,0 +1,131 @@
+{
+  "$schema": "./size-guide.schema.json",
+  "schemaVersion": 1,
+  "babySizes": [
+    {
+      "size": "RN",
+      "suggestedAge": "0 a 1 mes",
+      "heightCm": "Hasta 52 cm",
+      "weightKg": "Hasta 3.5 kg",
+      "totalLengthCm": 34,
+      "armholeWidthCm": 18,
+      "note": "Ideal bolso de maternidad"
+    },
+    {
+      "size": "0-3m",
+      "suggestedAge": "1 a 3 meses",
+      "heightCm": "52 - 62 cm",
+      "weightKg": "3.5 - 5.5 kg",
+      "totalLengthCm": 37,
+      "armholeWidthCm": 20,
+      "note": "Primeros paseos"
+    },
+    {
+      "size": "3-6m",
+      "suggestedAge": "3 a 6 meses",
+      "heightCm": "62 - 68 cm",
+      "weightKg": "5.5 - 7.5 kg",
+      "totalLengthCm": 40,
+      "armholeWidthCm": 22,
+      "note": "Comienza a girar y jugar"
+    },
+    {
+      "size": "6-9m",
+      "suggestedAge": "6 a 9 meses",
+      "heightCm": "68 - 74 cm",
+      "weightKg": "7.5 - 9.0 kg",
+      "totalLengthCm": 43,
+      "armholeWidthCm": 24,
+      "note": "Primeras comidas y gateo"
+    },
+    {
+      "size": "9-12m",
+      "suggestedAge": "9 a 12 meses",
+      "heightCm": "74 - 80 cm",
+      "weightKg": "9.0 - 10.5 kg",
+      "totalLengthCm": 46,
+      "armholeWidthCm": 25,
+      "note": "De pie y primeros apoyos"
+    },
+    {
+      "size": "12-18m",
+      "suggestedAge": "12 a 18 meses",
+      "heightCm": "80 - 86 cm",
+      "weightKg": "10.5 - 12.0 kg",
+      "totalLengthCm": 49,
+      "armholeWidthCm": 27,
+      "note": "Primeros pasos independientes"
+    },
+    {
+      "size": "18-24m",
+      "suggestedAge": "18 a 24 meses",
+      "heightCm": "86 - 92 cm",
+      "weightKg": "12.0 - 13.5 kg",
+      "totalLengthCm": 52,
+      "armholeWidthCm": 29,
+      "note": "Exploradores activos"
+    }
+  ],
+  "kidsSizes": [
+    {
+      "size": "T2",
+      "suggestedAge": "2 a 3 años",
+      "heightCm": "92 - 98 cm",
+      "weightKg": "13 - 15 kg",
+      "chestCm": 53,
+      "waistCm": 51,
+      "totalLengthCm": 42,
+      "note": "Jardín maternal"
+    },
+    {
+      "size": "T4",
+      "suggestedAge": "3 a 4 años",
+      "heightCm": "98 - 106 cm",
+      "weightKg": "15 - 18 kg",
+      "chestCm": 56,
+      "waistCm": 53,
+      "totalLengthCm": 46,
+      "note": "Salita de 3 y 4"
+    },
+    {
+      "size": "T6",
+      "suggestedAge": "5 a 6 años",
+      "heightCm": "106 - 116 cm",
+      "weightKg": "18 - 22 kg",
+      "chestCm": 60,
+      "waistCm": 56,
+      "totalLengthCm": 50,
+      "note": "Preescolar / Primaria"
+    },
+    {
+      "size": "T8",
+      "suggestedAge": "7 a 8 años",
+      "heightCm": "116 - 126 cm",
+      "weightKg": "22 - 27 kg",
+      "chestCm": 64,
+      "waistCm": 59,
+      "totalLengthCm": 54,
+      "note": "Juegos y aire libre"
+    },
+    {
+      "size": "T10",
+      "suggestedAge": "9 a 10 años",
+      "heightCm": "126 - 136 cm",
+      "weightKg": "27 - 33 kg",
+      "chestCm": 68,
+      "waistCm": 62,
+      "totalLengthCm": 58,
+      "note": "Ropa duradera escolar"
+    }
+  ],
+  "tips": {
+    "mainTip": "El algodón Pima y las telas de punto ceden cómodamente entre un 8% y 12% para permitir libertad total de movimiento.",
+    "parentAdvice": "Si dudás entre dos talles, te aconsejamos elegir el más grande: las prendas durarán mucho más y las botamangas o puños se pueden arremangar cómodamente.",
+    "measuringSteps": [
+      "Apoyá una prenda que le quede cómoda sobre una superficie plana (mesa o cama).",
+      "Medí el largo total desde el punto más alto del hombro hasta la botamanga o broches inferiores.",
+      "Medí el ancho de sisa a sisa (de axila a axila) en línea recta.",
+      "Compará esos centímetros con los valores de nuestra tabla."
+    ]
+  }
+}

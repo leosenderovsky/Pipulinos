@@ -1,0 +1,8 @@
+{
+  "exceptions": {
+    "RN": "Código de talle de recién nacido usado por ProductDetailView para seleccionar la referencia de peso por etapa.",
+    "recien-nacidos": "Identificador de etapa de edad; la lógica de etapas de Pipulinos permanece en código.",
+    "bebes": "Identificador de etapa de edad; la lógica de etapas de Pipulinos permanece en código.",
+    "ninos": "Identificador de etapa de edad; la lógica de etapas de Pipulinos permanece en código."
+  }
+}

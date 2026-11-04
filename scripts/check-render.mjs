@@ -1,25 +1,26 @@
-import { createElement } from 'react';
-import { renderToString } from 'react-dom/server';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { createServer } from 'vite';
 
-const vite = await createServer({
+globalThis.localStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+};
+
+const server = await createServer({
+  configFile: './vite.config.ts',
   server: { middlewareMode: true },
   appType: 'custom',
-  logLevel: 'silent',
 });
 
 try {
-  const mod = await vite.ssrLoadModule('/src/App.tsx');
-  const html = renderToString(createElement(mod.default));
-  const anchors = html.match(/<a\b/g)?.length ?? 0;
-  const images = html.match(/<img\b/g)?.length ?? 0;
-  console.log(`chars=${html.length} a=${anchors} img=${images}`);
-} catch (error) {
-  const message = error instanceof Error ? error.message : String(error);
-  const stack = error instanceof Error && error.stack ? error.stack : '';
-  console.error(message);
-  console.error(stack.split('\n').slice(0, 12).join('\n'));
-  process.exitCode = 1;
+  const { default: App } = await server.ssrLoadModule('/src/App.tsx');
+  const markup = renderToStaticMarkup(React.createElement(App));
+  if (!markup.includes('<main') || markup.length === 0) {
+    throw new Error('App did not render the catalog page.');
+  }
+  console.log(`Render correcto: ${markup.length} caracteres.`);
 } finally {
-  await vite.close();
+  await server.close();
 }

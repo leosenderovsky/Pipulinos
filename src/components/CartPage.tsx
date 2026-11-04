@@ -3,7 +3,7 @@ import { Txt } from './Txt';
 import { useCart } from '../context/CartContext';
 import { ProductPicture } from './ProductPicture';
 import { BRAND_CONFIG, formatText } from '../brand.config';
-import { PRODUCTS, Product } from '../data/products';
+import { CROSS_SELL_CATEGORY, PRODUCTS, Product } from '../catalog';
 import {
   ArrowLeft,
   Trash2,
@@ -61,7 +61,9 @@ export const CartPage: React.FC<CartPageProps> = ({
   const [couponError, setCouponError] = useState(false);
 
   // Quick cross-sell accessories
-  const crossSellProducts = PRODUCTS.filter((p) => p.categoria === 'Accesorios & Packs');
+  const crossSellProducts = CROSS_SELL_CATEGORY
+    ? PRODUCTS.filter((product) => product.category === CROSS_SELL_CATEGORY)
+    : [];
 
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,7 +126,11 @@ export const CartPage: React.FC<CartPageProps> = ({
             <span className="flex items-center gap-1 text-brand-primary">
               <ShieldCheck className="w-3.5 h-3.5" />{" "}{BRAND_CONFIG.ui.cart.trustProtectedTitle}</span>
             <span className="flex items-center gap-1">
-              <RefreshCw className="w-3.5 h-3.5 text-brand-success" />{" "}{BRAND_CONFIG.ui.cart.trustExchangeTitle}</span>
+              <RefreshCw className="w-3.5 h-3.5 text-brand-success" />{" "}
+              {formatText(BRAND_CONFIG.ui.cart.trustExchangeTitle, {
+                days: String(BRAND_CONFIG.commerce.exchangePeriodDays),
+              })}
+            </span>
             <span className="flex items-center gap-1">
               <Truck className="w-3.5 h-3.5 text-brand-accent-blue" />{" "}{BRAND_CONFIG.ui.cart.trustDispatchTitle}</span>
           </div>
@@ -222,8 +228,8 @@ export const CartPage: React.FC<CartPageProps> = ({
                         className="relative w-22 h-26 sm:w-26 sm:h-30 shrink-0 rounded-2xl overflow-hidden bg-purple-50 shadow-xs border border-purple-100 cursor-pointer group"
                       >
                         <ProductPicture
-                          src={item.product.imagenes[0]}
-                          alt={item.product.nombre}
+                          src={item.product.images[0]}
+                          alt={item.product.name}
                           loading="lazy"
                           decoding="async"
                           width={800}
@@ -239,13 +245,13 @@ export const CartPage: React.FC<CartPageProps> = ({
                       {/* Details */}
                       <div className="flex flex-col gap-1 min-w-0 flex-1">
                         <span className="text-[10px] uppercase tracking-wider font-extrabold text-purple-400">
-                          {item.product.tela}
+                          {item.product.material}
                         </span>
                         <h2
                           onClick={() => onOpenProduct(item.product)}
                           className="font-extrabold text-sm sm:text-base text-brand-text line-clamp-1 hover:text-brand-primary transition-colors cursor-pointer"
                         >
-                          {item.product.nombre}
+                          {item.product.name}
                         </h2>
 
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-purple-900/80 font-medium">
@@ -539,7 +545,13 @@ export const CartPage: React.FC<CartPageProps> = ({
                     </div>
                     <div className="flex flex-col text-left">
                       <Txt as="span" className="font-extrabold text-sm leading-tight" value={BRAND_CONFIG.ui.cart.whatsappTitle} />
-                      <Txt as="span" className="text-white/90 text-[10px] font-medium leading-tight" value={BRAND_CONFIG.ui.cart.whatsappText} />
+                      <Txt
+                        as="span"
+                        className="text-white/90 text-[10px] font-medium leading-tight"
+                        value={formatText(BRAND_CONFIG.ui.cart.whatsappText, {
+                          percent: String(BRAND_CONFIG.commerce.transferDiscountPercent),
+                        })}
+                      />
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 transition-transform" />
@@ -579,6 +591,7 @@ export const CartPage: React.FC<CartPageProps> = ({
         </div>
 
         {/* Suggested Cross-sell Carousel Header */}
+        {CROSS_SELL_CATEGORY && (
         <section className="mt-12 pt-6 border-t border-purple-100 flex flex-col gap-4">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
@@ -601,8 +614,8 @@ export const CartPage: React.FC<CartPageProps> = ({
                   className="w-18 h-18 rounded-xl overflow-hidden bg-purple-50 shrink-0 cursor-pointer"
                 >
                   <ProductPicture
-                    src={prod.imagenes[0]}
-                    alt={prod.nombre}
+                    src={prod.images[0]}
+                    alt={prod.name}
                     loading="lazy"
                     decoding="async"
                     width={800}
@@ -612,23 +625,23 @@ export const CartPage: React.FC<CartPageProps> = ({
                   />
                 </div>
                 <div className="flex flex-col flex-1 min-w-0">
-                  <span className="text-[10px] text-purple-400 font-bold">{prod.tela}</span>
+                  <span className="text-[10px] text-purple-400 font-bold">{prod.material}</span>
                   <h4
                     onClick={() => onOpenProduct(prod)}
                     className="font-extrabold text-xs text-brand-text truncate hover:text-brand-primary cursor-pointer"
                   >
-                    {prod.nombre}
+                    {prod.name}
                   </h4>
                   <span className="font-extrabold text-sm text-brand-primary">
-                    ${prod.precio.toLocaleString('es-AR')}
+                    ${prod.price.toLocaleString('es-AR')}
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => {
-                    const defaultSize = prod.tallesDisponibles[0] || BRAND_CONFIG.ui.defaults.size;
-                    const defaultColor = prod.coloresDisponibles[0] || {
-                      name: BRAND_CONFIG.ui.defaults.color,
+                    const defaultSize = prod.sizes[0] || 'Único';
+                    const defaultColor = prod.colors[0] || {
+                      name: 'Estándar',
                       hex: BRAND_CONFIG.theme.primary,
                     };
                     addToCart(prod, defaultSize, defaultColor, 1);
@@ -642,6 +655,7 @@ export const CartPage: React.FC<CartPageProps> = ({
             ))}
           </div>
         </section>
+        )}
       </main>
     </div>
   );

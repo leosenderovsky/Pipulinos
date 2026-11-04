@@ -32,67 +32,40 @@ En producción, Netlify redirige las rutas `/api/*` a Netlify Functions, según 
 - `src/components/`: vistas y componentes de catálogo, producto, carrito y checkout.
 - `src/context/CartContext.tsx`: estado y operaciones del carrito.
 - `src/lib/`: filtros, búsqueda, talles, referencias y cálculo de precios del checkout.
-- `src/data/products.ts`: productos, categorías, edades/etapas, telas y vocabulario de etiquetas.
-- `src/data/sizeGuide.ts`: tablas y consejos de medidas.
-- `src/data/brand.json`: **todos los datos y textos editables** de la marca y de la interfaz.
-- `src/data/brand.schema.json`: esquema con etiquetas en español, tipos y reglas; `docs/CAMPOS.md` es la tabla de campos generada.
-- `src/brand.config.ts`: envoltorio que importa `brand.json` y exporta `BRAND_CONFIG` (no se edita).
-- `src/components/Txt.tsx`: muestra un texto editable y no dibuja nada si está vacío.
+- `src/data/brand.json`: textos, datos de marca, contacto, reglas comerciales y tema.
+- `src/data/catalog.json`: categorías, productos, filtros y configuración del catálogo.
+- `src/data/size-guide.json`: tablas y consejos de medidas.
+- `src/data/*.schema.json`: contratos que puede consumir un editor basado en formularios.
+- `src/brand.config.ts`, `src/catalog.ts` y `src/data/sizeGuide.ts`: envoltorios tipados que consume la aplicación.
+- `src/generated/`: tipos TypeScript generados desde los tres esquemas.
 - `netlify/functions/create-preference.ts`: creación de preferencias de Mercado Pago.
 - `netlify/functions/mp-webhook.ts`: recepción y consulta de notificaciones de pago.
 - `server.ts`: Express local para desarrollo y compatibilidad de rutas de API.
 - `public/assets/`: fotos, logo, íconos y recursos visuales.
 - `scripts/`: generación y controles de imágenes, íconos y filtros.
 - `docs/IMAGENES.md`: criterios y comandos para preparar imágenes y logo.
+- `docs/CAMPOS.md`: referencia generada desde los esquemas editables.
 
 ## Adaptar para un cliente nuevo
 
-Editá `src/data/brand.json` (la tabla completa de campos está en `docs/CAMPOS.md`) en este orden:
+Editá los JSON de `src/data/`; no edites los archivos generados ni los envoltorios.
+Los esquemas correspondientes son la fuente del contrato y de los controles del editor.
 
-- `seo`: sufijo del título, descripción y recurso para compartir en redes.
-- `typography`: familias tipográficas y stylesheet.
-- `theme`: colores y tokens visuales; `src/main.tsx` los inyecta como variables CSS.
-- `storage`: clave usada para persistir el carrito en el navegador.
-- `demo`: activación del carrito y checkout de ejemplo, dedicatoria, cupón y envoltorio.
-- `logo`: imagen, texto alternativo, íconos, `iconCrop` y `iconBackground`.
-- `contact`: WhatsApp, asesoría, Instagram, showroom, horarios y email.
-- `commerce`: moneda, cupones porcentuales o fijos, descuentos, envíos y cambios.
-- `announcement`: activación y texto de la franja de anuncio.
-- `hero`: título, bajada, promociones, imagen y mensajes destacados.
-- `copy`: textos del catálogo, checkout, regalo, WhatsApp y pie de página.
-- `ui`: el resto de los textos de la interfaz (carrito, checkout, filtros, ficha de producto, guía de talles, avisos de pago y plantillas de mensajes de WhatsApp).
+`brand.json` organiza los datos de marca, `commerce`, `ui`, textos genéricos, tema e imágenes.
+El catálogo completo, incluidas categorías, rótulos, productos, filtros y venta cruzada,
+vive en `catalog.json`. La guía de medidas se edita en `size-guide.json`.
+Los campos nuevos deben respetar el esquema; regenerá tipos y documentación cuando cambie:
 
-### Todos los textos son editables (y quitables)
+```sh
+npm run generate:types
+npm run docs:fields
+npm run check:config
+npm run check:coupling
+```
 
-Ningún texto visible está escrito en el código: todo sale de `src/data/brand.json`, incluidos botones, títulos, avisos, etiquetas de accesibilidad y los mensajes de WhatsApp.
-
-- **Cambiar un texto:** editá su valor (por ejemplo `ui.footer.contactTitle` de "Contacto Showroom" a "Contacto").
-- **Quitar un elemento:** dejá su texto **vacío** (`""`); el elemento no se dibuja.
-- **Textos con variables:** `{name}`, `{count}`, `{amount}`, etc. se reemplazan solos; el esquema indica cuáles admite cada texto y `check:config` falla si usás una desconocida.
-- Nombres, descripciones, cuidados y características de productos están en `src/data/products.ts`, las medidas en `src/data/sizeGuide.ts` y los filtros en `src/data/filterOptions.ts` (también datos editables).
-
-Si agregás un componente, sus textos van a `brand.json` y a `brand.schema.json`; `npm run check:texts` lo verifica.
-
-### Datos, validación y pruebas
-
-| Comando | Para qué sirve |
-| --- | --- |
-| `npm run generate:types` | Genera `src/generated/brand.types.ts` desde el esquema (corre solo en `dev` y `build`; el archivo se commitea). |
-| `npm run check:config` | Valida `brand.json` contra el esquema, imágenes, URLs, colores, WhatsApp y variables de texto. |
-| `npm run check:config:strict` | Además exige reemplazar los datos de ejemplo y rechaza los textos de `prototype-markers.json`. **Falla en el prototipo, a propósito.** |
-| `npm run check:texts` | Falla si algún texto visible está escrito en el código en vez de salir de `brand.json`. |
-| `npm run check:render` | Renderiza la aplicación sin navegador y falla ante cualquier excepción. |
-| `npm run docs:fields` | Regenera `docs/CAMPOS.md`. |
-
-Después adaptá `src/data/products.ts`. Cada producto define, entre otros campos, `id`,
-`nombre`, `categoria`, `subcategoria`, `precio`, `precioAnterior`, `tallesDisponibles`,
-`coloresDisponibles`, `imagenes`, `descripcion`, `tela`, `caracteristicas`, `cuidados`,
-`stockPorTalle`, `destacado`, `esPack` y `tags`.
-
-Las categorías son Bodys & Enteritos, Remeras & Tops, Pantalones & Calzas, Pijamas & Abrigo y Accesorios & Packs; las etapas son recién nacidos, bebés y niños.
-Las telas de `FABRICS_LIST`: 100% Algodón Pima, Algodón Peinado 24/1, Plush & Friza Abrigada,
-Rústico con Lycra, Denim Ultra Soft y Muselina Pura. `src/data/filterOptions.ts` define talles, colores y filtros rápidos.
-Actualizá también `src/data/sizeGuide.ts` si cambian las medidas o recomendaciones.
+La lógica de etapas de edad (`recien-nacidos`, `bebes`, `ninos`) y sus reglas de talles
+siguen siendo específicas del prototipo infantil en TypeScript. Las categorías y listas de
+filtros, en cambio, se leen de JSON.
 
 Cuando cambies datos o comportamiento de filtros, actualizá sus resultados esperados
 en `scripts/filters.expected.json` y validalos con:
@@ -120,16 +93,25 @@ Las fotos de producto no deben tener texto ni capturas de interfaz. La optimizac
 Comandos disponibles:
 
 ```sh
-npm run images:optimize
-npm run logo:optimize
+npm run lint
+npm run build
+npm run check:config
+npm run check:config:strict
+npm run check:coupling
+npm run check:render
+npm run check:filters
 npm run check:images
 npm run check:images:strict
-npm run icons:make
 npm run check:icons
+npm run images:optimize
+npm run logo:optimize
+npm run make:icons
 npm run make:og
+npm run generate:types
+npm run docs:fields
 ```
 
-`check:images:strict` falla si hay advertencias. `icons:make` genera los dos íconos
+`check:images:strict` falla si hay advertencias. `make:icons` genera los dos íconos
 desde el PNG, aplicando `iconCrop` y el fondo configurado. `check:icons` compara
 los archivos generados con los publicados. `make:og` acepta `OG_IMAGE_QUALITY`.
 
@@ -143,10 +125,11 @@ nunca lo guardes en el repositorio ni uses el prefijo `VITE_`.
 `true`. Sin token, la función devuelve una preferencia simulada `development_demo`:
 no se realiza ningún cobro. No lo uses como configuración de pagos reales.
 
-El servidor calcula el importe con los precios de `src/data/products.ts`, no con precios
+El servidor calcula el importe con los precios de `src/data/catalog.json`, no con precios
 enviados por el navegador. `src/lib/checkoutPricing.ts` valida productos y cantidades,
 aplica el cupón, calcula el envío express y el descuento por transferencia cuando
-corresponde. Los cupones y reglas comerciales se editan en `commerce` (en `brand.json`).
+corresponde. Los cupones y reglas comerciales se editan en `src/data/brand.json`,
+dentro de `commerce`.
 
 `netlify/functions/health.ts` expone `/api/health` para revisar, sin revelar valores,
 si Netlify ve las variables necesarias para Functions. Configurá las variables privadas
@@ -176,7 +159,7 @@ Revisá el flujo y sus URLs de retorno antes de reemplazar las credenciales por 
 | `MERCADO_PAGO_ACCESS_TOKEN` | Credencial privada de servidor, configurada en Netlify; nunca en el repo ni con `VITE_`. |
 | `APP_URL` | Base de los retornos y notificaciones de pago; fallback `URL`. |
 | `MP_DEMO_MODE` | `false` en el ejemplo; con `true` permite la preferencia simulada sin token en producción. |
-| `BRAND_ICON_BACKGROUND` | Fondo opcional de favicon y Apple Touch Icon; precede a `logo.iconBackground` de `brand.json`. |
+| `BRAND_ICON_BACKGROUND` | Fondo opcional de favicon y Apple Touch Icon; precede a `brand.json.logo.iconBackground`. |
 | `MP_STATEMENT_DESCRIPTOR` | Descriptor opcional del resumen de Mercado Pago; si falta, usa el nombre de marca en mayúsculas. |
 | `PORT` | Puerto del Express local; por defecto `3000`. |
 | `NODE_ENV` / `CONTEXT` | Se usan para detectar contexto de producción y exigir el token. |
@@ -212,10 +195,11 @@ npm run verify:deploy -- https://<sitio>.netlify.app
 vienen de `src/demoBanner.config.ts`; `getDemoLegend` también arma la aclaración del pie.
 Si no hay nombre configurado, se muestra el aviso genérico.
 
-En `demo` (en `brand.json`), `prefillCart` y `prefillCheckout` están desactivados por defecto.
+En `brand.json.demo`, `showPrototypeBanner` controla el banner; `prefillCart` y
+`prefillCheckout` están desactivados por defecto.
 Al activar el primero, se precargan tres productos y se aplican los datos demo de regalo
 y cupón. El segundo precarga el formulario con los campos de ejemplo definidos en
-`demo.checkout` (nombre, email, teléfono, domicilio, localidad y notas).
+`brand.json.demo.checkout` (nombre, email, teléfono, domicilio, localidad y notas).
 
 Al entregar a un cliente real, desactivá o quitá esas precargas y reemplazá los datos
 de muestra. Borrá el banner demo y su configuración, el import y render en `src/App.tsx`,
@@ -229,7 +213,7 @@ de servidor necesarias para el contexto de deploy; no subas secretos al reposito
 
 Antes de entregar:
 
-- [ ] Pasá `npm run check:config:strict`, y revisá `brand.json`, el catálogo, los talles, los filtros y el contenido de muestra.
+- [ ] Revisá `brand.json`, `catalog.json`, `size-guide.json` y el contenido de muestra.
 - [ ] Prepará las fotos y el logo; regenerá íconos y vista previa social si corresponde.
 - [ ] Configurá `VITE_SITE_URL`, `APP_URL` y credenciales de pago en el entorno de Netlify.
 - [ ] Corré `npm run lint`, `npm run check:filters` y `npm run build`.

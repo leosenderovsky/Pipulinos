@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product, ProductColor, PRODUCTS } from '../data/products';
+import { Product, ProductColor, PRODUCTS } from '../catalog';
 import { BRAND_CONFIG } from '../brand.config';
 import { calculateCouponDiscount } from '../lib/checkoutPricing';
 
@@ -42,8 +42,8 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const DEMO_ITEMS: CartItem[] = BRAND_CONFIG.demo.prefillCart
   ? PRODUCTS.slice(0, 3).map((product) => {
-      const size = product.tallesDisponibles[0];
-      const color = product.coloresDisponibles[0];
+      const size = product.sizes[0];
+      const color = product.colors[0];
 
       return {
         id: `${product.id}-${size}-${color.name}`,
@@ -52,7 +52,7 @@ const DEMO_ITEMS: CartItem[] = BRAND_CONFIG.demo.prefillCart
         size,
         color,
         quantity: 1,
-        unitPrice: product.precio,
+        unitPrice: product.price,
       };
     })
   : [];
@@ -108,7 +108,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           size,
           color,
           quantity,
-          unitPrice: product.precio,
+          unitPrice: product.price,
         },
       ];
     });

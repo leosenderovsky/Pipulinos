@@ -1,12 +1,11 @@
 {
   "schemaVersion": 1,
   "site": "pipulinos",
-  "name": "PIPULINO",
+  "name": "Pipulinos",
   "shortName": "Pipulinos",
   "tagline": "Showroom de Indumentaria Infantil",
   "slogan": "Amor en cada puntada para crecer jugando 🎈",
   "foundedYear": 2025,
-  "catalogYear": 2027,
   "seo": {
     "titleSuffix": "Showroom & Catálogo de Indumentaria Infantil",
     "description": "Showroom y catálogo de indumentaria infantil. Ropa tierna para bebés y niños de 0 a 10 años, compra online con Mercado Pago y WhatsApp.",
@@ -64,7 +63,8 @@
       "zipCode": "C1425",
       "city": "Palermo, CABA",
       "deliveryNotes": "Entregar por la tarde."
-    }
+    },
+    "showPrototypeBanner": true
   },
   "logo": {
     "url": "/assets/logo/logo.png",
@@ -120,14 +120,14 @@
   },
   "announcement": {
     "enabled": true,
-    "text": "Envíos gratis desde $45.000 • 3 y 6 cuotas sin interés con Mercado Pago • ¡Atención personalizada por WhatsApp!"
+    "text": "Envíos gratis desde {amount} • {installments} cuotas sin interés con Mercado Pago • ¡Atención personalizada por WhatsApp!"
   },
   "hero": {
     "badge": "NUEVA COLECCIÓN 2027",
     "title": "Amor en cada puntada para crecer jugando 🎈",
     "subtitle": "Prendas suaves, nobles e hipoalergénicas para acompañar los primeros pasos y sueños de tu peque.",
-    "promoCreditCard": "Hasta 6 Cuotas Sin Interés con Mercado Pago",
-    "promoTransfer": "+ 10% OFF abonando por Transferencia Bancaria",
+    "promoCreditCard": "Hasta {installments} Cuotas Sin Interés con Mercado Pago",
+    "promoTransfer": "+ {percent}% OFF abonando por Transferencia Bancaria",
     "bannerImageUrl": "/assets/hero/hero-1.jpg",
     "bannerImageAlt": "Bebés jugando felices con prendas suaves Pipulinos en showroom",
     "trustPill": "100% Algodón Peinado Suave"
@@ -159,7 +159,10 @@
       "zip": "Código postal",
       "city": "Localidad",
       "notes": "Indicaciones para la entrega (opcional)"
-    }
+    },
+    "footerDisclaimer": "Marca, productos y precios de ejemplo — prototipo de demostración",
+    "catalogYear": 2027,
+    "sizeHintFallback": "Disponible"
   },
   "ui": {
     "app": {
@@ -178,7 +181,7 @@
       "keepShopping": "Seguir comprando",
       "title": "Carrito de Compras",
       "trustProtectedTitle": "Compra 100% Protegida",
-      "trustExchangeTitle": "30 días para cambios",
+      "trustExchangeTitle": "{days} días para cambios",
       "trustDispatchTitle": "Despacho en 24hs",
       "stepBadge": "Paso Final",
       "freeShippingTitle": "¡Envío Gratis a Domicilio!",
@@ -209,7 +212,7 @@
       "mpTitle": "Pagar con Mercado Pago",
       "mpText": "Tarjetas de crédito, débito o dinero en cuenta",
       "whatsappTitle": "Coordinar por WhatsApp",
-      "whatsappText": "Asesoramiento, talles y 10% OFF transferencia",
+      "whatsappText": "Asesoramiento, talles y {percent}% OFF transferencia",
       "sslNote": "Checkout encriptado con seguridad SSL 256 bits",
       "sizeHelpTitle": "¿Dudas con los talles de tu peque?",
       "sizeHelpText": "Escribinos y te pasamos medidas en centímetros.",
@@ -267,7 +270,8 @@
       "modelsAvailable": "{count} modelos disponibles",
       "pagination": "Página {page} de 1 • Mostrando {shown} de {total} prendas mimadas",
       "filterButton": "Filtrar prendas divertidas",
-      "activeCount": "({count} activos)"
+      "activeCount": "({count} activos)",
+      "allCategoryLabel": "Todos los artículos"
     },
     "footer": {
       "helpTitle": "Ayuda & Compras",
@@ -299,7 +303,7 @@
     "hero": {
       "cta": "Ver Colección Showroom",
       "ctaNote": "o explorá el catálogo con los filtros abajo 👇",
-      "benefitInstallmentsTitle": "3 y 6 Cuotas Sin Interés",
+      "benefitInstallmentsTitle": "{installments} Cuotas Sin Interés",
       "benefitInstallmentsText": "Con todas las tarjetas vía Mercado Pago",
       "benefitShippingText": "Llegamos a todo el país seguro y rápido",
       "benefitExchangeText": "Cambio ágil y sin complicaciones",
@@ -316,7 +320,7 @@
       "title": "¡Felicitaciones! Pedido Confirmado",
       "nextTitle": "¿Qué sucede a continuación?",
       "nextTracking": "• Te enviaremos el número de guía para seguir el despacho en tiempo real por WhatsApp.",
-      "nextExchange": "• ¡Tenés 30 días para cualquier cambio de talle con tranquilidad!",
+      "nextExchange": "¡Tenés {days} días para cualquier cambio de talle con tranquilidad!",
       "whatsapp": "Hablar con una asesora por WhatsApp",
       "back": "Volver a la tienda",
       "registered": "Tu compra quedó registrada con el número",
@@ -363,7 +367,7 @@
         "paymentFailed": "No pudimos iniciar el pago ({status}){details}"
       },
       "paymentWhatsapp": "WhatsApp & Transferencia",
-      "banner": "✨ Compra 100% Segura • 3 y 6 cuotas sin interés • Despachos garantizados a todo el país ✨",
+      "banner": "✨ Compra 100% Segura • {installments} cuotas sin interés • Despachos garantizados a todo el país ✨",
       "backToCart": "Volver al carrito",
       "secureBadge": "Compra Segura",
       "step1": "1. Envío",
@@ -402,13 +406,13 @@
       "methodBalance": "💙 Saldo Mercado Pago",
       "installmentsPrompt": "Seleccioná plan de cuotas:",
       "installmentOne": "1 Pago Débito/Crédito",
-      "installmentThree": "3 Cuotas sin interés",
+      "installmentThree": "{installments} Cuotas sin interés",
       "installmentCft": "0% CFT",
       "generating": "Generando preferencia en Mercado Pago...",
       "redirectNote": "Redirección directa y protegida por Mercado Pago Argentina",
       "orCoordinate": "O preferís coordinar directo",
       "whatsappTitle": "Coordinar y Pagar por WhatsApp",
-      "whatsappBadge": "10% OFF",
+      "whatsappBadge": "{percent}% OFF",
       "sizeCheck": "Chequeo de centímetros de tu peque",
       "whatsappConfirm": "Finalizar pedido y coordinar por WhatsApp",
       "summaryTitle": "Resumen de Compra",
@@ -416,7 +420,7 @@
       "discount": "Descuento Promo",
       "shippingSelected": "Envío seleccionado",
       "total": "Total final:",
-      "guaranteeTitle": "Garantía de Crecimiento • 30 días de cambio",
+      "guaranteeTitle": "Garantía de Crecimiento • {days} días de cambio",
       "guaranteeText": "Si le queda chico o preferís otro color, el primer cambio es 100% ágil y gratuito en showroom o correo.",
       "trustExchange": "Cambio Fácil",
       "trustGift": "Embalaje Regalo",
@@ -515,7 +519,7 @@
       "careIron": "• Planchar del revés a temperatura suave.",
       "shippingTitle": "Envíos a todo el país y retiro gratis en showroom",
       "shippingExpress": "• Envíos express en CABA y GBA por mensajería privada en 24 a 48 hs.",
-      "exchangeTitle": "Cambios sin costo dentro de los 30 días",
+      "exchangeTitle": "Cambios sin costo dentro de los {days} días",
       "exchangeIntro": "¡Queremos que tu bebé esté 100% cómodo! Si el talle no era el indicado o preferís otro tono:",
       "exchangeFirst": "• El primer cambio por talle es ágil y sin complicaciones.",
       "guideTitle": "Guía de Talles & Medidas en Centímetros",
@@ -551,7 +555,33 @@
       "exchangeStart": "• Tenés hasta",
       "exchangeStrong": "{days} días corridos",
       "exchangeEnd": "desde que recibís tu compra.",
-      "guideTipText": "El algodón Pima cede cómodamente hasta un 12%"
+      "guideTipText": "El algodón Pima cede cómodamente hasta un 12%",
+      "sizeHints": [
+        {
+          "sizeFragment": "RN",
+          "text": "Hasta 3.5 kg"
+        },
+        {
+          "sizeFragment": "0-3",
+          "text": "Hasta 5.5 kg"
+        },
+        {
+          "sizeFragment": "3-6",
+          "text": "Hasta 7.5 kg"
+        },
+        {
+          "sizeFragment": "6-9",
+          "text": "Hasta 9.0 kg"
+        },
+        {
+          "sizeFragment": "9-12",
+          "text": "Hasta 10.5 kg"
+        },
+        {
+          "sizeFragment": "12-18",
+          "text": "Hasta 12.0 kg"
+        }
+      ]
     },
     "whatsapp": {
       "greeting": "Hola {name}, {message}",
@@ -562,5 +592,6 @@
       "size": "Único",
       "color": "Estándar"
     }
-  }
+  },
+  "$schema": "./brand.schema.json"
 }

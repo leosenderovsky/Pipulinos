@@ -24,17 +24,24 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
               </span>
             </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-text tracking-tight leading-[1.15]">
+            <h2
+              aria-label={`${BRAND_CONFIG.hero.title}. ${BRAND_CONFIG.hero.subtitle}`}
+              className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-brand-text tracking-tight leading-[1.15]"
+            >
               {BRAND_CONFIG.hero.title}
             </h2>
 
             <div className="space-y-1.5 text-xs sm:text-sm font-medium">
               <p className="font-extrabold text-brand-text-muted flex items-center gap-1.5">
                 <CreditCard className="w-4 h-4 text-brand-text-muted" />
-                {BRAND_CONFIG.hero.promoCreditCard}
+                {formatText(BRAND_CONFIG.hero.promoCreditCard, {
+                  installments: BRAND_CONFIG.commerce.installmentsWithoutInterest,
+                })}
               </p>
               <p className="font-bold text-emerald-700 bg-emerald-100/60 inline-block px-2.5 py-1 rounded-xl border border-emerald-200">
-                {BRAND_CONFIG.hero.promoTransfer}
+                {formatText(BRAND_CONFIG.hero.promoTransfer, {
+                  percent: BRAND_CONFIG.commerce.transferDiscountPercent,
+                })}
               </p>
             </div>
 
@@ -79,7 +86,13 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onScrollToCatalog }) => 
             <CreditCard className="w-5 h-5" />
           </div>
           <div>
-            <Txt as="p" className="font-extrabold text-xs text-brand-text" value={BRAND_CONFIG.ui.hero.benefitInstallmentsTitle} />
+            <Txt
+              as="p"
+              className="font-extrabold text-xs text-brand-text"
+              value={formatText(BRAND_CONFIG.ui.hero.benefitInstallmentsTitle, {
+                installments: String(BRAND_CONFIG.commerce.installmentsWithoutInterest),
+              })}
+            />
             <Txt as="p" className="text-[11px] font-medium text-purple-400" value={BRAND_CONFIG.ui.hero.benefitInstallmentsText} />
           </div>
         </div>

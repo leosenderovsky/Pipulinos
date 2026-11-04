@@ -4,6 +4,19 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 const productsDir = path.join(process.cwd(), 'public', 'assets', 'products');
+const catalog = JSON.parse(
+  await fs.readFile(path.join(process.cwd(), 'src', 'data', 'catalog.json'), 'utf8'),
+);
+const catalogSchema = JSON.parse(
+  await fs.readFile(path.join(process.cwd(), 'src', 'data', 'catalog.schema.json'), 'utf8'),
+);
+const productIds = new Set(catalog.products.map(({ id }) => id));
+const imageAsset = catalogSchema.properties.products.items.properties.images.items['x-asset'];
+const expectedRatios = (imageAsset.ratios ?? [imageAsset.ratio]).map((ratio) => {
+  const [width, height] = ratio.split(':').map(Number);
+  return width / height;
+});
+const ratioTolerance = imageAsset.ratioTolerance ?? 0.02;
 const strict = process.argv.includes('--strict');
 const files = (await fs.readdir(productsDir))
   .filter((name) => name.toLowerCase().endsWith('.jpg'))
@@ -28,8 +41,11 @@ for (const file of files) {
     .replace(/-\d+$/, '');
   const record = { file, width, height, ratio, bytes: stats.size, hash, productKey, flags: [] };
 
-  if (width < 900) record.flags.push('BAJA RESOLUCIÓN');
-  if (Math.abs(ratio - 0.8) > 0.02 && Math.abs(ratio - 1) > 0.02) record.flags.push('RATIO');
+  if (!productIds.has(productKey)) record.flags.push('SIN_PRODUCTO');
+  if (width < (imageAsset.minWidth ?? 900)) record.flags.push('BAJA RESOLUCIÓN');
+  if (!expectedRatios.some((expected) => Math.abs(ratio - expected) <= ratioTolerance)) {
+    record.flags.push('RATIO');
+  }
   try {
     await fs.access(filePath.replace(/\.jpg$/i, '.webp'));
   } catch {
