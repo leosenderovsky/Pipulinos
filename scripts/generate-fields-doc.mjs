@@ -28,6 +28,7 @@ const visit = (schema, fieldPath) => {
       title: schema.title ?? 'Lista',
       group: schema['x-group'] ?? 'Secciones',
       widget: schema['x-widget'] ?? 'list',
+      role: schema['x-role'] ?? '',
       optional: schema['x-optional'] ? 'Sí' : 'No',
       variables: (schema['x-vars'] ?? []).map((variable) => `{${variable}}`).join(', '),
       asset: schema['x-asset'] ? JSON.stringify(schema['x-asset']) : '',
@@ -46,6 +47,7 @@ const visit = (schema, fieldPath) => {
       title: schema.title ?? 'Datos',
       group: schema['x-group'] ?? 'Secciones',
       widget: schema['x-widget'] ?? 'list',
+      role: schema['x-role'] ?? '',
       optional: schema['x-optional'] ? 'Sí' : 'No',
       variables: (schema['x-vars'] ?? []).map((variable) => `{${variable}}`).join(', '),
       asset: schema['x-asset'] ? JSON.stringify(schema['x-asset']) : '',
@@ -59,6 +61,7 @@ const visit = (schema, fieldPath) => {
     title: schema.title ?? 'Dato',
     group: schema['x-group'] ?? 'Secciones',
     widget: schema['x-widget'] ?? 'text',
+    role: schema['x-role'] ?? '',
     optional: schema['x-optional'] ? 'Sí' : 'No',
     variables: (schema['x-vars'] ?? []).map((variable) => `{${variable}}`).join(', '),
     asset: schema['x-asset'] ? JSON.stringify(schema['x-asset']) : '',
@@ -83,7 +86,7 @@ for (const [file, sectionTitle] of schemas) {
   for (const row of rows) {
     const values = [
       row.path,
-      row.title,
+      row.role ? `${row.title} (x-role: ${row.role})` : row.title,
       row.group,
       row.widget,
       row.optional,

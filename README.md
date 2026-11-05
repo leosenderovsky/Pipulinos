@@ -63,6 +63,13 @@ npm run check:config
 npm run check:coupling
 ```
 
+## Anotación x-role
+
+`x-role` identifica el campo de marca para el editor: `brandName` es obligatorio y único;
+`brandShortName` y `legalName` son opcionales, con un máximo de uno cada uno. El campo
+anotado debe ser `string`, estar fuera de arrays, tener `x-exampleData: true` y un `examples`
+que incluya el nombre del prototipo.
+
 La lógica de etapas de edad (`recien-nacidos`, `bebes`, `ninos`) y sus reglas de talles
 siguen siendo específicas del prototipo infantil en TypeScript. Las categorías y listas de
 filtros, en cambio, se leen de JSON.

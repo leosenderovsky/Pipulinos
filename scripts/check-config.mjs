@@ -184,6 +184,85 @@ const contrastRatio = (foreground, background) => {
 };
 
 const brandSchema = await readJson('src/data/brand.schema.json');
+const validBrandRoles = new Set(['brandName', 'brandShortName', 'legalName']);
+const brandRoleEntries = [];
+const inspectBrandRoles = (node, fieldPath, insideArray = false) => {
+  if (!node || typeof node !== 'object') return;
+  if (Object.hasOwn(node, 'x-role')) {
+    const rolePath = `src/data/brand.schema.json.${fieldPath}.x-role`;
+    const role = node['x-role'];
+    if (!validBrandRoles.has(role)) {
+      errors.push(`${rolePath}: valor no permitido`);
+    } else {
+      brandRoleEntries.push({ role, node, fieldPath, insideArray });
+    }
+  }
+  for (const [key, value] of Object.entries(node)) {
+    if (value && typeof value === 'object') {
+      inspectBrandRoles(
+        value,
+        fieldPath ? `${fieldPath}.${key}` : key,
+        insideArray || (node.type === 'array' && key === 'items'),
+      );
+    }
+  }
+};
+inspectBrandRoles(brandSchema, '');
+const brandNameRoles = brandRoleEntries.filter(({ role }) => role === 'brandName');
+if (brandNameRoles.length === 0) {
+  errors.push('src/data/brand.schema.json: falta exactamente un x-role "brandName"');
+} else if (brandNameRoles.length > 1) {
+  for (const { fieldPath } of brandNameRoles) {
+    errors.push(`src/data/brand.schema.json.${fieldPath}.x-role: x-role "brandName" está repetido`);
+  }
+}
+for (const role of validBrandRoles) {
+  const entries = brandRoleEntries.filter((entry) => entry.role === role);
+  if (entries.length > 1 && role !== 'brandName') {
+    for (const { fieldPath } of entries) {
+      errors.push(`src/data/brand.schema.json.${fieldPath}.x-role: x-role "${role}" está repetido`);
+    }
+  }
+}
+const brandNameExample = brandNameRoles[0]?.node.examples?.[0];
+for (const { role, node, fieldPath, insideArray } of brandRoleEntries) {
+  const rolePath = `src/data/brand.schema.json.${fieldPath}`;
+  if (node.type !== 'string') errors.push(`${rolePath}: x-role "${role}" requiere type string`);
+  if (insideArray) errors.push(`${rolePath}: x-role "${role}" no puede estar dentro de un array`);
+  if (node['x-exampleData'] !== true) {
+    errors.push(`${rolePath}: x-role "${role}" requiere x-exampleData: true`);
+  }
+  const roleExamples = node.examples;
+  const hasExamples = Array.isArray(roleExamples)
+    && roleExamples.some((example) => typeof example === 'string' && example.trim());
+  const hasBrandNameExample = typeof brandNameExample === 'string'
+    ? Array.isArray(roleExamples) && roleExamples.some((example) =>
+      typeof example === 'string' && example.toLowerCase().includes(brandNameExample.toLowerCase()),
+    )
+    : role === 'brandName'
+      ? typeof roleExamples?.[0] === 'string' && Boolean(roleExamples[0].trim())
+      : hasExamples;
+  if (!hasExamples || !hasBrandNameExample) {
+    errors.push(`${rolePath}.examples: debe incluir el nombre del prototipo de brandName`);
+  }
+}
+const inspectForbiddenBrandRoles = (node, schemaPath, fieldPath = '') => {
+  if (!node || typeof node !== 'object') return;
+  if (Object.hasOwn(node, 'x-role')) {
+    errors.push(`${schemaPath}.${fieldPath}.x-role: no se permite x-role en este esquema`);
+  }
+  for (const [key, value] of Object.entries(node)) {
+    if (value && typeof value === 'object') {
+      inspectForbiddenBrandRoles(value, schemaPath, fieldPath ? `${fieldPath}.${key}` : key);
+    }
+  }
+};
+for (const [schemaPath, schema] of [
+  ['src/data/catalog.schema.json', catalogSchema],
+  ['src/data/size-guide.schema.json', await readJson('src/data/size-guide.schema.json')],
+]) {
+  inspectForbiddenBrandRoles(schema, schemaPath);
+}
 const validAssetKeys = new Set([
   'path',
   'minWidth',

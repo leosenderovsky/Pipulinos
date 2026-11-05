@@ -48,6 +48,7 @@
       "x-widget": "text",
       "description": "Ingresá el texto de «nombre de la marca».",
       "x-exampleData": true,
+      "x-role": "brandName",
       "examples": [
         "Pipulinos"
       ]
@@ -59,6 +60,7 @@
       "x-widget": "text",
       "description": "Ingresá el texto de «nombre corto de la marca».",
       "x-exampleData": true,
+      "x-role": "brandShortName",
       "examples": [
         "Pipulinos"
       ]

@@ -10,8 +10,8 @@ Esquema: `src/data/brand.schema.json`
 |---|---|---|---|---|---|---|---|
 | schemaVersion | Versión del esquema | Secciones | number | No |  |  | Versión del formato de configuración. |
 | site | Identificador del sitio | Marca | text | No |  |  | Texto editable. Dejalo vacío para ocultar el elemento. |
-| name | Nombre de la marca | Marca | text | No |  |  | Ingresá el texto de «nombre de la marca». |
-| shortName | Nombre corto de la marca | Marca | text | No |  |  | Ingresá el texto de «nombre corto de la marca». |
+| name | Nombre de la marca (x-role: brandName) | Marca | text | No |  |  | Ingresá el texto de «nombre de la marca». |
+| shortName | Nombre corto de la marca (x-role: brandShortName) | Marca | text | No |  |  | Ingresá el texto de «nombre corto de la marca». |
 | tagline | Descripción breve de la marca | Marca | text | No |  |  | Ingresá el texto de «descripción breve de la marca». |
 | slogan | Frase de marca | Marca | text | No |  |  | Ingresá el texto de «frase de marca». |
 | foundedYear | Año de fundación | Marca | number | No |  |  | Valor numérico. |
