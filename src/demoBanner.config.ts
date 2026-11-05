@@ -1,5 +1,5 @@
 // DEMO ONLY. Al entregar el sitio a un cliente real: borrar este archivo, PrototypeBanner.tsx y su import en App.tsx (marcado DEMO ONLY).
-export const DEFAULT_DEMO_BRAND_NAME = '';
+export const DEFAULT_DEMO_BRAND_NAME = 'Tienda ON!';
 export const DEFAULT_DEMO_BRAND_URL = '';
 
 export const DEMO_BANNER_CONFIG = {

@@ -154,7 +154,7 @@ Revisá el flujo y sus URLs de retorno antes de reemplazar las credenciales por 
 | `VITE_SITE_URL` | URL pública/canónica para metadatos; se recorta whitespace. |
 | `DEPLOY_PRIME_URL` | Segundo valor para la URL del sitio en el build, si no hay `VITE_SITE_URL`. |
 | `URL` | Tercer valor para esa URL; también es fallback de `APP_URL`. |
-| `VITE_DEMO_BRAND_NAME` | Nombre opcional que muestra el banner de demo. |
+| `VITE_DEMO_BRAND_NAME` | Nombre que muestra el banner de demo; si no se define, usa `Tienda ON!`. |
 | `VITE_DEMO_BRAND_URL` | Enlace opcional del banner; solo acepta URL HTTP o HTTPS válida. |
 | `MERCADO_PAGO_ACCESS_TOKEN` | Credencial privada de servidor, configurada en Netlify; nunca en el repo ni con `VITE_`. |
 | `APP_URL` | Base de los retornos y notificaciones de pago; fallback `URL`. |
@@ -193,7 +193,7 @@ npm run verify:deploy -- https://<sitio>.netlify.app
 
 `src/components/PrototypeBanner.tsx` muestra el aviso de prototipo. El nombre y el enlace
 vienen de `src/demoBanner.config.ts`; `getDemoLegend` también arma la aclaración del pie.
-Si no hay nombre configurado, se muestra el aviso genérico.
+El nombre es `Tienda ON!` por defecto y se puede reemplazar con `VITE_DEMO_BRAND_NAME`.
 
 En `brand.json.demo`, `showPrototypeBanner` controla el banner; `prefillCart` y
 `prefillCheckout` están desactivados por defecto.
