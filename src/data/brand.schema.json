@@ -1333,7 +1333,8 @@
           ],
           "x-exampleData": true,
           "x-asset": {
-            "path": "/assets/hero/hero-1.jpg"
+            "path": "/assets/hero/hero-1.jpg",
+            "ratio": "16:9"
           }
         },
         "bannerImageAlt": {

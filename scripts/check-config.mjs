@@ -219,11 +219,15 @@ for (const [schemaPath, schema] of [
       )) {
         errors.push(`${schemaPath}.${fieldPath}.x-asset.ratios: debe ser una lista de proporciones "W:H"`);
       }
+      if (asset.ratio !== undefined && asset.ratios !== undefined) {
+        errors.push(`${schemaPath}.${fieldPath}.x-asset: ratio y ratios no pueden usarse juntos`);
+      }
       if (asset.ratio === undefined && asset.ratios === undefined) {
         if (fieldPath === 'properties.seo.properties.socialImage'
           || fieldPath === 'properties.products.items.properties.images.items'
           || fieldPath === 'properties.logo.properties.faviconUrl'
-          || fieldPath === 'properties.logo.properties.appleTouchIconUrl') {
+          || fieldPath === 'properties.logo.properties.appleTouchIconUrl'
+          || fieldPath === 'properties.hero.properties.bannerImageUrl') {
           errors.push(`${schemaPath}.${fieldPath}.x-asset: falta ratio o ratios`);
         }
       }

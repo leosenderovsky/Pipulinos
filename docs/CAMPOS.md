@@ -101,7 +101,7 @@ Esquema: `src/data/brand.schema.json`
 | hero.subtitle | Bajada | Textos | text | No |  |  | Ingresá el texto de «bajada». |
 | hero.promoCreditCard | Promoción con tarjeta | Textos | text | No | {installments} |  | Ingresá el texto de «promoción con tarjeta». Variables: {installments} significa cantidad de cuotas sin interés. |
 | hero.promoTransfer | Promoción por transferencia | Textos | text | No | {percent} |  | Ingresá el texto de «promoción por transferencia». Variables: {percent} significa porcentaje de descuento por transferencia. |
-| hero.bannerImageUrl | Imagen de portada | Imágenes | image | No |  | {"path":"/assets/hero/hero-1.jpg"} | Elegí la imagen que se usará para «imagen de portada». |
+| hero.bannerImageUrl | Imagen de portada | Imágenes | image | No |  | {"path":"/assets/hero/hero-1.jpg","ratio":"16:9"} | Elegí la imagen que se usará para «imagen de portada». |
 | hero.bannerImageAlt | Descripción de la imagen de portada | Textos | text | No |  |  | Ingresá el texto de «descripción de la imagen de portada». |
 | hero.trustPill | Mensaje destacado | Textos | text | No |  |  | Ingresá el texto de «mensaje destacado». |
 | copy.sizeAssistancePrompt | Mensaje para pedir ayuda con el talle | Textos | text | No |  |  | Ingresá el texto de «mensaje para pedir ayuda con el talle». |
